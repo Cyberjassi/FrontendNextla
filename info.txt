@@ -1,0 +1,54 @@
+##Features---
+
+-  Website
+    -  Explore Courses accoring to category
+    -  Serach Courses with keyword
+    -  Free and Paid Courses
+    -  About Us Page 
+    -  Contact Us Page 
+    -  FAQ Page 
+    -  Support 
+    -  Join as Student and enroll in Courses
+    -  Join as  Teacher and upload content
+
+-  Teacher Panel
+    -  Login/Register/OTP verify via email
+    -  ForgetPassword/ChangPassword
+    -  Profile/Social Accounts 
+    -  Send message to Enrolled Student (Individually or All)
+    -  Category CURD 
+    -  Upload content accoring to category 
+       -  If Video status true then anyone can see the video withour enroll
+       -  If video status false then only enrolled student can see the video
+
+    -  Uplaod Study material accoding to Courses
+    -  Can see the total enrolled Students and their progress
+    -  Count Total views of content
+
+-  Student Panel
+    -  Login/Register/OTP verify via email
+    -  ForgetPassword/ChangPassword
+    -  Enrolled Courses
+       -  Each Enrolled Course Show the videsos in sequence
+       -  When previous video then student acess the next video
+    - View The profile of content creator
+    -  Send message to content Creators (Individual or All)
+
+- Admin Panel
+  -  Manage everything
+  -  Search anything 
+  -  Add/Update/Delete Any content 
+  -  Enable disable any course , student or teacher
+
+
+#Technologies
+
+- Backend
+  - Python
+  - Django
+  - Rest API (Django Rest Framework)
+  - SQLite
+
+- Frontend 
+  - Next Js 
+  - Tailwind
