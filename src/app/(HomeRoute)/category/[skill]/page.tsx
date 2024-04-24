@@ -1,33 +1,10 @@
-'use client'
-import Link from 'next/link';
-import { useEffect,useState } from 'react';
-import axios from 'axios';
 
-import { getTeacherInfo } from '@/app/redux/teacher/todo';
-import { useDispatch, useSelector } from "react-redux";
-
-export default function PopularTeachers() {
-  const [teacher,setTeacher] = useState(null)
-  // useEffect(()=>{
-  //   axios.get('http://localhost:8000/api/teacher')
-  //   .then(res=>{
-  //     setTeacher(res.data)
-  //     console.log(res.data)
-  //   })
- 
- 
-  // },[])
-  const dispatch = useDispatch()
-  const state = useSelector(state=>state);
-  console.log(state)
-
-  const data = dispatch(getTeacherInfo())
-  
- 
+import Link from 'next/link'
+export default function CategoryCourses() {
   return (
     <div className="container mt-3">
      <h3 className="pb-1 my-4 text-start">
-          Popular Teachers{" "}
+          WebDevelopment Courses{" "}
           
         </h3>
         <div className="row mb-4">
@@ -42,14 +19,8 @@ export default function PopularTeachers() {
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link href="/detail/1">TeachersName</Link>
+                  <Link href="/course-detail/1">Course Title</Link>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>
@@ -64,14 +35,8 @@ export default function PopularTeachers() {
               </a>
               <div className="card-body">
                 <h5 className="card-title">
-                  <a href="#">TeachersName</a>
+                  <a href="#">Course Title</a>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>
@@ -86,14 +51,8 @@ export default function PopularTeachers() {
               </a>
               <div className="card-body">
                 <h5 className="card-title">
-                  <a href="#">TeachersName</a>
+                  <a href="#">Course Title</a>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>
@@ -108,20 +67,14 @@ export default function PopularTeachers() {
               </a>
               <div className="card-body">
                 <h5 className="card-title">
-                  <a href="#">TeachersName</a>
+                  <a href="#">Course Title</a>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>
           <div className="col-md-3 mb-4">
             <div className="card">
-            <Link href="/detail/1">
+            <Link href="/course-detail/1">
                 <img
                   className="card-img-top"
                   src="https://picsum.photos/200/300"
@@ -130,19 +83,13 @@ export default function PopularTeachers() {
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link href="/detail/1">TeachersName</Link>
+                  <Link href="/course-detail/1">Course Title</Link>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>  <div className="col-md-3 mb-4">
             <div className="card">
-            <Link href="/detail/1">
+            <Link href="/course-detail/1">
                 <img
                   className="card-img-top"
                   src="https://picsum.photos/200/300"
@@ -151,19 +98,13 @@ export default function PopularTeachers() {
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link href="/detail/1">TeachersName</Link>
+                  <Link href="/course-detail/1">Course Title</Link>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>  <div className="col-md-3 mb-4">
             <div className="card">
-            <Link href="/detail/1">
+            <Link href="/course-detail/1">
                 <img
                   className="card-img-top"
                   src="https://picsum.photos/200/300"
@@ -172,19 +113,13 @@ export default function PopularTeachers() {
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link href="/detail/1">TeachersName</Link>
+                  <Link href="/course-detail/1">Course Title</Link>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>  <div className="col-md-3 mb-4">
             <div className="card">
-            <Link href="/detail/1">
+            <Link href="/course-detail/1">
                 <img
                   className="card-img-top"
                   src="https://picsum.photos/200/300"
@@ -193,14 +128,8 @@ export default function PopularTeachers() {
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link href="/detail/1">TeachersName</Link>
+                  <Link href="/course-detail/1">Course Title</Link>
                 </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                 
-                </div>
               </div>
             </div>
           </div>

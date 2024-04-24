@@ -1,6 +1,11 @@
+'use client'
+import { useEffect } from "react"
 
+// use for set title in next app
 function TeacherRegister() {
- 
+     useEffect(()=>{
+      document.title= "Teacher Register"
+     })
  
   return (
     <div>
@@ -8,12 +13,12 @@ function TeacherRegister() {
         <div className="row">
           <div className="col-6 offset-3">
             <div className="card">
-              <h3 className="card-header">User Register</h3>
+              <h3 className="card-header">Teacher Register</h3>
               <div className="card-body">
                 <form>
                 <div className="mb-3">
                     <label
-                    //   for="exampleInputEmail1"
+                     htmlFor="exampleInputEmail1"
                       className="form-label"
                     >
                       Full Name
@@ -27,13 +32,13 @@ function TeacherRegister() {
                   </div>
                   <div className="mb-3">
                     <label
-                    //   for="exampleInputEmail1"
+                       htmlFor="exampleInputEmail1"
                       className="form-label"
                     >
                       Email
                     </label>
                     <input
-                    name="email"
+                      name="email"
 
                       type="email"
                       className="form-control"
@@ -42,12 +47,12 @@ function TeacherRegister() {
                   </div>
                   <div className="mb-3">
                     <label 
-                    // for="exampleInputPassword1" 
+                   htmlFor="exampleInputPassword1" 
                     className="form-label">
                       Password
                     </label>
                     <input
-                    name="password"
+                      name="password"
                   
                       type="password"
                       className="form-control"
@@ -56,13 +61,13 @@ function TeacherRegister() {
                   </div>
                   <div className="mb-3">
                     <label
-                    //   for="exampleInputEmail1"
+                      htmlFor="exampleInputEmail1"
                       className="form-label"
                     >
                       Qualification
                     </label>
                     <input
-                    name="qualification"
+                      name="qualification"
                     
                       type="text"
                       className="form-control"
@@ -71,13 +76,13 @@ function TeacherRegister() {
                   </div>
                   <div className="mb-3">
                     <label
-                    //   htmlForfor="exampleInputEmail1"
+                      htmlFor="exampleInputEmail1"
                       className="form-label"
                     >
                       Mobile Number
                     </label>
                     <input
-                    name="mobile_no"
+                      name="mobile_no"
                    
                       type="integer"
                       className="form-control"
@@ -87,7 +92,7 @@ function TeacherRegister() {
                  
                   <div className="mb-3">
                     <label
-                    //   for="exampleInputEmail1"
+                      htmlFor="exampleInputEmail1"
                       className="form-label"
                     >
                       Skills

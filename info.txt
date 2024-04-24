@@ -52,3 +52,10 @@
 - Frontend 
   - Next Js 
   - Tailwind
+
+
+
+
+Depened-
+install axious
+cross origin policy 

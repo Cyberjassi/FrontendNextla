@@ -120,7 +120,7 @@ function page({params}:any) {
       <div className="row mb-4">
         <div className="col-md-3">
           <div className="card">
-            <Link href="/detail/1">
+            <Link href="/course-detail/1">
               <img
                 className="card-img-top"
                 src="https://picsum.photos/200/300"
@@ -129,7 +129,7 @@ function page({params}:any) {
             </Link>
             <div className="card-body">
               <h5 className="card-title">
-                <Link href="/detail/1">Course Title</Link>
+                <Link href="/course-detail/1">Course Title</Link>
               </h5>
             </div>
           </div>

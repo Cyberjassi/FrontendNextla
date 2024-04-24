@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/redux/providers.tsx", "src/app/redux/teacher/todo.tsx", "src/app/practiceremove/page.jsx"],
   "exclude": ["node_modules"]
 }
