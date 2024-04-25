@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { Navbar } from "@/components/ui/navigation-menu";
 import { Providers } from "./redux/providers";
 
-import { store } from "./redux/store";
+
 
 // import bootstrap file -
 import 'bootstrap/dist/css/bootstrap.min.css'

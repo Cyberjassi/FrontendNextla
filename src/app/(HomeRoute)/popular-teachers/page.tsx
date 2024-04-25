@@ -1,13 +1,13 @@
-'use client'
+"use client"
 import Link from 'next/link';
-import { useEffect,useState } from 'react';
-import axios from 'axios';
+import { useEffect ,useState} from 'react';
+// import axios from 'axios';
 
-import { getTeacherInfo } from '@/app/redux/teacher/todo';
+import { getTeacherInfo } from '../../redux/teacher/TeacherRetrieve'
 import { useDispatch, useSelector } from "react-redux";
 
 export default function PopularTeachers() {
-  const [teacher,setTeacher] = useState(null)
+  const [teacher,setTeacher] = useState<any>(null)
   // useEffect(()=>{
   //   axios.get('http://localhost:8000/api/teacher')
   //   .then(res=>{
@@ -18,14 +18,19 @@ export default function PopularTeachers() {
  
   // },[])
   const dispatch = useDispatch()
-  const state = useSelector(state=>state);
-  console.log(state)
 
-  const data = dispatch(getTeacherInfo())
+  useEffect (()=>{
+    dispatch(getTeacherInfo())
+  },[])
+  
+  const state = useSelector((state:any)=>state);
+  console.log("this is my State",state)
+
   
  
   return (
     <div className="container mt-3">
+ 
      <h3 className="pb-1 my-4 text-start">
           Popular Teachers{" "}
           

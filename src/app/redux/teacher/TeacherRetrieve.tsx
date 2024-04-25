@@ -2,31 +2,31 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 
-interface Todo {
+interface Teacher {
     userId: number;
     id: number;
     title: string;
     completed: boolean;
 }
 
-interface TodoState {
+interface TeacherState {
     isLoading: boolean;
-    data: Todo[] | null;
+    data: Teacher[] | null;
     isError: boolean;
 }
 
-export const getTeacherInfo = createAsyncThunk<Todo[]>('getTeacherInfo', async () => {
+export const getTeacherInfo = createAsyncThunk<Teacher[]>('getTeacherInfo', async () => {
     const response = await axios.get("http://localhost:8000/api/teacher");
     return response.data;
 });
 
-const initialState: TodoState = {
+const initialState: TeacherState = {
     isLoading: false,
     data: null,
     isError: false
 };
 
-const todoSlice = createSlice({
+const teacherRetrieveSlice = createSlice({
     name: "getteacherinfo",
     initialState,
     reducers: {},
@@ -46,4 +46,4 @@ const todoSlice = createSlice({
     }
 });
 
-export default todoSlice.reducer;
+export default teacherRetrieveSlice.reducer;

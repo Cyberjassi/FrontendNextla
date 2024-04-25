@@ -1,12 +1,12 @@
 // import slice from './slice'
 // import reducer from './slice'
-import todoReducer from './teacher/todo';
+import teacherReducer from './teacher/TeacherRetrieve';
 import { configureStore } from '@reduxjs/toolkit';
 
 // in which we confiure our actions and reducer
 export const store = configureStore({
     reducer: {
-        todo: todoReducer,
+        teacher:teacherReducer ,
     },
 });
 

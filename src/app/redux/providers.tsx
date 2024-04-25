@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Provider } from 'react-redux';
-import {store,RootState} from './store'; // Correct import statement
+import {store} from './store'; // Correct import statement
 
 interface ProvidersProps {
   children: ReactNode;

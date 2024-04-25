@@ -4,7 +4,7 @@ import Link from "next/link";
 import { removeUser } from "../redux/slice";
 
 
-import { getTeacherInfo } from "../redux/teacher/todo";
+import { getTeacherInfo } from "../redux/teacher/TeacherRetrieve";
 
 function page() {
   // const useselcetor = useSelector((data) => data.users);
@@ -13,10 +13,12 @@ function page() {
 
   // console.log(useselcetor);
   const dispatch = useDispatch();
-  const state = useSelector((state)=>state);
-  console.log("State",state)
 
-  if (state.todo.isLoading) {
+  const state = useSelector((state)=>state);
+  console.log("State.................",state)
+  
+  
+  if (state.teacher.isLoading) {
     return <h1>Loading...</h1>;
   }
   return (
@@ -33,7 +35,7 @@ function page() {
 
       <button onClick={()=>dispatch(getTeacherInfo())}>Fetch Todo </button>
       {
-       state.todo.data&&state.todo.data.map ((item)=>(
+       state.teacher.data&&state.teacher.data.map ((item)=>(
         <>
         <h2>{item.title}</h2>
         <h2>{item.full_name}</h2>

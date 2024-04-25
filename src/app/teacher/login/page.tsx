@@ -1,6 +1,11 @@
-
+'use client'
+import { useEffect,useState } from "react";
+import axios from 'axios'
 function TeacherLogin() {
- 
+ useEffect(()=>{
+  document.title='Teacher Login'
+ })
+ http://localhost:3000/teacher/login
   return (
     <div>
       <div className="container mt-4">
@@ -18,7 +23,7 @@ function TeacherLogin() {
                       Email
                     </label>
 
-                    <input  name="email" type="email" className="form-control" />
+                    <input  name="email" type="email" placeholder="Enter Your Email" className="form-control" />
                   </div>
                   <div className="mb-3">
                     <label 
@@ -27,6 +32,7 @@ function TeacherLogin() {
                       Password
                     </label>
                     <input
+                    placeholder="Enter Your Password" 
                     name="password"
                       type="password"
                       className="form-control"
