@@ -1,10 +1,96 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
+import axios from "axios";
 
+function AddCourse() {
 
-function TeacherMyCourses() {
+  // for category Retriew ---
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategoryInfo());
+  }, [dispatch]);
+  const state = useSelector((state: any) => state);
+  console.log("this is my State", state);
+  let dataCategory = state.category.data
  
+
+
+  // for post data for course--
+  interface CourseData {
+    'category': any;
+    'teacher': any|Number;
+    'title': string;
+    'description': string;
+    'featured_img': File |string|any;
+    'techs': string;
+  
+  }
+
+
+  const [CourseData, setCourseData] = useState<CourseData>({
+    'category': "",
+    'teacher': "",
+    'title': "",
+    'description': "",
+    'featured_img': "",
+    'techs': "",
+  });
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // const { name, value } = event.target;
+    setCourseData({
+      // we pass referance CourseData and then change our name and value acording to event 
+      ...CourseData,
+      [event.target.name]: event.target.value
+    });
+  };
+  
+ console.log(CourseData)
+
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const courseFormData = new FormData();
+    // Object.entries(CourseData).forEach(([key, value]) => {
+    //   courseFormData.append(key, value as string | Blob);
+    // });
+    courseFormData.append('category',CourseData.category);
+    courseFormData.append('teacher',1);
+    courseFormData.append('title',CourseData.title);
+    courseFormData.append('description',CourseData.description);
+    courseFormData.append('featured_img',CourseData.featured_img,courseFormData.featured_img.name);
+    courseFormData.append('techs',CourseData.techs);
+  
+  try{
+    
+    axios.post("http://127.0.0.1:8000/api/course/", courseFormData)
+      .then((response) => {
+        console.log(response.data);
+        setCourseData(
+          {
+            'category': "",
+            'teacher': "",
+            'title': "",
+            'description': "",
+            'featured_img': "",
+            'techs': "",
+          }
+        )
+      })   
+    }catch(error){
+      console.log(error);
+    }
+
+  
+  };
+  
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -14,29 +100,32 @@ function TeacherMyCourses() {
         <section className="col-md-9">
           <div className="card">
             <h5 className="card-header">Add Courses</h5>
-            <form className="container">
-            <div className="mb-3">
+            <form onSubmit={submitForm} className="container">
+              <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
-                    Category
+                  Category
                 </label>
-                <select name="category" 
-                className="form-control">
-                   
-                    <option>
-                       
-                    </option>
-               
+                <select name="category" className="form-control">
+                  {/* if apit take time to load then show loading otherwise show data */}
+                  {state.category.isLoading ? (
+                    <p>Loading...</p>
+                  ) : (
+                    dataCategory &&
+                    dataCategory.map((category: any, index: any) => (
+                      <option key={index}>{category.title}</option>
+                    ))
+                  )}
                 </select>
-                </div>
+              </div>
 
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label ">
                   Title
                 </label>
                 <input
-                name="title"
-                type="text"
-           
+                  onChange={handleChange}
+                  name="title"
+                  type="text"
                   className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
@@ -48,7 +137,7 @@ function TeacherMyCourses() {
                 </label>
                 <div className="form-floating">
                   <textarea
-                   
+                    onChange={handleChange}
                     name="description"
                     className="form-control"
                     placeholder="Leave a comment here"
@@ -61,7 +150,7 @@ function TeacherMyCourses() {
                   Featured Image
                 </label>
                 <input
-             
+                  onChange={handleChange}
                   name="featured_img"
                   type="file"
                   className="form-control"
@@ -70,12 +159,12 @@ function TeacherMyCourses() {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" >
+                <label htmlFor="exampleInputPassword1" className="form-label">
                   Technologies
                 </label>
                 <div className="form-floating">
                   <textarea
-                 
+                    onChange={handleChange}
                     name="techs"
                     className="form-control"
                     placeholder="Php,Python,Javascript,HTML,CSS,Javascript"
@@ -83,7 +172,7 @@ function TeacherMyCourses() {
                   ></textarea>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary" >
+              <button type="submit" className="btn btn-primary">
                 Submit
               </button>
             </form>
@@ -94,4 +183,4 @@ function TeacherMyCourses() {
   );
 }
 
-export default TeacherMyCourses;
+export default AddCourse;

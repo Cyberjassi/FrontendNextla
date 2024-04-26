@@ -40,7 +40,7 @@ function TeacherRegister() {
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
+    // const { name, value } = event.target;
     setTeacherData({
       // we pass referance teacherData and then change our name and value acording to event 
       ...teacherData,
@@ -56,7 +56,9 @@ function TeacherRegister() {
     Object.entries(teacherData).forEach(([key, value]) => {
       teacherFormData.append(key, value as string | Blob);
     });
+  
   try{
+    
     axios.post("http://127.0.0.1:8000/api/teacher/", teacherFormData)
       .then((response) => {
         console.log(response.data);
@@ -75,12 +77,22 @@ function TeacherRegister() {
             'status': 'success'
           }
         )
+        if(response.data.bool==true){
+          localStorage.setItem('teacherLoginStatus',true)
+          window.location.href='/teacher/login'
+        }
       })
       console.log(teacherData.status)
+      
     }catch(error){
       setTeacherData({...teacherData,status:'error'})
       console.log(teacherData.status)
       console.log(error);
+    }
+
+    const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
+    if(teacherLoginStatus == 'true'){
+      window.location.href='/teacher/login'
     }
   };
   

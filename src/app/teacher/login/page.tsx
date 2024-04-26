@@ -5,7 +5,69 @@ function TeacherLogin() {
  useEffect(()=>{
   document.title='Teacher Login'
  })
- http://localhost:3000/teacher/login
+
+
+
+interface TeacherData {
+  'email': string;
+  'password': string;
+}
+
+
+const [teacherData, setTeacherData] = useState<TeacherData>({
+  'email': "",
+  'password': "",
+});
+
+
+const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // const { name, value } = event.target;
+  setTeacherData({
+    // we pass referance teacherData and then change our name and value acording to event 
+    ...teacherData,
+    [event.target.name]: event.target.value
+  });
+};
+console.log(teacherData)
+
+const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  // console.log(teacherData.status)
+  e.preventDefault();
+  // const teacherFormData = new FormData();
+  // teacherFormData.append('email', teacherData.email);
+  // teacherFormData.append('password', teacherData.password);
+try{
+  // console.log(teacherFormData)
+  axios.post("http://127.0.0.1:8000/api/teacher-login/", teacherData)
+    .then((response) => {
+      console.log(response.data);
+      setTeacherData(
+        {
+          'email': "",
+          'password': "",
+        }
+      )
+      // if backend server response bool is true then we set in local storage
+      //  then we redirect to teacher dashboard and set it true
+      if(response.data.bool==true){
+        localStorage.setItem('teacherLoginStatus',true)
+        window.location.href='/teacher/dashboard'
+      }
+    })
+
+  }catch(error){
+    // setTeacherData({...teacherData,status:'error'})
+    // console.log(teacherData.status)
+    console.log(error);
+  }
+ 
+
+  // get the localStorage data if it's true then redirect to teacher dashboard
+  const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
+  if(teacherLoginStatus == 'true'){
+    window.location.href='/teacher/dashboard'
+  }
+};
   return (
     <div>
       <div className="container mt-4">
@@ -14,7 +76,7 @@ function TeacherLogin() {
             <div className="card">
               <h3 className="card-header">User Login</h3>
               <div className="card-body">
-                <form>
+                <form onSubmit={submitForm}>
                   <div className="mb-3">
                     <label
                     //   for="exampleInputEmail1"
@@ -23,7 +85,10 @@ function TeacherLogin() {
                       Email
                     </label>
 
-                    <input  name="email" type="email" placeholder="Enter Your Email" className="form-control" />
+                    <input  name="email" type="email"   
+                    onChange={handleChange} 
+                    value={teacherData.email}
+                    placeholder="Enter Your Email" className="form-control" />
                   </div>
                   <div className="mb-3">
                     <label 
@@ -33,6 +98,8 @@ function TeacherLogin() {
                     </label>
                     <input
                     placeholder="Enter Your Password" 
+                    onChange={handleChange}
+                    value={teacherData.password}
                     name="password"
                       type="password"
                       className="form-control"

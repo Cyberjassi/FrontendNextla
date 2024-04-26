@@ -3,7 +3,7 @@ import Link from "next/link";
 
 function Header() {
   
-
+const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -47,8 +47,10 @@ function Header() {
               </a>
               <ul className="dropdown-menu" aria-labelledby="teachersDropdown">
                
-                <li>
-                    <>
+                <li> 
+                  {teacherLoginStatus!=='true' &&
+                <>
+                    
                 <li>
                   <Link className="dropdown-item" href="/teacher/registration">
                     Register
@@ -57,7 +59,7 @@ function Header() {
                   <Link className="dropdown-item" href="/teacher/login">
                     Login
                   </Link>
-                  </>
+                  </>}
                 </li>
                 
                 
@@ -88,19 +90,18 @@ function Header() {
                 User
               </a>
               <ul className="dropdown-menu" aria-labelledby="userDropdown">
-                <li>
-                  <Link className="dropdown-item" href="/user/registration">
-                    Register
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" href="/user/login">
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
+               
+                    <li>
+                      <Link className="dropdown-item" href="/user/registration">
+                        Register
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" href="/user/login">
+                        Login
+                      </Link>
+                    </li>
+               
                 <li>
                   <Link className="dropdown-item" href="/user/dashboard">
                     Dashboard
