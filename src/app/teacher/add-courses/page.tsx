@@ -24,7 +24,7 @@ function AddCourse() {
   // for post data for course--
   interface CourseData {
     'category': any;
-    'teacher': any|Number;
+    'teacher': any|Number|string;
     'title': string;
     'description': string;
     'featured_img': File |string|any;
@@ -34,12 +34,12 @@ function AddCourse() {
 
 
   const [CourseData, setCourseData] = useState<CourseData>({
-    'category': "",
-    'teacher': "",
-    'title': "",
-    'description': "",
-    'featured_img': "",
-    'techs': "",
+    category: '',
+    teacher: '',
+    title: '',
+    description: '',
+    featured_img: null,
+    techs: '',
   });
 
 
@@ -51,6 +51,16 @@ function AddCourse() {
       [event.target.name]: event.target.value
     });
   };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0]; // Get the first file from the input
+      setCourseData({
+        ...CourseData,
+        featured_img: file // Set the file directly to the featured_img field
+      });
+    }
+  };
   
  console.log(CourseData)
 
@@ -60,28 +70,26 @@ function AddCourse() {
     // Object.entries(CourseData).forEach(([key, value]) => {
     //   courseFormData.append(key, value as string | Blob);
     // });
+    const categoryId = parseInt(CourseData.category, 10);
     courseFormData.append('category',CourseData.category);
-    courseFormData.append('teacher',1);
+    courseFormData.append('teacher','1');
     courseFormData.append('title',CourseData.title);
     courseFormData.append('description',CourseData.description);
-    courseFormData.append('featured_img',CourseData.featured_img,courseFormData.featured_img.name);
+    courseFormData.append('featured_img',CourseData.featured_img);
     courseFormData.append('techs',CourseData.techs);
   
   try{
+    console.log("here course form data",[...courseFormData.entries()])
     
-    axios.post("http://127.0.0.1:8000/api/course/", courseFormData)
+    axios.post("http://127.0.0.1:8000/api/course/", courseFormData,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    })
       .then((response) => {
         console.log(response.data);
-        setCourseData(
-          {
-            'category': "",
-            'teacher': "",
-            'title': "",
-            'description': "",
-            'featured_img': "",
-            'techs': "",
-          }
-        )
+        // for reload-
+        window.location.href='/add-course';
       })   
     }catch(error){
       console.log(error);
@@ -100,19 +108,20 @@ function AddCourse() {
         <section className="col-md-9">
           <div className="card">
             <h5 className="card-header">Add Courses</h5>
-            <form onSubmit={submitForm} className="container">
+            <form onSubmit={submitForm} className="container" >
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Category
                 </label>
-                <select name="category" className="form-control">
+                <select name="category" className="form-control" onChange={handleChange}>
                   {/* if apit take time to load then show loading otherwise show data */}
                   {state.category.isLoading ? (
                     <p>Loading...</p>
                   ) : (
                     dataCategory &&
                     dataCategory.map((category: any, index: any) => (
-                      <option key={index}>{category.title}</option>
+                      
+                      <option key={index} value={category.id} >{category.title}</option>
                     ))
                   )}
                 </select>
@@ -150,12 +159,11 @@ function AddCourse() {
                   Featured Image
                 </label>
                 <input
-                  onChange={handleChange}
+                  onChange={handleFileChange}
                   name="featured_img"
                   type="file"
                   className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
+                  id="video"
                 />
               </div>
               <div className="mb-3">

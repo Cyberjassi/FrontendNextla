@@ -1,8 +1,32 @@
+"use client"
 import React from "react";
+import { useEffect ,useState} from 'react';
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 
+import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
+import { useDispatch, useSelector } from "react-redux";
+
+
 function TeacherMyCourses() {
+  const [course,setCourse] = useState<any>([])
+
+  // to get teacher id from local storage---
+  const teacherId = localStorage.getItem('teacherId')
+  console.log("this is teacher id",teacherId)
+
+  const dispatch = useDispatch()
+
+  useEffect (()=>{
+    dispatch(getCourseInfo())
+  },[dispatch])
+  
+  const state = useSelector((state:any)=>state);
+  console.log("this is my data",state.course.data)
+  const courseData = state.course.data
+
+
+ 
   return (
     <div className="container mt-4">
       <div className="row">
@@ -22,14 +46,22 @@ function TeacherMyCourses() {
                   </tr>
                 </thead>
                 <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link href="/">123</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                    <Link className="btn btn-success btn-sm active ms-2" href="/teacher/add-chapter">Add Chapters</Link>
-                  </td>
+                  {state.course.isLoading ? (
+                    <p>Loading....</p>
+                  ):(courseData&&
+                    courseData.map((course:any,index:any)=>(
+                 <tr key={index} >
+                    <td>{course.title}</td>
+                    <td>
+                      <Link href="/">123</Link>
+                    </td>
+                    <td>
+                      <button className="btn btn-danger btn-sm  ms-2">Delete</button>
+                      <Link className="btn btn-success btn-sm  ms-2" href="/teacher/add-chapter">Add Chapters</Link>
+                    </td>
+                  </tr>
+                    )) 
+                  )}
                 </tbody>
               </table>
             </div>

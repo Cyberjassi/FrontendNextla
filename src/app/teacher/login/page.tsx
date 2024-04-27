@@ -51,6 +51,8 @@ try{
       //  then we redirect to teacher dashboard and set it true
       if(response.data.bool==true){
         localStorage.setItem('teacherLoginStatus',true)
+        // set teacher id in local storage for future use---
+        localStorage.setItem('teacherId',response.data.teacher_id)
         window.location.href='/teacher/dashboard'
       }
     })
