@@ -19,6 +19,8 @@ const [teacherData, setTeacherData] = useState<TeacherData>({
   'password': "",
 });
 
+const [errorMsg,setErrorMsg] = useState("");
+
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   // const { name, value } = event.target;
@@ -41,12 +43,12 @@ try{
   axios.post("http://127.0.0.1:8000/api/teacher-login/", teacherData)
     .then((response) => {
       console.log(response.data);
-      setTeacherData(
-        {
-          'email': "",
-          'password': "",
-        }
-      )
+      // setTeacherData(
+      //   {
+      //     'email': "",
+      //     'password': "",
+      //   }
+      // )
       // if backend server response bool is true then we set in local storage
       //  then we redirect to teacher dashboard and set it true
       if(response.data.bool==true){
@@ -54,6 +56,8 @@ try{
         // set teacher id in local storage for future use---
         localStorage.setItem('teacherId',response.data.teacher_id)
         window.location.href='/teacher/dashboard'
+      }else{
+        setErrorMsg("Invalid Email or Password!")
       }
     })
 
@@ -76,8 +80,9 @@ try{
         <div className="row">
           <div className="col-6 offset-3">
             <div className="card">
-              <h3 className="card-header">User Login</h3>
+              <h5 className="card-header">Teacher Login</h5>
               <div className="card-body">
+                {errorMsg && <p className="text-danger">{errorMsg}</p>}
                 <form onSubmit={submitForm}>
                   <div className="mb-3">
                     <label

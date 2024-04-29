@@ -60,3 +60,4 @@ Depened-
 install axious
 cross origin policy 
 zod install
+sweetalert install

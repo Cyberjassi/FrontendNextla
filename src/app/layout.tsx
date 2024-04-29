@@ -10,6 +10,10 @@ import { Providers } from "./redux/providers";
 // import bootstrap file -
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
+// Import Bootstrap icons
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+
 
 import { useEffect } from "react";
 import Header from "@/components/Home/Header";

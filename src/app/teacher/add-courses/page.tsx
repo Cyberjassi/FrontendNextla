@@ -89,7 +89,7 @@ function AddCourse() {
       .then((response) => {
         console.log(response.data);
         // for reload-
-        window.location.href='/add-course';
+        // window.location.href='/teacher/add-courses';
       })   
     }catch(error){
       console.log(error);

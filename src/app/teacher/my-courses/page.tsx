@@ -41,6 +41,7 @@ function TeacherMyCourses() {
                 <thead>
                   <tr>
                   <th>Name</th>
+                  <th>Image</th>
                     <th>Total Enrolled</th>
                     <th>Action</th>
                   </tr>
@@ -51,13 +52,14 @@ function TeacherMyCourses() {
                   ):(courseData&&
                     courseData.map((course:any,index:any)=>(
                  <tr key={index} >
-                    <td>{course.title}</td>
+                    <td><Link href={`chapter/${course.id}`}>{course.title}</Link></td>
+                    <td><img src={course.featured_img} width="80" className="rounded" alt={course.title} /></td>
                     <td>
                       <Link href="/">123</Link>
                     </td>
                     <td>
                       <button className="btn btn-danger btn-sm  ms-2">Delete</button>
-                      <Link className="btn btn-success btn-sm  ms-2" href="/teacher/add-chapter">Add Chapters</Link>
+                      <Link className="btn btn-success btn-sm  ms-2" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
                     </td>
                   </tr>
                     )) 
