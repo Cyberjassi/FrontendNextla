@@ -18,7 +18,7 @@ function TeacherMyCourses() {
   const dispatch = useDispatch()
 
   useEffect (()=>{
-    dispatch(getCourseInfo())
+    dispatch(getCourseInfo() as any)
   },[dispatch])
   
   const state = useSelector((state:any)=>state);
@@ -58,8 +58,9 @@ function TeacherMyCourses() {
                       <Link href="/">123</Link>
                     </td>
                     <td>
-                      <button className="btn btn-danger btn-sm  ms-2">Delete</button>
+                    <Link className="btn btn-info btn-sm " href={`/teacher/edit-course/${course.id}`}>Edit</Link>
                       <Link className="btn btn-success btn-sm  ms-2" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
+                      <button className="btn btn-danger btn-sm  ms-2">Delete</button>
                     </td>
                   </tr>
                     )) 

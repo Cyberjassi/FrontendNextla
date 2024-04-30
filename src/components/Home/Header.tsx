@@ -6,7 +6,7 @@ function Header() {
 const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
         <Link className="navbar-brand" href="/">
           Working

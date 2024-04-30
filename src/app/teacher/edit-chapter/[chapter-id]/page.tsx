@@ -9,7 +9,7 @@ function page(props: any) {
   // console.log("this is current course",currentCourse)
 
   interface ChapterData {
-    course: string | number;
+    course: string | number|any;
     title: string;
     description: string;
     prev_video:any;

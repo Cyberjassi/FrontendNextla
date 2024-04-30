@@ -4,10 +4,8 @@ import TeacherSidebar from "@/components/Teacher/Sidebar";
 import Link from "next/link";
 
 // for sweetalert---
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import axios from "axios";
-
-
 
 function Page(props: any) {
   const [chapterData, setChapterData] = useState([]);
@@ -16,19 +14,23 @@ function Page(props: any) {
   const currentChapter = props.params["chapter-id"];
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/course-chapters/${currentChapter}`)
-      .then((res) => res.json())
-      .then((data) => {
+    axios
+      .get(`http://localhost:8000/api/course-chapters/${currentChapter}`)
+      .then((response) => {
+        const data = response.data;
         setTotalResult(data.length);
         setChapterData(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching course chapters:", error);
       });
   }, []);
   // console.log("this is my chapters", chapterData);
- 
+
   // for sweetalert---
   // const Swal = require('sweetalert2')
-  const handleDeleteClick = (chapter_id:any) => {
-    console.log("..................",chapter_id)
+  const handleDeleteClick = (chapter_id: any) => {
+    console.log("..................", chapter_id);
 
     Swal.fire({
       title: "Confirm",
@@ -39,19 +41,33 @@ function Page(props: any) {
     }).then((result) => {
       if (result.isConfirmed) {
         try {
-          axios.delete(`http://localhost:8000/api/chapter/${chapter_id}`)
+          axios
+            .delete(`http://localhost:8000/api/chapter/${chapter_id}`)
             .then((res) => {
-              console.log(res)
-              window.location.reload();
+              console.log(res);
+              Swal.fire('success','Data has been deleted. ')
+              axios
+                .get(
+                  `http://localhost:8000/api/course-chapters/${currentChapter}`
+                )
+                .then((response) => {
+                  const data = response.data;
+                  setTotalResult(data.length);
+                  setChapterData(data);
+                })
+                .catch((error) => {
+                  console.error("Error fetching course chapters:", error);
+                });
             })
             .catch((error) => {
-              Swal.fire('error', 'Data has not been deleted!!', 'error');
+              Swal.fire("error", "Data has not been deleted!!", "error");
             });
+      
         } catch (error) {
-          Swal.fire('error', 'Data has not been deleted!!', 'error');
+          Swal.fire("error", "Data has not been deleted!!", "error");
         }
-      }else{
-        Swal.fire('error','Data has not been deleted!!');
+      } else {
+        Swal.fire("error", "Data has not been deleted!!");
       }
     });
   };
@@ -63,7 +79,7 @@ function Page(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header">All Chapters ({totalResult})</h5>
+            <h5 className="card-header">All Chapters ({totalResult}) <Link href={`/teacher/add-chapter/${currentChapter}`} className="btn btn-sm btn-success float">Add chapter</Link></h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
@@ -125,10 +141,10 @@ function Page(props: any) {
                             <i className="bi bi-pencil-square"></i>
                           </Link>
                           <button
-                            onClick={()=>handleDeleteClick(chapter.id)}
+                            onClick={() => handleDeleteClick(chapter.id)}
                             className="btn btn-danger btn-sm  ms-2"
                           >
-                           <i className="bi bi-trash"></i>
+                            <i className="bi bi-trash"></i>
                           </button>
                         </td>
                       </tr>

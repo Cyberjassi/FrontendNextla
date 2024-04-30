@@ -1,6 +1,26 @@
-import React from 'react'
+'use client'
+import React, { useState,useEffect } from 'react'
 import Link from 'next/link'
-function TeacherDetail() {
+import axios from 'axios'
+function TeacherDetail(props:any) {
+
+  const currentTeacher = props.params['teacher-id']
+  const [teacherData,setTeacherData]=useState<any>([])
+  const [courseData,setCourseData]=useState<any>([])
+
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/api/teacher/${currentTeacher}`)
+      .then(response => {
+        console.log('Data:', response.data);
+        setTeacherData(response.data);
+        setCourseData(response.data.teacher_courses);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
+console.log("teacher data",teacherData)
+console.log("course data",courseData)
   return (
     <div>
       <div className="container mt-3">
@@ -13,14 +33,9 @@ function TeacherDetail() {
             />
           </div>
           <div className="col-8">
-            <h3>Ramprasad</h3>
+            <h3>{teacherData.full_name}</h3>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consequatur eaque veritatis in unde laudantium temporibus ut! Nam
-              illum velit sequi ea quibusdam aperiam et perferendis, facilis
-              voluptas? Quis iure necessitatibus inventore quod laboriosam
-              veritatis labore nesciunt aliquid, dicta, cumque placeat obcaecati
-              dolorem totam laborum eos.
+             {teacherData.detail}
             </p>
             <p className="fw-bold">
               Skills: <Link href="/category/php">Php</Link>,<Link href="/category/php">Python</Link>,<Link href="/category/php">Java</Link>,

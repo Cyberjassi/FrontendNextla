@@ -65,7 +65,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   chapterFormData.append('remarks', chapterData.remarks);
 
   try {
-    console.log("here course form data", [...chapterFormData.entries()]);
+    // console.log("here course form data", [...chapterFormData.entries()]);
     
     axios.post("http://127.0.0.1:8000/api/chapter/", chapterFormData, {
       headers: {

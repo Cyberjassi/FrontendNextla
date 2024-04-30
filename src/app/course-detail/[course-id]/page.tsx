@@ -2,8 +2,35 @@
 import React from 'react'
 import Link from 'next/link'
 import { FaYoutube } from 'react-icons/fa';
+import { useState ,useEffect } from 'react';
+import axios from 'axios';
 
-function page({params}:any) {
+function page(props:any) {
+
+const currentCourse = props.params['course-id']
+const siteUrl = 'http://127.0.0.1:8000/'
+// console.log("this is param is",currentCourse)
+const [course, setCourse] = useState<any|String[]>([]); 
+const [teacher, setTeacher] = useState<any|String[]>([]);  
+const [chapterData, setChapterData] = useState<any|String[]>([]); 
+const [realtedCourseData, setrealtedCourseData] = useState<any|String[]>([]); 
+  
+useEffect(() => {
+  axios.get(`http://127.0.0.1:8000/api/course/${currentCourse}`)
+    .then(response => {
+      console.log('Data:', response.data);
+      setCourse(response.data);
+      setTeacher(response.data.teacher);
+      setChapterData(response.data.course_chapter);
+      // to parse the related videos json format
+      setrealtedCourseData(JSON.parse(response.data.related_videos));
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}, []);
+console.log(realtedCourseData)
+
   return (
       <div>
        
@@ -12,23 +39,18 @@ function page({params}:any) {
         <div className="col-4">
           <img
             className="img-thumbnail"
-            src="https://picsum.photos/200/300"
-            alt="Card image cap"
+            src={course.featured_img}
+            alt="image "
           />
         </div>
         <div className="col-8">
 
-          <h3>course Title</h3>
+          <h3>{course.title}</h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Consequatur eaque veritatis in unde laudantium temporibus ut! Nam
-            illum velit sequi ea quibusdam aperiam et perferendis, facilis
-            voluptas? Quis iure necessitatibus inventore quod laboriosam
-            veritatis labore nesciunt aliquid, dicta, cumque placeat obcaecati
-            dolorem totam laborum eos.
+           {course.description}
           </p>
           <p className="fw-bold">
-            Course By: <Link href="/teacher-detail/1">Teacher 1</Link>
+            Course By: <Link href={`/teacher-detail/${teacher.id}`}>{teacher.full_name}</Link>
           </p>
           <p className="fw-bold">Duration: 3 Hours 30 Minutes</p>
           <p className="fw-bold">Total Enrolled: 456 Students</p>
@@ -40,8 +62,10 @@ function page({params}:any) {
         <div className="card">
           <h3 className="card-header">Course Videos</h3>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              Introduction{" "}
+          {chapterData &&
+                    chapterData.map((chapter: any, index: any) => (
+            <li key={index} className="list-group-item">
+              {chapter.title}
               <span className="float-end">
                 <span className="me-5">1 Hour 30 mins</span>
                 <button
@@ -87,24 +111,7 @@ function page({params}:any) {
               </div>
               {/* Video Model End */}
             </li>
-            <li className="list-group-item">
-              Introduction{" "}
-              <span className="float-end">
-                <span className="me-5">1 Hour 30 mins</span>
-                <button className="btn  btn-danger ">
-                <FaYoutube size={20} />
-                </button>
-              </span>
-            </li>
-            <li className="list-group-item">
-              Introduction{" "}
-              <span className="float-end">
-                <span className="me-5">1 Hour 30 mins</span>
-                <button className="btn  btn-danger  ">
-                <FaYoutube size={20} />
-                </button>
-              </span>
-            </li>
+         ))}
           </ul>
         </div>
       </div>
@@ -118,70 +125,26 @@ function page({params}:any) {
         </a>
       </h3>
       <div className="row mb-4">
+      {realtedCourseData &&
+                    realtedCourseData.map((rcorse: any, index: any) => (
         <div className="col-md-3">
           <div className="card">
-            <Link href="/course-detail/1">
+            <Link target='__blank' href={`/course-detail/${rcorse.pk}`}>
+               {/* here if we want to access the image we use whole path ,path means where our image is stored in python local dir  */}
               <img
                 className="card-img-top"
-                src="https://picsum.photos/200/300"
-                alt="Card image cap"
+                src={`${siteUrl}media/${rcorse.fields.featured_img}`}
+                alt={rcorse.fields.title}
               />
             </Link>
             <div className="card-body">
               <h5 className="card-title">
-                <Link href="/course-detail/1">Course Title</Link>
+                <Link href={`/course-detail/${rcorse.pk}`}>{rcorse.fields.title}</Link>
               </h5>
             </div>
           </div>
         </div>
-        <div className="col-md-3">
-          <div className="card">
-            <a href="#">
-              <img
-                className="card-img-top"
-                src="https://picsum.photos/200/300"
-                alt="Card image cap"
-              />
-            </a>
-            <div className="card-body">
-              <h5 className="card-title">
-                <a href="#">Course Title</a>
-              </h5>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="card">
-            <a href="#">
-              <img
-                className="card-img-top"
-                src="https://picsum.photos/200/300"
-                alt="Card image cap"
-              />
-            </a>
-            <div className="card-body">
-              <h5 className="card-title">
-                <a href="#">Course Title</a>
-              </h5>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="card">
-            <a href="#">
-              <img
-                className="card-img-top"
-                src="https://picsum.photos/200/300"
-                alt="Card image cap"
-              />
-            </a>
-            <div className="card-body">
-              <h5 className="card-title">
-                <a href="#">Course Title</a>
-              </h5>
-            </div>
-          </div>
-        </div>
+      ))}
       </div>
       {/* Ratlated Course end*/}
     </div>

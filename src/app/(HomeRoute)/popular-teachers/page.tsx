@@ -20,11 +20,11 @@ export default function PopularTeachers() {
   const dispatch = useDispatch()
 
   useEffect (()=>{
-    dispatch(getTeacherInfo())
+    dispatch(getTeacherInfo() as any)
   },[])
   
   const state = useSelector((state:any)=>state);
-  console.log("this is my State",state)
+  console.log("this is my Popular State",state)
 
   
  
