@@ -14,6 +14,7 @@ const [course, setCourse] = useState<any|String[]>([]);
 const [teacher, setTeacher] = useState<any|String[]>([]);  
 const [chapterData, setChapterData] = useState<any|String[]>([]); 
 const [realtedCourseData, setrealtedCourseData] = useState<any|String[]>([]); 
+const [techListData, setTechListData] = useState<any|String[]>([]); 
   
 useEffect(() => {
   axios.get(`http://127.0.0.1:8000/api/course/${currentCourse}`)
@@ -24,12 +25,14 @@ useEffect(() => {
       setChapterData(response.data.course_chapter);
       // to parse the related videos json format
       setrealtedCourseData(JSON.parse(response.data.related_videos));
+      setTechListData(response.data.tech_list);
     })
     .catch(error => {
       console.error('Error:', error);
     });
 }, []);
-console.log(realtedCourseData)
+console.log("related courses",realtedCourseData)
+console.log("tech list ",techListData)
 
   return (
       <div>
@@ -51,6 +54,13 @@ console.log(realtedCourseData)
           </p>
           <p className="fw-bold">
             Course By: <Link href={`/teacher-detail/${teacher.id}`}>{teacher.full_name}</Link>
+          </p>
+          <p className="fw-bold">
+            Techs:&nbsp; 
+            {techListData &&
+                    techListData.map((tech: any, index: any) => (
+            <Link href={`/category/${tech.trim()}`} className='badge badge-pill text-dark bg-warning'>{tech}</Link>
+            ))}
           </p>
           <p className="fw-bold">Duration: 3 Hours 30 Minutes</p>
           <p className="fw-bold">Total Enrolled: 456 Students</p>

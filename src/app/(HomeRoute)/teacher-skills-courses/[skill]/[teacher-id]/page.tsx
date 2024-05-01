@@ -4,12 +4,14 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react';
 
 
-export default function CategoryCourses(props:any) {
+export default function teacherSkillsCourses(props:any) {
   const siteUrl = 'http://127.0.0.1:8000/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
   const currentSkill = props.params['skill']
+  const currentTeacher = props.params['teacher-id']
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/course/?category=${currentSkill}`)
+    axios.get(`http://127.0.0.1:8000/api/course/?skill_name=${currentSkill}&teacher=${currentTeacher}`)
+   
       .then(response => {
         console.log('Data:', response.data);
         setAllCourses(response.data);
@@ -21,8 +23,7 @@ export default function CategoryCourses(props:any) {
   return (
     <div className="container mt-3">
      <h3 className="pb-1 my-4 text-start">
-          {currentSkill} Courses{" "}
-          
+          {currentSkill} Couses{" "}
         </h3>
         <div className="row mb-4">
         {allCourses.map((course:any,index:number)=>

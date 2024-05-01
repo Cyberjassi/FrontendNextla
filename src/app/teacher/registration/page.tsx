@@ -78,7 +78,7 @@ function TeacherRegister() {
           }
         )
         if(response.data.bool==true){
-          localStorage.setItem('teacherLoginStatus',true)
+          localStorage.setItem('teacherLoginStatus','true')
           window.location.href='/teacher/login'
         }
       })
