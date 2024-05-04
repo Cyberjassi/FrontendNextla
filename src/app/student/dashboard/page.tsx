@@ -1,5 +1,5 @@
 
-import UserSidebar from "@/components/User/UserSidebar";
+import UserSidebar from "@/components/student/UserSidebar";
 
 function Dashboard() {
   return (

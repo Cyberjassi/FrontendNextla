@@ -1,14 +1,14 @@
 'use client'
 import { useEffect,useState } from "react"
 import axios from "axios"
-import studentRegister from "@/app/student/registration/page"
+
 
 // use for set title in next app
 function TeacherRegister() {
   useEffect(() => {
     document.title = "Auth Registeration"
   }, [])
-  const [check,setCheck] = useState<String>("Student")
+  const [check,setCheck] = useState<String>("")
   interface TeacherData {
     'full_name': string;
     'email': string;
@@ -143,10 +143,8 @@ function TeacherRegister() {
             'status': "success",
           }
         )
-        if(response.data.bool==true){
-          localStorage.setItem('studentLoginStatus','true')
           window.location.href='/student/login'
-        }
+        
       })
       console.log(studentData.status)
       
@@ -175,7 +173,7 @@ console.log("this is check",check)
               <p className="text-danger">Something Wrong Happen</p>
             )}
             <div className="card">
-              <h3 className="card-header">Teacher Regsiteration Form</h3>
+              <h3 className="card-header">Regsiteration Form</h3>
               <div className="card-body">
                 {/* submit the data thorugh form onsubmit */}
                 {/* if we select teacher then that display other wise student form--- */}
@@ -301,6 +299,8 @@ console.log("this is check",check)
                   </button>
                 </form>
                 }
+
+
                 {check == "Student" &&
                 <form onSubmit={submitForm}>
                 <div className="mb-3">
@@ -312,6 +312,7 @@ console.log("this is check",check)
                     </label>
                     <input
                       onChange={handleChange}
+                      placeholder="Enter Your Full Name"
                        value={studentData.full_name}
                        name="full_name"
                       type="text"
@@ -328,6 +329,7 @@ console.log("this is check",check)
                     </label>
                     <input
                     onChange={handleChange}
+                    placeholder="Enter Your Email"
                      value={studentData.email}
                      name="email"
                       type="email"
@@ -344,6 +346,7 @@ console.log("this is check",check)
                     </label>
                     <input
                     onChange={handleChange}
+                    placeholder="Enter Your Username"
                      value={studentData.username}
                      name="username"
                       type="text"
@@ -357,6 +360,7 @@ console.log("this is check",check)
                     </label>
                     <input
                     onChange={handleChange}
+                    placeholder="Enter Your Password"
                     value={studentData.password}
                      name="password"
                       type="password"
@@ -373,11 +377,13 @@ console.log("this is check",check)
                     </label>
                     <textarea 
                     onChange={handleChange}
+                    placeholder="Enter Your Intrests"
                     className='form-control'
                     value={studentData.interested_categories}
                      name="interested_categories"
                      ></textarea>
-                    <div id="emailHelp" className="form-text">Php,Python,JavaScript,etc</div>
+                    <div id="emailHelp" 
+                    className="form-text">Php,Python,JavaScript,etc</div>
                    
                   </div>
                  

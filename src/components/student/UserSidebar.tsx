@@ -7,43 +7,43 @@ function Sidebar() {
             
             <div className="list-group list-group-flush">
             <Link
-                href="/user/dashboard"
+                href="/student/dashboard"
                 className="list-group-item list-group-item-action"
               >
                 Dashboard
               </Link>
               <Link
-                href="/user/my-courses"
+                href="/student/my-courses"
                 className="list-group-item list-group-item-action"
               >
                 My Courses
               </Link>
               <Link
-                href="/user/favorite-courses"
+                href="/student/favorite-courses"
                 className="list-group-item list-group-item-action"
               >
                 Favorite Courses
               </Link>
               <Link
-                href="/user/recommended-courses"
+                href="/student/recommended-courses"
                 className="list-group-item list-group-item-action"
               >
                 Recommended Courses
               </Link>
               <Link
-                href="/user/profile-settings"
+                href="/student/profile-settings"
                 className="list-group-item list-group-item-action"
               >
                 Profile Settings
               </Link>
               <Link
-                href="/user/change-password"
+                href="/student/change-password"
                 className="list-group-item list-group-item-action"
               >
                 Change Password
               </Link>
               <Link
-                href="/user/login"
+                href="/student/logout"
                 className="list-group-item list-group-item-action text-danger"
               >
                 Logout

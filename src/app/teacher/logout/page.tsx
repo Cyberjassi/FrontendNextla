@@ -1,8 +1,11 @@
 'use client'
 
+
 function TeacherLogout() {
-  localStorage.removeItem('teacherLoginStatus')
-  window.location.href='/teacher/login'
+  
+
+  localStorage.clear()
+  window.location.href='/login'
   return (
     <div>
       

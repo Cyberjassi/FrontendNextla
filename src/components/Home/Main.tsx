@@ -6,20 +6,29 @@ import axios from 'axios';
 import Link from 'next/link';
 
 function Main() {
-  const siteUrl = 'http://127.0.0.1:8000/'
+  // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
-  
+  const role = localStorage.getItem('teacherLoginStatus')?'teacher':localStorage.getItem('studentLoginStatus')?'student':'';
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/course/')
-      .then(response => {
+    const token = localStorage.getItem('token');
+
+    axios.get('http://127.0.0.1:8000/api/course/', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        params: {
+          role: role
+      }
+    })
+    .then(response => {
         console.log('Data:', response.data);
         setAllCourses(response.data);
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         console.error('Error:', error);
-      });
-  }, []);
-
+    });
+    console.log("your token is, ",token);
+}, []);
   return (
     <div>
       <>
@@ -37,7 +46,7 @@ function Main() {
                   <Link href={`/course-detail/${course.id}`}>
                     <img
                       className="card-img-top"
-                      src={`${siteUrl}${course.featured_img}`}
+                      src={`${course.featured_img}`}
                       alt={course.title}
                     />
                   </Link>

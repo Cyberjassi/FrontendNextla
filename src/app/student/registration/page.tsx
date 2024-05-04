@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-function Register() {
+function studentRegister() {
   useEffect(() => {
     document.title = "Teacher Register"
   }, [])
@@ -183,4 +183,4 @@ function Register() {
   )
 }
 
-export default Register
+export default studentRegister

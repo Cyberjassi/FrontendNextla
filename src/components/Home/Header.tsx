@@ -4,6 +4,7 @@ import Link from "next/link";
 function Header() {
   
 const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
+const studentLoginStatus = localStorage.getItem('studentLoginStatus')
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -35,49 +36,63 @@ const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
               </Link>
             </li>
             <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="teachersDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Teachers
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="teachersDropdown">
-               
-                <li> 
-                  {teacherLoginStatus!=='true' &&
-                <>
-                    
-                <li>
-                  <Link className="dropdown-item" href="/teacher/registration">
-                    Register
-                  </Link>
-                </li>
-                  <Link className="dropdown-item" href="/teacher/login">
-                    Login
-                  </Link>
-                  </>}
-                </li>
-                
-                
-                <li>
-                  <Link className="dropdown-item" href="/teacher/dashboard">
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" href="/teacher/logout">
-                    Logout
-                  </Link>
-                </li>
-              </ul>
-            </li>
+  <a
+    className="nav-link dropdown-toggle"
+    href="#"
+    id="teachersDropdown"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Authentication
+  </a>
+  <ul className="dropdown-menu" aria-labelledby="teachersDropdown">
+    {!teacherLoginStatus && !studentLoginStatus && (
+      <>
+        <li>
+          <Link className="dropdown-item" href="/registration">
+            Register
+          </Link>
+        </li>
+        <li>
+          <Link className="dropdown-item" href="/login">
+            Login
+          </Link>
+        </li>
+      </>
+    )}
+
+    {(teacherLoginStatus || studentLoginStatus) && (
+      <>
+        {teacherLoginStatus && (
+          <li>
+            <Link className="dropdown-item" href="/teacher/dashboard">
+              Dashboard
+            </Link>
+          </li>
+        )}
+        {studentLoginStatus && (
+          <li>
+            <Link className="dropdown-item" href="/student/dashboard">
+              Dashboard
+            </Link>
+          </li>
+        )}
+        <li>
+          <hr className="dropdown-divider" />
+        </li>
+        <li>
+          <Link className="dropdown-item" href="/logout">
+            Logout
+          </Link>
+        </li>
+      </>
+    )}
+  </ul>
+</li>
+
+            {/* my logic */}
+            {/* {teacherLoginStatus!=='true' &&
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -111,12 +126,12 @@ const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/teacher/logout">
                     Logout
                   </a>
                 </li>
               </ul>
-            </li>
+            </li>} */}
           </ul>
         </div>
       </div>

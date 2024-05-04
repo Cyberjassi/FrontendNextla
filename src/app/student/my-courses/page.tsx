@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import UserSidebar from "@/components/User/UserSidebar";
+import UserSidebar from "@/components/student/UserSidebar";
 
 
 function MyCourses() {

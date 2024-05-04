@@ -1,7 +1,7 @@
 import React from "react";
 
 
-import UserSidebar from "@/components/User/UserSidebar";
+import UserSidebar from "@/components/student/UserSidebar";
 
 function ChangePassword() {
   return (
