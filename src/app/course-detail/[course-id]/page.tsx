@@ -4,10 +4,13 @@ import Link from 'next/link'
 import { FaYoutube } from 'react-icons/fa';
 import { useState ,useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function page(props:any) {
 
 const currentCourse = props.params['course-id']
+const studentId = localStorage.getItem('studentId')
+
 const siteUrl = 'http://127.0.0.1:8000/'
 // console.log("this is param is",currentCourse)
 const [course, setCourse] = useState<any|String[]>([]); 
@@ -15,6 +18,8 @@ const [teacher, setTeacher] = useState<any|String[]>([]);
 const [chapterData, setChapterData] = useState<any|String[]>([]); 
 const [realtedCourseData, setrealtedCourseData] = useState<any|String[]>([]); 
 const [techListData, setTechListData] = useState<any|String[]>([]); 
+const [userLoginStatus,setUserLoginStatus]=useState("")
+const [enrollStatus,setEnrollStatus] = useState("");
   
 useEffect(() => {
   axios.get(`http://127.0.0.1:8000/api/course/${currentCourse}`)
@@ -30,9 +35,69 @@ useEffect(() => {
     .catch(error => {
       console.error('Error:', error);
     });
-}, []);
+
+    // fatch enroll status
+  axios.get(`http://127.0.0.1:8000/api/fatch-enroll-status/${studentId}/${currentCourse}`)
+    .then(response => {
+      console.log("this is a response for bool",response)
+      if(response.data.bool == true){
+          setEnrollStatus('success')
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+
+    
+    
+    const studentLoginStatus = localStorage.getItem('studentLoginStatus')
+  if(studentLoginStatus == 'true'){
+   setUserLoginStatus('success')
+  }
+}, ['']);
 console.log("related courses",realtedCourseData)
 console.log("tech list ",techListData)
+
+const enrollCourse = () =>{
+  const studentID = localStorage.getItem('studentId');
+  // e.preventDefault();
+  const courseFormData = new FormData();
+  // Object.entries(CourseData).forEach(([key, value]) => {
+  //   courseFormData.append(key, value as string | Blob);
+  // });
+  courseFormData.append('course',currentCourse);
+  courseFormData.append('student',studentID);
+
+try{
+  // console.log("here course form data",[...courseFormData.entries()])
+  
+  axios.post("http://127.0.0.1:8000/api/student-enroll-course/", courseFormData,{
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  })
+    .then((response) => {
+      console.log(response.data);
+      if(response.status==200 || response.status==201){
+        Swal.fire({
+          title:'You have succesfully enrolled in this course',
+          icon:'success',
+          toast:true,
+          timer: 5000,
+          position:'top-right',
+          timerProgressBar:true,
+          showConfirmButton: false,
+        });
+        setEnrollStatus('success');
+        // window.location.reload();
+      }
+      // window.location.href='/teacher/add-courses';
+    })   
+  }catch(error){
+    console.log(error);
+  }
+}
 
   return (
       <div>
@@ -65,9 +130,19 @@ console.log("tech list ",techListData)
           <p className="fw-bold">Duration: 3 Hours 30 Minutes</p>
           <p className="fw-bold">Total Enrolled: 456 Students</p>
           <p className="fw-bold">Rating: 4.5/5 </p>
+          {enrollStatus == 'success' && userLoginStatus == 'success' &&
+          <p><span>You are already enrolled in this course</span></p>
+          }
+          {userLoginStatus == 'success' && enrollStatus !== 'success' &&
+          <p><button className='btn btn-success' onClick={enrollCourse} type='button'>Enroll in this course</button></p>
+          }
+          {userLoginStatus !=='success'&&
+          <p><Link className='btn btn-success' href='/login'>Please login to enroll in this course</Link></p>
+          }
         </div>
       </div>
       {/* Course Videos */}
+      {enrollStatus == 'success' && userLoginStatus == 'success' &&
       <div className="card mt-4">
         <div className="card">
           <h3 className="card-header">Course Videos</h3>
@@ -125,6 +200,7 @@ console.log("tech list ",techListData)
           </ul>
         </div>
       </div>
+      }
       {/* EndCourse Videos */}
 
       {/* Ratlated Course */}

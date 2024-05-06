@@ -3,6 +3,7 @@ import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 
 function AddChapter(props:any) {
@@ -16,6 +17,7 @@ interface ChapterData {
   'title': string;
   'description': string;
   'video': null|File |any|Blob;
+  'video_duration': any;
   'remarks': string;
 
 }
@@ -26,6 +28,7 @@ const [chapterData, setChapterData] = useState<ChapterData>({
   title: '',
   description: '',
   video: '',
+  video_duration:'',
   remarks: ''
 });
 
@@ -62,24 +65,42 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   chapterFormData.append('title', chapterData.title);
   chapterFormData.append('description', chapterData.description);
   chapterFormData.append('video', chapterData.video);
+  chapterFormData.append('video_duration', chapterData.video_duration);
   chapterFormData.append('remarks', chapterData.remarks);
 
-  try {
+  
     // console.log("here course form data", [...chapterFormData.entries()]);
     
-    axios.post("http://127.0.0.1:8000/api/chapter/", chapterFormData, {
+    axios.post(`http://127.0.0.1:8000/api/course-chapters/${currentCourse}`, chapterFormData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
     })
     .then((response) => {
       console.log(response.data);
-      window.location.href = `/teacher/add-chapter/${currentCourse}`;
-      
-    })   
-  } catch(error) {
-    console.log(error);
-  }
+      if(response.status==200 || response.status==201){
+        Swal.fire({
+          title:'Data has been added',
+          icon:'success',
+          toast:true,
+          timer: 3000,
+          position:'top-right',
+          timerProgressBar:true,
+          showConfirmButton: false,
+        });
+        window.location.reload();
+      }
+    }).catch((error) => {
+      console.error('Error:', error);
+      // Handle the error here, such as displaying an error message to the user
+      Swal.fire({
+          title: 'Error',
+          text: 'An error occurred while adding data',
+          icon: 'error',
+      });
+  });
+  
+    
 };
 
   return (

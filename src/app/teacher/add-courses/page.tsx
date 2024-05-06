@@ -24,11 +24,11 @@ function AddCourse() {
   // for post data for course--
   interface CourseData {
     'category': any;
-    'teacher': any|Number|string;
-    'title': string;
-    'description': string;
+    'teacher': any|Number|string|null;
+    'title': any;
+    'description': any;
     'featured_img': File |string|any;
-    'techs': string;
+    'techs': any;
   
   }
 
@@ -65,6 +65,7 @@ function AddCourse() {
  console.log(CourseData)
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const teacherId = localStorage.getItem('teacherId');
     e.preventDefault();
     const courseFormData = new FormData();
     // Object.entries(CourseData).forEach(([key, value]) => {
@@ -72,7 +73,7 @@ function AddCourse() {
     // });
     const categoryId = parseInt(CourseData.category, 10);
     courseFormData.append('category',CourseData.category);
-    courseFormData.append('teacher','1');
+    courseFormData.append('teacher',teacherId);
     courseFormData.append('title',CourseData.title);
     courseFormData.append('description',CourseData.description);
     courseFormData.append('featured_img',CourseData.featured_img);
@@ -94,8 +95,6 @@ function AddCourse() {
     }catch(error){
       console.log(error);
     }
-
-  
   };
   
 
