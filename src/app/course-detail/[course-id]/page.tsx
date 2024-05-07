@@ -20,6 +20,8 @@ const [realtedCourseData, setrealtedCourseData] = useState<any|String[]>([]);
 const [techListData, setTechListData] = useState<any|String[]>([]); 
 const [userLoginStatus,setUserLoginStatus]=useState("")
 const [enrollStatus,setEnrollStatus] = useState("");
+const [ratingStatus,setratingStatus] = useState("");
+const [Avgrating,setAvgrating] = useState(0);
   
 useEffect(() => {
   axios.get(`http://127.0.0.1:8000/api/course/${currentCourse}`)
@@ -31,6 +33,9 @@ useEffect(() => {
       // to parse the related videos json format
       setrealtedCourseData(JSON.parse(response.data.related_videos));
       setTechListData(response.data.tech_list);
+      if(response.data.course_rating!='' && response.data.course_rating!=null){
+        setAvgrating(response.data.course_rating)
+      }
     })
     .catch(error => {
       console.error('Error:', error);
@@ -42,6 +47,18 @@ useEffect(() => {
       console.log("this is a response for bool",response)
       if(response.data.bool == true){
           setEnrollStatus('success')
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+// fatch rating status-
+  axios.get(`http://127.0.0.1:8000/api/fatch-rating-status/${studentId}/${currentCourse}`)
+    .then(response => {
+      console.log("this is a response for bool",response)
+      if(response.data.bool == true){
+        setratingStatus('success')
       }
     })
     .catch(error => {
@@ -90,7 +107,7 @@ try{
           showConfirmButton: false,
         });
         setEnrollStatus('success');
-        // window.location.reload();
+        window.location.reload();
       }
       // window.location.href='/teacher/add-courses';
     })   
@@ -98,6 +115,76 @@ try{
     console.log(error);
   }
 }
+
+// Add Rating-
+interface ChapterData {
+  rating:string;
+  reviews:string;
+  // 'course':string|number;
+  // 'title': string;
+  // 'description': string;
+  // 'video': null|File |any|Blob;
+  // 'video_duration': any;
+  // 'remarks': string;
+
+}
+
+
+const [ratingData, setratingData] = useState<ChapterData>({
+ rating:'',
+ reviews:''
+});
+
+const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // const { name, value } = event.target;
+  setratingData({
+    // we pass referance CourseData and then change our name and value acording to event 
+    ...ratingData,
+    [event.target.name]: event.target.value
+  });
+};
+
+
+const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  console.log("jalksdfjlkasdjf")
+  const chapterFormData = new FormData();
+  
+  chapterFormData.append('course',currentCourse); 
+  chapterFormData.append('student', studentId);
+  chapterFormData.append('rating', ratingData.rating);
+  chapterFormData.append('reviews', ratingData.reviews);
+
+  
+    // console.log("here course form data", [...chapterFormData.entries()]);
+    
+    axios.post(`http://127.0.0.1:8000/api/course-rating/`, chapterFormData,)
+    .then((response) => {
+      console.log(response.data);
+      if(response.status==200 || response.status==201){
+        Swal.fire({
+          title:'Rating has been added',
+          icon:'success',
+          toast:true,
+          timer: 5000,
+          position:'top-right',
+          timerProgressBar:true,
+          showConfirmButton: false,
+        });
+        window.location.reload();
+      }
+    }).catch((error) => {
+      console.error('Error:', error);
+      // Handle the error here, such as displaying an error message to the user
+      Swal.fire({
+          title: 'Error',
+          text: 'An error occurred while adding data',
+          icon: 'error',
+      });
+  });
+  
+    
+};
 
   return (
       <div>
@@ -128,8 +215,51 @@ try{
             ))}
           </p>
           <p className="fw-bold">Duration: 3 Hours 30 Minutes</p>
-          <p className="fw-bold">Total Enrolled: 456 Students</p>
-          <p className="fw-bold">Rating: 4.5/5 </p>
+          <p className="fw-bold">Total Enrolled: {course.total_enrolled_students} Students</p>
+          <p className="fw-bold">
+            Rating: {Avgrating}/5 
+            {enrollStatus === 'success' && userLoginStatus === 'success' && 
+        <>
+        {ratingStatus != 'success' && 
+          <button className='btn btn-success btn-sm ms-2'  data-bs-toggle="modal" data-bs-target="#ratingModal">Rating</button>
+        }
+        {ratingStatus == 'success' && 
+          <small className='badge bg-info text-dark ms-2'>You already rated this course</small>
+        }
+          <div className="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-lg" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Rate for course {course.title}</h5>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    {/* <span aria-hidden="true">&times;</span> */}
+                  </button>
+                </div>
+                <div className="modal-body">
+                    <form onSubmit={submitForm as any}>
+                      <div className="form-group">
+                        <label htmlFor="exampleInputEmail1">Rating</label>
+                          <select onChange={handleChange as any} className='form-control' name='rating'>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                          </select>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="exampleInputPassword1">Review</label>
+                        <textarea onChange={handleChange as any} rows={10} name="reviews"className='form-control'></textarea>
+                      </div>
+                      <button type="submit" className="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          </>
+          }
+            </p>
           {enrollStatus == 'success' && userLoginStatus == 'success' &&
           <p><span>You are already enrolled in this course</span></p>
           }

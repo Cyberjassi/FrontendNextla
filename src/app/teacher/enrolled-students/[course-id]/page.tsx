@@ -6,27 +6,27 @@ import TeacherSidebar from "@/components/Teacher/Sidebar";
 
 import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 
-function TeacherMyCourses() {
-  const [course,setCourse] = useState<any>([])
+function enrolledStudents(props:any) {
+  const currentCourse = props.params['course-id']
+  const [studentData,setStudentData] = useState<any>([])
 
   // to get teacher id from local storage---
   const teacherId = localStorage.getItem('teacherId')
-  console.log("this is teacher id",teacherId)
-
-  const dispatch = useDispatch()
 
   useEffect (()=>{
-    dispatch(getCourseInfo() as any)
-  },[dispatch])
-  
-  const state = useSelector((state:any)=>state);
-  console.log("this is my data",state.course.data)
-  const courseData = state.course.data
+    try{
+        axios.get(`http://127.0.0.1:8000/api/fatch-enrolled-students/${currentCourse}`)
+        .then((res)=>{
+          setStudentData(res.data)
+        })
+    }catch(error){
+      console.log(error)
+    }
+  },[])
 
-
- 
   return (
     <div className="container mt-4">
       <div className="row">
@@ -35,7 +35,7 @@ function TeacherMyCourses() {
         </aside>
         <section className="col-md-9">
          <div className="card">
-            <h5 className="card-header">My Courses</h5>
+            <h5 className="card-header">Enrolled Student List</h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
@@ -47,24 +47,16 @@ function TeacherMyCourses() {
                   </tr>
                 </thead>
                 <tbody>
-                  {state.course.isLoading ? (
-                    <p>Loading....</p>
-                  ):(courseData&&
-                    courseData.map((course:any,index:any)=>(
-                 <tr key={index} >
-                    <td><Link href={`chapter/${course.id}`}>{course.title}</Link></td>
-                    <td><img src={course.featured_img} width="80" className="rounded" alt={course.title} /></td>
-                    <td>
-                      <Link href={`enrolled-students/${course.id}`}>{course.total_enrolled_students}</Link>
-                    </td>
-                    <td>
-                    <Link className="btn btn-info btn-sm " href={`/teacher/edit-course/${course.id}`}>Edit</Link>
-                      <Link className="btn btn-success btn-sm  ms-2" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
-                      <button className="btn btn-danger btn-sm  ms-2">Delete</button>
-                    </td>
-                  </tr>
-                    )) 
-                  )}
+                    {studentData.map((row:any,index:any)=>
+                    <tr>
+                        <td><Link href={`/view-student/${row.student.id}`}>{row.student.full_name}</Link></td>
+                        <td>{row.student.email}</td>
+                        <td>{row.student.username}</td>
+                        <td>
+                            <Link className="btn btn-info btn-sm" href={`/view-student/${row.student.id}`}>View</Link>
+                        </td>
+                    </tr>
+                    )}
                 </tbody>
               </table>
             </div>
@@ -75,7 +67,7 @@ function TeacherMyCourses() {
   );
 }
 
-export default TeacherMyCourses;
+export default enrolledStudents;
 {
   /* <div className="card">
             <h5 className="card-header">My Courses</h5>

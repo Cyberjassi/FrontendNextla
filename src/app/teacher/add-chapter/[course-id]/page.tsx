@@ -32,6 +32,14 @@ const [chapterData, setChapterData] = useState<ChapterData>({
   remarks: ''
 });
 
+const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // const { name, value } = event.target;
+  setChapterData({
+    // we pass referance CourseData and then change our name and value acording to event 
+    ...chapterData,
+    [event.target.name]: event.target.value
+  });
+};
 
 const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const files = event.target.files;
@@ -44,14 +52,6 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   }
 };
 
-const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  // const { name, value } = event.target;
-  setChapterData({
-    // we pass referance CourseData and then change our name and value acording to event 
-    ...chapterData,
-    [event.target.name]: event.target.value
-  });
-};
 
 console.log("this is chapter above submit",chapterData)
 console.log("this is chapter title ",chapterData.course)
