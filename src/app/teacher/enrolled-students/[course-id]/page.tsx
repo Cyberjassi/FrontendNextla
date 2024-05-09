@@ -4,8 +4,8 @@ import { useEffect ,useState} from 'react';
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 
-import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
-import { useDispatch, useSelector } from "react-redux";
+// import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
+// import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 
@@ -43,17 +43,18 @@ function enrolledStudents(props:any) {
                   <th>Name</th>
                   <th>Image</th>
                     <th>Total Enrolled</th>
-                    <th>Action</th>
+                    <th>Intrested Categories</th>
                   </tr>
                 </thead>
                 <tbody>
                     {studentData.map((row:any,index:any)=>
                     <tr>
-                        <td><Link href={`/view-student/${row.student.id}`}>{row.student.full_name}</Link></td>
+                        <td>{row.student.full_name}</td>
                         <td>{row.student.email}</td>
                         <td>{row.student.username}</td>
                         <td>
-                            <Link className="btn btn-info btn-sm" href={`/view-student/${row.student.id}`}>View</Link>
+                            {/* <Link className="btn btn-info btn-sm" href={`/view-student/${row.student.id}`}>View</Link> */}
+                            {row.student.interested_categories}
                         </td>
                     </tr>
                     )}

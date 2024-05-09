@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function TeacherMyCourses() {
   const [course,setCourse] = useState<any>([])
+  const [Avgrating,setAvgrating] = useState(0);
 
   // to get teacher id from local storage---
   const teacherId = localStorage.getItem('teacherId')
@@ -52,7 +53,16 @@ function TeacherMyCourses() {
                   ):(courseData&&
                     courseData.map((course:any,index:any)=>(
                  <tr key={index} >
-                    <td><Link href={`chapter/${course.id}`}>{course.title}</Link></td>
+                    <td>
+                      <Link href={`chapter/${course.id}`}>{course.title}</Link>
+                      <hr />
+                      {course.course_rating && 
+                     <span>Rating: {course.course_rating}/5</span>
+                      }
+                      {!course.course_rating && 
+                     <span>Rating: 0/5</span>
+                      }
+                    </td>
                     <td><img src={course.featured_img} width="80" className="rounded" alt={course.title} /></td>
                     <td>
                       <Link href={`enrolled-students/${course.id}`}>{course.total_enrolled_students}</Link>

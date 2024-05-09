@@ -26,8 +26,8 @@ function EditCourse(props: any) {
     featured_img: "",
     techs: "",
   });
-
   const currentCourse = props.params["course-id"];
+  const teacherId = localStorage.getItem('teacherId')
 
   // for category Retriew ---
   const dispatch = useDispatch();
@@ -90,8 +90,9 @@ function EditCourse(props: any) {
     //   courseFormData.append(key, value as string | Blob);
     // });
     const categoryId = parseInt(CourseData.category, 10);
+ 
     courseFormData.append("category", CourseData.category);
-    courseFormData.append("teacher", "1");
+    courseFormData.append("teacher", teacherId);
     courseFormData.append("title", CourseData.title);
     courseFormData.append("description", CourseData.description);
     if (CourseData.featured_img !== "") {

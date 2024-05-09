@@ -1,9 +1,28 @@
+"use client"
 import React from "react";
-import Link from "next/link";
+import { useEffect ,useState} from 'react';
+import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
+import axios from "axios";
 
 
 function MyCourses() {
+  const [courseData,setCourseData] = useState<any>([])
+
+  const studentId = localStorage.getItem('studentId')
+
+  useEffect (()=>{
+    try{
+        axios.get(`http://127.0.0.1:8000/api/fatch-enrolled-courses/${studentId}`)
+        .then((res)=>{
+          setCourseData(res.data)
+        })
+    }catch(error){
+      console.log(error)
+    }
+  },[])
+
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -19,17 +38,17 @@ function MyCourses() {
                   <tr>
                     <th>Name</th>
                     <th>Created By</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link href="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
+                {courseData.map((row:any,index:any)=>
+                  <tr>
+                    <td><Link href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
+                    <td>
+                      <Link href="/">{row.course.teacher.full_name}</Link>
+                    </td>
+                  </tr>
+                )}
                 </tbody>
               </table>
             </div>
