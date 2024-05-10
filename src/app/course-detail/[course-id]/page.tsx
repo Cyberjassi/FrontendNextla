@@ -10,6 +10,7 @@ function page(props:any) {
 
 const currentCourse = props.params['course-id']
 const studentId = localStorage.getItem('studentId')
+const imageUrl = "https://res.cloudinary.com/dr9wiqs2y/image/upload/v1/"
 
 const siteUrl = 'http://127.0.0.1:8000/'
 // console.log("this is param is",currentCourse)
@@ -22,6 +23,7 @@ const [userLoginStatus,setUserLoginStatus]=useState("")
 const [enrollStatus,setEnrollStatus] = useState("");
 const [ratingStatus,setratingStatus] = useState("");
 const [Avgrating,setAvgrating] = useState(0);
+const [favoriteStatus,setfavoriteStatus] = useState<any>();
   
 useEffect(() => {
   axios.get(`http://127.0.0.1:8000/api/course/${currentCourse}`)
@@ -66,6 +68,20 @@ useEffect(() => {
     });
 
 
+  axios.get(`http://127.0.0.1:8000/api/fatch-favorite-status/${studentId}/${currentCourse}`)
+    .then(response => {
+      console.log("this is a response for bool",response)
+      if(response.data.bool == true){
+        setfavoriteStatus('success')
+      }else{
+        setfavoriteStatus('')
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+ 
     
     
     const studentLoginStatus = localStorage.getItem('studentLoginStatus')
@@ -107,6 +123,78 @@ try{
           showConfirmButton: false,
         });
         setEnrollStatus('success');
+        window.location.reload();
+      }
+      // window.location.href='/teacher/add-courses';
+    })   
+  }catch(error){
+    console.log(error);
+  }
+}
+
+//Mark as favorite Course
+const marksAsFavorite = ()=>{
+  const favCourseFormData = new FormData();
+  
+  favCourseFormData.append('course',currentCourse);
+  favCourseFormData.append('student',studentId);
+  favCourseFormData.append('status',true);
+
+try{
+    axios.post(`http://127.0.0.1:8000/api/student-add-favorite-course/`, favCourseFormData,{
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  })
+    .then((response):any => {
+      console.log("student favorite status",response.data);
+      if(response.status==200 || response.status==201){
+        Swal.fire({
+          title:'This course has been added in your favorite list ',
+          icon:'success',
+          toast:true,
+          timer: 10000,
+          position:'top-right',
+          timerProgressBar:true,
+          showConfirmButton: false,
+        });
+        setfavoriteStatus('success');
+        window.location.reload();
+      }
+      // window.location.href='/teacher/add-courses';
+    })   
+  }catch(error){
+    console.log(error);
+  }
+}
+
+//Remove favorite Course
+const removeFavorite = ()=>{
+  const favCourseFormData = new FormData();
+  
+  favCourseFormData.append('course',currentCourse);
+  favCourseFormData.append('student',studentId);
+  favCourseFormData.append('status',false);
+
+try{
+    axios.post(`http://127.0.0.1:8000/api/student-remove-favorite-course/${currentCourse}/${studentId}`, favCourseFormData,{
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  })
+    .then((response):any => {
+      console.log("student favorite status",response.data);
+      if(response.status==200 || response.status==201){
+        Swal.fire({
+          title:'This course has been removed from your favorite list ',
+          icon:'success',
+          toast:true,
+          timer: 10000,
+          position:'top-right',
+          timerProgressBar:true,
+          showConfirmButton: false,
+        });
+        setfavoriteStatus('');
         window.location.reload();
       }
       // window.location.href='/teacher/add-courses';
@@ -266,6 +354,15 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           {userLoginStatus == 'success' && enrollStatus !== 'success' &&
           <p><button className='btn btn-success' onClick={enrollCourse} type='button'>Enroll in this course</button></p>
           }
+
+          {userLoginStatus == 'success' && favoriteStatus!=='success' &&
+          <p><button className='btn btn-outline-danger' onClick={marksAsFavorite} title='Add in Your Favorite Course List' type='button'><i className='bi bi-heart'></i></button></p>
+          }
+
+          {userLoginStatus == 'success' && favoriteStatus=='success' &&
+          <p><button className='btn btn-outline-danger' onClick={removeFavorite} title='Remove from your Your favorite Course List' type='button'><i className='bi bi-heart-fill'></i></button></p>
+          }
+
           {userLoginStatus !=='success'&&
           <p><Link className='btn btn-success' href='/login'>Please login to enroll in this course</Link></p>
           }
@@ -349,7 +446,8 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                {/* here if we want to access the image we use whole path ,path means where our image is stored in python local dir  */}
               <img
                 className="card-img-top"
-                src={`${siteUrl}media/${rcorse.fields.featured_img}`}
+                // src={`'${imageUrl}${rcorse.fields.featured_img}`}
+                src={`${imageUrl}${rcorse.fields.featured_img}`}
                 alt={rcorse.fields.title}
               />
             </Link>

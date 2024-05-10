@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 
 export default function CategoryCourses(props:any) {
-  const siteUrl = 'http://127.0.0.1:8000/'
+
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
   const currentSkill = props.params['skill']
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function CategoryCourses(props:any) {
                   <Link href={`/course-detail/${course.id}`}>
                     <img
                       className="card-img-top"
-                      src={`${siteUrl}${course.featured_img}`}
+                      src={`${course.featured_img}`}
                       alt={course.title}
                     />
                   </Link>

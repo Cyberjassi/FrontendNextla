@@ -22,7 +22,7 @@ function MyCourses() {
     }
   },[])
 
-
+console.log("this is teacher data",courseData)
   return (
     <div className="container mt-4">
       <div className="row">
@@ -45,7 +45,7 @@ function MyCourses() {
                   <tr>
                     <td><Link href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
                     <td>
-                      <Link href="/">{row.course.teacher.full_name}</Link>
+                      <Link href={`/teacher-detail/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link>
                     </td>
                   </tr>
                 )}
