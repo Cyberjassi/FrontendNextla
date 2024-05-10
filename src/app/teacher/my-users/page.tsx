@@ -44,6 +44,7 @@ function Myusers(props:any) {
                   <th>Image</th>
                     <th>Total Enrolled</th>
                     <th>Intrested Categories</th>
+                    <th>Assignment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,10 @@ function Myusers(props:any) {
                         <td>
                             {/* <Link className="btn btn-info btn-sm" href={`/view-student/${row.student.id}`}>View</Link> */}
                             {row.student.interested_categories}
+                        </td>
+                        <td>
+                          <Link href={`assignments/${teacherId}/${row.student.id}`}  className="btn btn-sm btn-warning">Assignments</Link>
+                          <Link href={`add-assignment/${teacherId}/${row.student.id}`} className="btn btn-sm btn-success ms-2">Add Assignment</Link>
                         </td>
                     </tr>
                     )}

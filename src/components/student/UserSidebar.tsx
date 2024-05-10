@@ -31,6 +31,12 @@ function Sidebar() {
                 Recommended Courses
               </Link>
               <Link
+                href="/student/assignments"
+                className="list-group-item list-group-item-action"
+              >
+                Assignment
+              </Link>
+              <Link
                 href="/student/profile-settings"
                 className="list-group-item list-group-item-action"
               >
