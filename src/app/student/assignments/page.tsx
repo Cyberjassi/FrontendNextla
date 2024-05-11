@@ -11,7 +11,7 @@ function studentAssignments() {
   const [assignmentData,setassignmentData] = useState<any>([])
   const [assignmentStatus,setassignmentStatus]=useState<any>()
 
-  const studentId = localStorage.getItem('studentId')
+  const studentId:string|null = localStorage.getItem('studentId')
 
   useEffect (()=>{
     try{
@@ -25,11 +25,11 @@ function studentAssignments() {
   },[])
 
 
-  const markAsDone = (assignment_id,title,detail,student,teacher) =>{
+  const markAsDone = (assignment_id:string,title:string,detail:string,student:string,teacher:string) =>{
     const studentID = localStorage.getItem('studentId');
     // e.preventDefault();
     const formData = new FormData();
-    formData.append('student_status',true);
+    formData.append('student_status',true as any);
     formData.append('title',title);
     formData.append('detail',detail);
     formData.append('student',student);
@@ -38,7 +38,7 @@ function studentAssignments() {
   try{
     // console.log("here course form data",[...courseFormData.entries()])
     
-    axios.put(`http://127.0.0.1:8000/api/update-assignment/${assignment_id}`, formData,{
+    axios.put(`http://127.0.0.1:8000/api/update-assignments/${assignment_id}/`, formData,{
       headers: {
         'Content-Type': 'multipart/form-data',
       }

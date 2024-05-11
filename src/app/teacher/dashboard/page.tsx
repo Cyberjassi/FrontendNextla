@@ -7,7 +7,7 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 
 function TeacherDashboard() {
-  const [dashboard,setDashboard] = useState([])
+  const [dashboard,setDashboard] = useState<any>([])
   const teacherId = localStorage.getItem('teacherId')
 
   useEffect(()=>{

@@ -9,7 +9,6 @@ import axios from "axios";
 
 function ShowAssignment(props: any) {
   const [assignmentData, setassignmentData] = useState([]);
-  // count all chapters-
   const [totalResult, setTotalResult] = useState([0]);
   const teacher_id = localStorage.getItem('teacherId')
   const student_id = props.params["student-id"];
