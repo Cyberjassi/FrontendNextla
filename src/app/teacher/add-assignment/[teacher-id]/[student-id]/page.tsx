@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 function addAssignment(props:any) {
 
   // fetch current course from url---
-  const teacher_id = localStorage.getItem('teacherId')
+  const teacher_id:any = localStorage.getItem('teacherId')
 const student_id = props.params['student-id']
 // console.log("this is current course",currentCourse)
 
@@ -65,6 +65,20 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           timerProgressBar:true,
           showConfirmButton: false,
         });
+        // for notification 
+        const notifData = new FormData();
+        notifData.append('teacher', teacher_id);
+        notifData.append('notif_subject', 'assignment');
+        notifData.append('notif_for', 'student');
+        notifData.append('student', student_id);
+        axios.post(`http://127.0.0.1:8000/api/save-notification/`,notifData,{
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        })
+        .then((res)=>{
+          console.log(res.data);
+        })
         window.location.reload();
       }
     }).catch((error) => {

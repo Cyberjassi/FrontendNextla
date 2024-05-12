@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import axios from 'axios';
 
 function Sidebar() {
+  const [notifData,setnotifData] = useState([]);
+  const studentId = localStorage.getItem('studentId');
+  useEffect(()=>{
+    try{
+      axios.get(`http://127.0.0.1:8000/api/student/fetch-all-notification/${studentId}`)
+      .then((res)=>{
+        setnotifData(res.data);
+      })
+    }catch(error){
+      console.log(error);
+    }
+  },[])
+  console.log("here the data for notification",notifData)
   return (
     <div className="card">
             
@@ -35,6 +49,8 @@ function Sidebar() {
                 className="list-group-item list-group-item-action"
               >
                 Assignment
+                {notifData.length !==0 &&
+                <span className='float-end badge bg-danger mt-1'>{notifData.length}</span>}
               </Link>
               <Link
                 href="/student/profile-settings"

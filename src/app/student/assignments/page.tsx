@@ -11,7 +11,7 @@ function studentAssignments() {
   const [assignmentData,setassignmentData] = useState<any>([])
   const [assignmentStatus,setassignmentStatus]=useState<any>()
 
-  const studentId:string|null = localStorage.getItem('studentId')
+  const studentId:any = localStorage.getItem('studentId')
 
   useEffect (()=>{
     try{
