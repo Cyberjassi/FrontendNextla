@@ -6,49 +6,64 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-function addAssignment(props:any) {
+function AddStudyMaterial(props:any) {
 
   // fetch current course from url---
-  const teacher_id:any = localStorage.getItem('teacherId')
-const student_id = props.params['student-id']
+const currentCourse = props.params['course-id']
 // console.log("this is current course",currentCourse)
 
-interface AssignmentData {
+interface studyData {
   'title': string;
-  'detail': string;
+  'description': string;
+  'upload':any;
+  'remarks': string;
+
 }
 
 
-const [assignmentData, setassignmentData] = useState<AssignmentData>({
+const [studyData, setstudyData] = useState<studyData>({
   title: '',
-  detail: '',  
+  description: '',
+  upload:'',
+  remarks: ''
 });
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   // const { name, value } = event.target;
-  setassignmentData({
+  setstudyData({
     // we pass referance CourseData and then change our name and value acording to event 
-    ...assignmentData,
+    ...studyData,
     [event.target.name]: event.target.value
   });
 };
 
+const handleFileChange = (event: React.ChangeEvent<HTMLInputElement|any>) => {
+window.URL || window.webkitURL;
+var upload = document.createElement('upload')
+upload.src = URL.createObjectURL(event.target.files[0]);
+
+setstudyData({
+  ...studyData,
+  [event.target.name] : event.target.files[0]
+})
+};
 
 
 const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   console.log("jalksdfjlkasdjf")
-  const chapterFormData = new FormData();
+  const formData = new FormData();
   
-  chapterFormData.append('teacher',teacher_id); 
-  chapterFormData.append('title', assignmentData.title);
-  chapterFormData.append('detail', assignmentData.detail);
-  chapterFormData.append('student', student_id);
+  formData.append('course',currentCourse); 
+  formData.append('title', studyData.title);
+  formData.append('description', studyData.description);
+  formData.append('upload', studyData.upload);
+  formData.append('remarks', studyData.remarks);
 
   
-    // console.log("here course form data", [...chapterFormData.entries()]);
+    // console.log("here course form data", [...formData.entries()]);
     
-    axios.post(`http://127.0.0.1:8000/api/student-assignment/${student_id}/${teacher_id}`, chapterFormData, {
+    axios.post(`http://127.0.0.1:8000/api/study-materials/${currentCourse}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
@@ -57,7 +72,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
       console.log(response.data);
       if(response.status==200 || response.status==201){
         Swal.fire({
-          title:'Assignment has been added',
+          title:'Data has been added',
           icon:'success',
           toast:true,
           timer: 3000,
@@ -65,20 +80,6 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           timerProgressBar:true,
           showConfirmButton: false,
         });
-        // for notification 
-        const notifData = new FormData();
-        notifData.append('teacher', teacher_id);
-        notifData.append('notif_subject', 'assignment');
-        notifData.append('notif_for', 'student');
-        notifData.append('student', student_id);
-        axios.post(`http://127.0.0.1:8000/api/save-notification/`,notifData,{
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        })
-        .then((res)=>{
-          console.log(res.data);
-        })
         window.location.reload();
       }
     }).catch((error) => {
@@ -102,11 +103,11 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header">Add Assignment</h5>
+            <h5 className="card-header">Add Study Materials</h5>
             <form className="container" onSubmit={submitForm}>
               <div className="mb-3">
                 <label
-                 htmlFor="title"
+                //  for="exampleInputEmail1"
                   className="form-label ">
                   Title
                 </label>
@@ -121,17 +122,47 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
               </div>
               <div className="mb-3">
                 <label
-                 htmlFor="detail" 
+                //  for="exampleInputPassword1" 
                  className="form-label">
-                  Detail
+                  Description
                 </label>
                 <div className="form-floating">
                   <textarea
                     onChange={handleChange}
-                    name="detail"
+                    name="description"
                     className="form-control"
                     placeholder="Leave a comment here"
-                    id="detail"
+                    id="floatingTextarea2"
+                  ></textarea>
+                </div>
+              </div>
+              <div className="mb-3">
+                <label 
+                htmlFor="upload"
+                 className="form-label">
+                 Upload
+                </label>
+                <input
+                  onChange={handleFileChange}
+                  name="upload"
+                  type="file"
+                  className="form-control"
+                  id="upload"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+              <div className="mb-3">
+                <label 
+                htmlFor="Reamarks"
+                 className="form-label" >
+                  remarks
+                </label>
+                <div className="form-floating">
+                  <textarea
+                    onChange={handleChange}
+                    name="remarks"
+                    className="form-control"
+                    id="Remarks"
                   ></textarea>
                 </div>
               </div>
@@ -146,4 +177,4 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   );
 }
 
-export default addAssignment;
+export default AddStudyMaterial;

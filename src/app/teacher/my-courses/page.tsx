@@ -69,6 +69,7 @@ function TeacherMyCourses() {
                     </td>
                     <td>
                     <Link className="btn btn-info btn-sm " href={`/teacher/edit-course/${course.id}`}>Edit</Link>
+                    <Link className="btn btn-warning btn-sm " href={`/teacher/study-material/${course.id}`}>Study Material</Link>
                       <Link className="btn btn-success btn-sm  ms-2" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
                       <button className="btn btn-danger btn-sm  ms-2">Delete</button>
                     </td>
