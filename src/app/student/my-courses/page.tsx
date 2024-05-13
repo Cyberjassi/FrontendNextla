@@ -38,6 +38,7 @@ console.log("this is teacher data",courseData)
                   <tr>
                     <th>Name</th>
                     <th>Created By</th>
+                    <th>Study Material</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -47,6 +48,10 @@ console.log("this is teacher data",courseData)
                     <td>
                       <Link href={`/teacher-detail/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link>
                     </td>
+                   <td>
+                       <Link className="btn btn-warning btn-sm ms-2" href={`study-material/${row.course.id}`}>Study Material</Link>
+                   </td>
+                  
                   </tr>
                 )}
                 </tbody>
