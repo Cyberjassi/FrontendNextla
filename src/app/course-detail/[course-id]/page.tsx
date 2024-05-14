@@ -22,6 +22,7 @@ const [techListData, setTechListData] = useState<any|String[]>([]);
 const [userLoginStatus,setUserLoginStatus]=useState("")
 const [enrollStatus,setEnrollStatus] = useState("");
 const [ratingStatus,setratingStatus] = useState("");
+const [courseView,setcourseViews] = useState(0);
 const [Avgrating,setAvgrating] = useState(0);
 const [favoriteStatus,setfavoriteStatus] = useState<any>();
   
@@ -42,6 +43,12 @@ useEffect(() => {
     .catch(error => {
       console.error('Error:', error);
     });
+
+    // updateview
+    axios.get(`http://127.0.0.1:8000/api/update-view/${currentCourse}`)
+    .then((res)=>{
+      setcourseViews(res.data.views)
+    })
 
     // fatch enroll status
   axios.get(`http://127.0.0.1:8000/api/fatch-enroll-status/${studentId}/${currentCourse}`)
@@ -348,6 +355,9 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           </>
           }
             </p>
+          <p className="fw-bold">
+            Views: {courseView}
+          </p>
           {enrollStatus == 'success' && userLoginStatus == 'success' &&
           <p><span>You are already enrolled in this course</span></p>
           }

@@ -3,6 +3,8 @@
 import AddUsers from './componentsPractice/AddUsers'
 import DisplayUser from './componentsPractice/DisplayUsers'
 import Main from '@/components/Home/Main';
+// import PopularCourses from './(HomeRoute)/popular-courses/page';
+
 export default function Home() {
   return (
     <>
@@ -10,6 +12,7 @@ export default function Home() {
     {/* <AddUsers></AddUsers>
     <DisplayUser></DisplayUser> */}
     <Main></Main>
+    
     </>
   );
 }

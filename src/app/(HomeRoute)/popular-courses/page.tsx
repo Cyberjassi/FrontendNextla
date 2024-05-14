@@ -1,188 +1,59 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
+import { useEffect,useState } from 'react';
+import axios from 'axios';
 
 export default function PopularCourses() {
+  const [popularCourseData, setpopularCourseData] = useState<any[]>([]); 
+  
+  useEffect(() => {
+
+    axios.get('http://127.0.0.1:8000/api/popular-courses/?all=1',)
+    .then(response => {
+        console.log('Data:', response.data);
+        setpopularCourseData(response.data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}, []);
+console.log("this is popular courses data ",popularCourseData)
   return (
-    <div className="container mt-3">
-     <h3 className="pb-1 my-4 text-start">
-          Popular Courses{" "}
-          
-        </h3>
-        <div className="row mb-4">
-          <div className="col-md-3 mb-4">
-            <div className="card">
-            <Link href="/detail/1">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link href="/detail/1">Course Title</Link>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
+    <div>
+      <>
+        <div className="container mt-4">
+          <h3 className="pb-1 my-4 text-start">
+            Popular Courses
+          </h3>
+          <div className="row mb-4">
+            {popularCourseData.map((row:any,index:number)=>
+              <div className="col-md-3" key={index}>
+                <div className="card">
+                  <Link href={`/course-detail/${row.course.id}`}>
+                    <img
+                      className="card-img-top"
+                      src={`${row.course.featured_img}`}
+                      alt={row.course.title}
+                    />
+                  </Link>
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      <Link href={`/course-detail/${row.course.id}`}>{row.course.title}</Link>
+                    </h5>
+                  </div>
+                  <div className="card-footer">
+                    <div className="title">
+                      <span>Rating: {row.rating}/5</span>
+                      <span className='float-end'>Views: {row.course.course_views}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card">
-              <a href="#">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </a>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <a href="#">Course Title</a>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card">
-              <a href="#">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </a>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <a href="#">Course Title</a>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card">
-              <a href="#">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </a>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <a href="#">Course Title</a>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3 mb-4">
-            <div className="card">
-            <Link href="/detail/1">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link href="/detail/1">Course Title</Link>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
-          </div>  <div className="col-md-3 mb-4">
-            <div className="card">
-            <Link href="/detail/1">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link href="/detail/1">Course Title</Link>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
-          </div>  <div className="col-md-3 mb-4">
-            <div className="card">
-            <Link href="/detail/1">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link href="/detail/1">Course Title</Link>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
-          </div>  <div className="col-md-3 mb-4">
-            <div className="card">
-            <Link href="/detail/1">
-                <img
-                  className="card-img-top"
-                  src="https://picsum.photos/200/300"
-                  alt="Card image cap"
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link href="/detail/1">Course Title</Link>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>Rating: 4.5/5</span>
-                  <span className="float-end">Views: 5654</span>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
+    
         {/* End Latest Courses */}
 
         {/* Pagination Start */}
@@ -196,6 +67,7 @@ export default function PopularCourses() {
   </ul>
 </nav>
         {/* Pagination End */}
+      </>
     </div>
   )
 }
