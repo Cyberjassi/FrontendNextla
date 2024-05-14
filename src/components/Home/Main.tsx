@@ -9,6 +9,7 @@ function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
   const [popularCourseData, setpopularCourseData] = useState<any[]>([]); 
+  const [popularTeacherData, setpopularTeacherData] = useState<any[]>([]); 
   const role = localStorage.getItem('teacherLoginStatus')?'teacher':localStorage.getItem('studentLoginStatus')?'student':'';
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,11 +30,21 @@ function Main() {
         console.error('Error:', error);
     });
 
-
+  //  fatch popular courses according to rating-
     axios.get('http://127.0.0.1:8000/api/popular-courses/?popular=1',)
     .then(response => {
         console.log('Data:', response.data);
         setpopularCourseData(response.data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    //fatch popular teachers-
+    axios.get('http://127.0.0.1:8000/api/popular-teachers/?popular=1',)
+    .then(response => {
+        console.log('Data:', response.data);
+        setpopularTeacherData(response.data);
     })
     .catch(error => {
         console.error('Error:', error);
@@ -69,15 +80,13 @@ function Main() {
                     </h5>
                   </div>
                   <div className="card-footer">
-                    <div className="title">
-                      <span>Rating: 4.5/5</span>
-                    </div>
                   </div>
                 </div>
               </div>
             )}
           </div>
         </div>
+
         <div className="container mt-4">
           <h3 className="pb-1 my-4 text-start">
             Popular Courses
@@ -105,6 +114,41 @@ function Main() {
                     <div className="title">
                       <span>Rating: {row.rating}/5</span>
                       <span className='float-end'>Views:{row.course.course_views}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="container mt-4">
+          <h3 className="pb-1 my-4 text-start">
+            Popular Teachers
+            <Link href="/popular-teachers" className="float-end btn btn-danger">
+              See All
+            </Link>
+          </h3>
+          <div className="row mb-4">
+            {popularTeacherData.map((teacher:any,index:number)=>
+              <div className="col-md-3" key={index}>
+                <div className="card">
+                  <Link href={`/teacher-detail/${teacher.id}`}>
+                    <img
+                      className="card-img-top"
+                      src={`${teacher.profile_img}`}
+                      alt={teacher.full_name}
+                    />
+                  </Link>
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      <Link href={`/teacher-detail/${teacher.id}`}>{teacher.full_name}</Link>
+                    </h5>
+                  </div>
+                  <div className="card-footer">
+                    <div className="title">
+                      <span>Courses:{teacher.total_teacher_courses}</span>
+                    
                     </div>
                   </div>
                 </div>
