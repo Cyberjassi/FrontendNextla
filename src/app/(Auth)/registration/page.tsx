@@ -1,7 +1,7 @@
 'use client'
 import { useEffect,useState } from "react"
 import axios from "axios"
-import studentRegister from "@/app/user/registration/page"
+// import studentRegister from "@/app/user/registration/page"
 
 // use for set title in next app
 function TeacherRegister() {

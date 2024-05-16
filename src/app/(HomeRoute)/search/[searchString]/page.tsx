@@ -12,7 +12,7 @@ function Search(props:any) {
     axios.get(`http://127.0.0.1:8000/api/course/?searchString=${searchString}`)
     .then(response => {
         console.log('Data:', response.data);
-        setAllCourses(response.data);
+        setAllCourses(response.data.results);
     })
     .catch(error => {
         console.error('Error:', error);
