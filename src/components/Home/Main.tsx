@@ -35,7 +35,7 @@ function Main() {
     axios.get('http://127.0.0.1:8000/api/popular-courses/?popular=1',)
     .then(response => {
         console.log('Data:', response.data);
-        setpopularCourseData(response.data);
+        setpopularCourseData(response.data.results);
     })
     .catch(error => {
         console.error('Error:', error);
@@ -55,7 +55,7 @@ function Main() {
     axios.get('http://127.0.0.1:8000/api/student-testimonial',)
     .then(response => {
         console.log('Data:', response.data);
-        setstudetTestimonnialData(response.data);
+        setstudetTestimonnialData(response.data.results);
     })
     .catch(error => {
         console.error('Error:', error);
