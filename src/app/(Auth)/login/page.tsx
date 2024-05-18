@@ -52,7 +52,7 @@ try{
         localStorage.setItem('token',response.data.token['access'])
         window.location.href='/teacher/dashboard'
       }else{
-        setErrorMsg("Invalid Email or Password!")
+        setErrorMsg(response.data.msg)
       }
     })
   }catch(error){

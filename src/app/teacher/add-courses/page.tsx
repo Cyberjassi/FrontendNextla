@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function AddCourse() {
 
@@ -73,7 +74,7 @@ function AddCourse() {
     // });
     const categoryId = parseInt(CourseData.category, 10);
     courseFormData.append('category',CourseData.category);
-    courseFormData.append('teacher',teacherId);
+    courseFormData.append('teacher',teacherId as any);
     courseFormData.append('title',CourseData.title);
     courseFormData.append('description',CourseData.description);
     courseFormData.append('featured_img',CourseData.featured_img);
@@ -89,6 +90,18 @@ function AddCourse() {
     })
       .then((response) => {
         console.log(response.data);
+        if(response.status==200 || response.status==201){
+          Swal.fire({
+            title:'Data has been added',
+            icon:'success',
+            toast:true,
+            timer: 5000,
+            position:'top-right',
+            timerProgressBar:true,
+            showConfirmButton: false,
+          });
+          window.location.reload();
+        }
         // for reload-
         // window.location.href='/teacher/add-courses';
       })   
