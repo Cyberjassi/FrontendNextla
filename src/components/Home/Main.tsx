@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 // import Footer from './Footer';
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
@@ -80,10 +81,12 @@ function Main() {
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/course-detail/${course.id}`}>
-                    <img
+                    <Image
                       className="card-img-top"
                       src={`${course.featured_img}`}
                       alt={course.title}
+                      height={300}
+                      width={150}
                     />
                   </Link>
                   <div className="card-body">
@@ -99,6 +102,7 @@ function Main() {
           </div>
         </div>
 
+
         <div className="container mt-4">
           <h3 className="pb-1 my-4 text-start">
             Popular Courses
@@ -111,10 +115,12 @@ function Main() {
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/course-detail/${row.course.id}`}>
-                    <img
+                    <Image
                       className="card-img-top"
                       src={`${row.course.featured_img}`}
                       alt={row.course.title}
+                      height={300}
+                      width={150}
                     />
                   </Link>
                   <div className="card-body">
@@ -146,10 +152,12 @@ function Main() {
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/teacher-detail/${teacher.id}`}>
-                    <img
+                    <Image
                       className="card-img-top"
                       src={`${teacher.profile_img}`}
                       alt={teacher.full_name}
+                      height={300}
+                      width={150}
                     />
                   </Link>
                   <div className="card-body">

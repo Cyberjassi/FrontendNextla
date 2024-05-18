@@ -2,22 +2,35 @@
 import axios from 'axios';
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 
 export default function CategoryCourses(props:any) {
-
-  const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
   const currentSkill = props.params['skill']
+  const baseUrl = `http://127.0.0.1:8000/api/course/?category=${currentSkill}`;
+  const [allCourses, setAllCourses] = useState<any[]>([]);
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+  const [previousUrl, setPreviousUrl] = useState<string | null>(null);
+  // Specify the type as an array of any
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/course/?category=${currentSkill}`)
+    fetchData(baseUrl);
+  }, []);
+
+  const fetchData = (url: string) => {
+    axios.get(url)
       .then(response => {
-        console.log('Data:', response.data);
+        setNextUrl(response.data.next);
+        setPreviousUrl(response.data.previous);
         setAllCourses(response.data.results);
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }, []);
+  };
+
+  const paginationHandler = (url: string) => {
+    fetchData(url);
+  };
   return (
     <div className="container mt-3">
      <h3 className="pb-1 my-4 text-start">
@@ -29,10 +42,12 @@ export default function CategoryCourses(props:any) {
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/course-detail/${course.id}`}>
-                    <img
+                    <Image
                       className="card-img-top"
                       src={`${course.featured_img}`}
                       alt={course.title}
+                      height={300}
+                      width={150}
                     />
                   </Link>
                   <div className="card-body">
@@ -49,19 +64,31 @@ export default function CategoryCourses(props:any) {
               </div>
             )}
         </div>
-        {/* End Latest Courses */}
-
-        {/* Pagination Start */}
         <nav aria-label="Page navigation example mt-5">
-  <ul className="pagination justify-content-center">
-    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-    <li className="page-item"><a className="page-link" href="#">1</a></li>
-    <li className="page-item"><a className="page-link" href="#">2</a></li>
-    <li className="page-item"><a className="page-link" href="#">3</a></li>
-    <li className="page-item"><a className="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
-        {/* Pagination End */}
+        <ul className="pagination justify-content-center">
+          {previousUrl && (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => paginationHandler(previousUrl)}
+              >
+                <i className="bi bi-arrow-left"> Previous </i>
+              </button>
+            </li>
+          )}
+
+          {nextUrl && (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => paginationHandler(nextUrl)}
+              >
+                <i className="bi bi-arrow-right"> Next </i>
+              </button>
+            </li>
+          )}
+        </ul>
+      </nav>
     </div>
   )
 }

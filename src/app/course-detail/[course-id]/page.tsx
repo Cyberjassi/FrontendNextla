@@ -5,6 +5,7 @@ import { FaYoutube } from 'react-icons/fa';
 import { useState ,useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 function page(props:any) {
 
@@ -107,7 +108,7 @@ const enrollCourse = () =>{
   //   courseFormData.append(key, value as string | Blob);
   // });
   courseFormData.append('course',currentCourse);
-  courseFormData.append('student',studentID);
+  courseFormData.append('student',studentID as any);
 
 try{
   // console.log("here course form data",[...courseFormData.entries()])
@@ -144,8 +145,8 @@ const marksAsFavorite = ()=>{
   const favCourseFormData = new FormData();
   
   favCourseFormData.append('course',currentCourse);
-  favCourseFormData.append('student',studentId);
-  favCourseFormData.append('status',true);
+  favCourseFormData.append('student',studentId as any);
+  favCourseFormData.append('status',true as any);
 
 try{
     axios.post(`http://127.0.0.1:8000/api/student-add-favorite-course/`, favCourseFormData,{
@@ -180,8 +181,8 @@ const removeFavorite = ()=>{
   const favCourseFormData = new FormData();
   
   favCourseFormData.append('course',currentCourse);
-  favCourseFormData.append('student',studentId);
-  favCourseFormData.append('status',false);
+  favCourseFormData.append('student',studentId as any);
+  favCourseFormData.append('status',false as any);
 
 try{
     axios.post(`http://127.0.0.1:8000/api/student-remove-favorite-course/${currentCourse}/${studentId}`, favCourseFormData,{
@@ -246,7 +247,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   const chapterFormData = new FormData();
   
   chapterFormData.append('course',currentCourse); 
-  chapterFormData.append('student', studentId);
+  chapterFormData.append('student', studentId as any);
   chapterFormData.append('rating', ratingData.rating);
   chapterFormData.append('reviews', ratingData.reviews);
 
@@ -321,7 +322,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         {ratingStatus == 'success' && 
           <small className='badge bg-info text-dark ms-2'>You already rated this course</small>
         }
-          <div className="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal fade" id="ratingModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">

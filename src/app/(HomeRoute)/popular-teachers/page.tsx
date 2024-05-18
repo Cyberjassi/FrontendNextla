@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link';
 import { useEffect ,useState} from 'react';
-// import axios from 'axios';
+import Image from 'next/image';
 
 import { getTeacherInfo } from '../../redux/teacher/TeacherRetrieve'
 import { useDispatch, useSelector } from "react-redux";
@@ -46,10 +46,12 @@ export default function PopularTeachers() {
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/teacher-detail/${teacher.id}`}>
-                    <img
+                    <Image
                       className="card-img-top"
                       src={`${teacher.profile_img}`}
                       alt={teacher.full_name}
+                      height={300}
+                      width={150}
                     />
                   </Link>
                   <div className="card-body">

@@ -30,7 +30,7 @@ console.log("course data",courseData)
           <div className="col-4">
             <img
               className="img-thumbnail"
-              src="https://picsum.photos/200/300"
+              src={`${teacherData.profile_img}`}
               alt="Teacher image"
             />
           </div>

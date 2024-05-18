@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 export default function PopularCourses() {
   const baseUrl = "http://127.0.0.1:8000/api/popular-courses/";
@@ -39,10 +40,12 @@ export default function PopularCourses() {
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/course-detail/${row.course.id}`}>
-                    <img
+                    <Image
                       className="card-img-top"
                       src={`${row.course.featured_img}`}
                       alt={row.course.title}
+                      height={300}
+                      width={150}
                     />
                   </Link>
                   <div className="card-body">
