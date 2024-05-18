@@ -8,20 +8,30 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
 export default function PopularTeachers() {
-
+  const baseUrl = 'http://127.0.0.1:8000/api/popular-teachers/'
   const [popularTeacherData, setpopularTeacherData] = useState<any[]>([]); 
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+  const [previousUrl, setPreviousUrl] = useState<string | null>(null);
 
   useEffect(() => {
-  axios.get('http://127.0.0.1:8000/api/popular-teachers/?popular=1',)
-    .then(response => {
-        console.log('Data:', response.data);
-        setpopularTeacherData(response.data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    fetchData(baseUrl);
+  }, [])
   
-  }, []);
+  const fetchData = (url: string) => {
+    axios.get(url)
+      .then(response => {
+        setNextUrl(response.data.next);
+        setPreviousUrl(response.data.previous);
+        setpopularTeacherData(response.data.results);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
+  const paginationHandler = (url: string) => {
+    fetchData(url);
+  };
   return (
     <div className="container mt-4">
 
@@ -62,14 +72,30 @@ export default function PopularTeachers() {
 
         {/* Pagination Start */}
         <nav aria-label="Page navigation example mt-5">
-  <ul className="pagination justify-content-center">
-    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-    <li className="page-item"><a className="page-link" href="#">1</a></li>
-    <li className="page-item"><a className="page-link" href="#">2</a></li>
-    <li className="page-item"><a className="page-link" href="#">3</a></li>
-    <li className="page-item"><a className="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+        <ul className="pagination justify-content-center">
+          {previousUrl && (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => paginationHandler(previousUrl)}
+              >
+                <i className="bi bi-arrow-left"> Previous </i>
+              </button>
+            </li>
+          )}
+
+          {nextUrl && (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => paginationHandler(nextUrl)}
+              >
+                <i className="bi bi-arrow-right"> Next </i>
+              </button>
+            </li>
+          )}
+        </ul>
+      </nav>
         {/* Pagination End */}
   </div>
   )

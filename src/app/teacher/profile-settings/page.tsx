@@ -17,8 +17,8 @@ function TeacherProfileSettings() {
     'qualification': string;
     'mobile_no': string;
     'skills': string;
-    'profile_img': any;
-    'p_img': any;
+    'profile_img': File | string | any;
+    'p_img': File | string | any;
   }
   const [teacherData, setTeacherData] = useState<TeacherData>({
     'full_name': "",
@@ -43,8 +43,8 @@ function TeacherProfileSettings() {
           qualification: response.data.qualification,
           mobile_no: response.data.mobile_no,
           skills: response.data.skills,
-          profile_img: response.data.profile_img,
-          p_img: '',
+          p_img: response.data.profile_img,
+          profile_img: '',
         });
         console.log("this is change",teacherData)
       })
@@ -84,13 +84,10 @@ function TeacherProfileSettings() {
     teacherFormData.append("qualification", teacherData.qualification);
     teacherFormData.append("mobile_no", teacherData.mobile_no);
     teacherFormData.append("skills", teacherData.skills);
-    if (teacherData.p_img !== "") {
-      teacherFormData.append("profile_img", teacherData.p_img);
-    }else{
-      teacherFormData.append("p_img", teacherData.p_img);
-
+    if (teacherData.profile_img !== "") {
+      teacherFormData.append("profile_img", teacherData.profile_img);
     }
-
+ console.log("this is data ",teacherData)
     try {
       // console.log("here course form data", [...teacherFormData.entries()]);
 
@@ -179,16 +176,16 @@ console.log(teacherData)
                 </label>
                 <input
                   onChange={handleFileChange}
-                  name="p_img"
+                  name="profile_img"
                   type="file"
                   className="form-control"
                   id="video"
                 />
-                {teacherData.profile_img && 
+                {teacherData.p_img && 
                   <div>
                     <img
                        
-                      src={teacherData.profile_img}
+                      src={teacherData.p_img}
                       width="300"
                       alt={teacherData.full_name}
                       className="img-fluid"

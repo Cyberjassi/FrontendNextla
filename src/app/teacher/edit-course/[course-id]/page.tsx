@@ -92,7 +92,7 @@ function EditCourse(props: any) {
     const categoryId = parseInt(CourseData.category, 10);
  
     courseFormData.append("category", CourseData.category);
-    courseFormData.append("teacher", teacherId);
+    courseFormData.append("teacher", teacherId as any);
     courseFormData.append("title", CourseData.title);
     courseFormData.append("description", CourseData.description);
     if (CourseData.featured_img !== "") {

@@ -45,7 +45,7 @@ function Main() {
     axios.get('http://127.0.0.1:8000/api/popular-teachers/?popular=1',)
     .then(response => {
         console.log('Data:', response.data);
-        setpopularTeacherData(response.data);
+        setpopularTeacherData(response.data.results);
     })
     .catch(error => {
         console.error('Error:', error);
