@@ -6,6 +6,8 @@ import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 
+
+
 function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any

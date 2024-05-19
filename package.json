@@ -23,6 +23,7 @@
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "cloudinary": "^2.2.0",
+    "cloudinary-react": "^1.8.1",
     "clsx": "^2.1.0",
     "jquery": "^3.7.1",
     "lucide-react": "^0.368.0",

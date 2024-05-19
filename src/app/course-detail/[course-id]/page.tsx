@@ -423,7 +423,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                     <div className="modal-body">
                       <div className="ratio ratio-16x9">
                         <iframe
-                          src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
+                          src= {chapterData.video}
                           title="YouTube video"
                         //   allowfullscreen
                         ></iframe>
@@ -455,8 +455,10 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           <div className="card">
             <Link target='__blank' href={`/course-detail/${rcorse.pk}`}>
                {/* here if we want to access the image we use whole path ,path means where our image is stored in python local dir  */}
-              <img
+              <Image
                 className="card-img-top"
+                width={150}
+                height={300}
                 // src={`'${imageUrl}${rcorse.fields.featured_img}`}
                 src={`${imageUrl}${rcorse.fields.featured_img}`}
                 alt={rcorse.fields.title}

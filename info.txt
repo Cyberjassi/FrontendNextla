@@ -61,3 +61,5 @@ install axious
 cross origin policy 
 zod install
 sweetalert install
+npm install next-images cloudinary
+npm install cloudinary-react

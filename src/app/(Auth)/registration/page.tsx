@@ -17,7 +17,7 @@ function TeacherRegister() {
     qualification: string;
     mobile_no: string;
     skills: string;
-    otp_digit: string;
+    otp_digit: string|number;
     profile_img: string | File;
     // 'teacher_courses': number[];
     verify_status: boolean;
@@ -30,7 +30,7 @@ function TeacherRegister() {
     qualification: "",
     mobile_no: "",
     skills: "",
-    otp_digit: "123",
+    otp_digit: "675676",
     profile_img: "",
     // 'teacher_courses': [4],
     verify_status: false,
@@ -64,27 +64,34 @@ function TeacherRegister() {
   const submitFormTeacher = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(teacherData.status);
     e.preventDefault();
+    const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
     const teacherFormData = new FormData();
-    Object.entries(teacherData).forEach(([key, value]) => {
-      teacherFormData.append(key, value as string | Blob);
-    });
+    teacherFormData.append("full_name", teacherData.full_name);
+    teacherFormData.append("email", teacherData.email);
+    teacherFormData.append("password", teacherData.password);
+    teacherFormData.append("qualification", teacherData.qualification);
+    teacherFormData.append("mobile_no", teacherData.mobile_no);
+    teacherFormData.append("skills", teacherData.skills);
+    teacherFormData.append("profile_img", teacherData.profile_img);
+    teacherFormData.append("otp_digit", otp_digit as any);
     try {
       axios
         .post("http://127.0.0.1:8000/api/teacher/", teacherFormData)
-        .then((response) => {
+        .then((response:any) => {
           console.log(response.data);
-          if(response.status==200 || response.status==201){
-            Swal.fire({
-              title:'Successfully Register!',
-              icon:'success',
-              toast:true,
-              timer: 5000,
-              position:'top-right',
-              timerProgressBar:true,
-              showConfirmButton: false,
-            });
-            window.location.href='/login'
-          }
+          // if(response.status==200 || response.status==201){
+          //   Swal.fire({
+          //     title:'Successfully Register!',
+          //     icon:'success',
+          //     toast:true,
+          //     timer: 5000,
+          //     position:'top-right',
+          //     timerProgressBar:true,
+          //     showConfirmButton: false,
+          //   });
+          //   window.location.href='/login'
+          // }
+          window.location.href=`/verify-teacher/${response.data.id}/`
           // if(response.data.bool==true){
           //   localStorage.setItem('teacherLoginStatus','true')
           // window.location.href='/login'
@@ -161,18 +168,18 @@ function TeacherRegister() {
         .post("http://127.0.0.1:8000/api/student/", teacherFormData)
         .then((response) => {
           console.log(response.data);
-          if(response.status==200 || response.status==201){
-            Swal.fire({
-              title:'Successfully Register!',
-              icon:'success',
-              toast:true,
-              timer: 5000,
-              position:'top-right',
-              timerProgressBar:true,
-              showConfirmButton: false,
-            });
-            window.location.href='/login'
-          }
+          // if(response.status==200 || response.status==201){
+          //   Swal.fire({
+          //     title:'Successfully Register!',
+          //     icon:'success',
+          //     toast:true,
+          //     timer: 5000,
+          //     position:'top-right',
+          //     timerProgressBar:true,
+          //     showConfirmButton: false,
+          //   });
+          // }
+          
           // if(response.data.bool==true){
           //   localStorage.setItem('studentLoginStatus','true')
           //   window.location.href='/student/login'
