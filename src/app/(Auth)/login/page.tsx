@@ -1,9 +1,13 @@
 'use client'
 import { useEffect,useState } from "react";
 import axios from 'axios'
-import { Session } from "inspector";
+// import navigateTo from "@/app/utils/navigation";
+// import { useRouter } from 'next/navigation'
+import Link from "next/link";
 
 function TeacherLogin() {
+
+  // const router = useRouter()
  useEffect(()=>{
   document.title='Login'
  })
@@ -50,7 +54,8 @@ try{
         // set teacher id in local storage for future use---
         localStorage.setItem('teacherId',response.data.teacher_id)
         localStorage.setItem('token',response.data.token['access'])
-        window.location.href='/teacher/dashboard'
+        window.location.href='/teacher/dashboard';
+
       }else{
         setErrorMsg(response.data.msg)
       }
@@ -63,7 +68,8 @@ try{
   // get the localStorage data if it's true then redirect to teacher dashboard
   const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
   if(teacherLoginStatus == 'true'){
-    window.location.href='/teacher/dashboard'
+    window.location.href='/teacher/dashboard';
+
   }
 };
 
@@ -110,9 +116,10 @@ try{
         // set teacher id in local storage for future use---
         localStorage.setItem('studentId',response.data.student_id)
         localStorage.setItem('token',response.data.token['access'])
-        window.location.href='/student/dashboard'
+        window.location.href='/student/dashboard';
+
       }else{
-        setErrorMsg("Invalid Email or Password!")
+        setErrorMsg(response.data.msg)
       }
     })
   }catch(error){
@@ -123,7 +130,8 @@ try{
   // get the localStorage data if it's true then redirect to teacher dashboard
   const studentLoginStatus = localStorage.getItem('studentLoginStatus')
   if(studentLoginStatus == 'true'){
-    window.location.href='/student/dashboard'
+    window.location.href='/student/dashboard';
+
   }
 };
 
@@ -203,6 +211,7 @@ try{
                    className="btn btn-primary">
                     Login
                   </button>
+                  <p className="mt-3"><Link href='/teacher-forgot-password' className="text-danger">Forget Password?</Link></p>
                 </form>}
                 
                 {check == "Student" &&

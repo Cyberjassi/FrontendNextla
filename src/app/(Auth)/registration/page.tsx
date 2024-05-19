@@ -30,7 +30,7 @@ function TeacherRegister() {
     qualification: "",
     mobile_no: "",
     skills: "",
-    otp_digit: "675676",
+    otp_digit: "",
     profile_img: "",
     // 'teacher_courses': [4],
     verify_status: false,
@@ -117,6 +117,8 @@ function TeacherRegister() {
     username: string;
     profile_img:string|File;
     interested_categories: string;
+    otp_digit: string|number;
+    verify_status: boolean;
     status: boolean | string;
   }
 
@@ -127,6 +129,8 @@ function TeacherRegister() {
     username: "",
     profile_img:"",
     interested_categories: "",
+    otp_digit:"",
+    verify_status: false,
     status: false,
   });
 
@@ -157,17 +161,25 @@ function TeacherRegister() {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(studentData.status);
+
     e.preventDefault();
+    const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
     const teacherFormData = new FormData();
-    Object.entries(studentData).forEach(([key, value]) => {
-      teacherFormData.append(key, value as string | Blob);
-    });
+    teacherFormData.append("full_name", studentData.full_name);
+    teacherFormData.append("email", studentData.email);
+    teacherFormData.append("password", studentData.password);
+    teacherFormData.append("username", studentData.username);
+    teacherFormData.append("profile_img", studentData.profile_img);
+    teacherFormData.append("interested_categories", studentData.interested_categories);
+    teacherFormData.append("otp_digit", otp_digit as any);
+  
 
     try {
       axios
         .post("http://127.0.0.1:8000/api/student/", teacherFormData)
         .then((response) => {
           console.log(response.data);
+          window.location.href=`/verify-student/${response.data.id}/`
           // if(response.status==200 || response.status==201){
           //   Swal.fire({
           //     title:'Successfully Register!',
