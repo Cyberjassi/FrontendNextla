@@ -30,9 +30,9 @@ function Myusers(props: any) {
   }, []);
 
   const msgList = {
-    height : '500px',
-    overflow:'atuo'
-  }
+    height: "500px",
+    overflow: "atuo",
+  };
   return (
     <div className="container mt-4">
       <div className="row">
@@ -66,7 +66,7 @@ function Myusers(props: any) {
                       <td className="text-center">
                         <Link
                           href={`assignments/${teacherId}/${row.student.id}`}
-                          className="btn btn-sm btn-warning mb-2 ms-2"
+                          className="btn btn-sm btn-warning mb-2 me-2"
                         >
                           Assignments
                         </Link>
@@ -79,7 +79,7 @@ function Myusers(props: any) {
                         <button
                           data-bs-toggle="modal"
                           data-bs-target={`#msgModel${index}`}
-                          className="btn btn-sm btn-dark ms-2"
+                          className="btn btn-sm btn-dark mb-2"
                           title="Send Message"
                         >
                           <i className="bi bi-chat-fill"></i>
@@ -92,16 +92,19 @@ function Myusers(props: any) {
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >
-                          <div className="modal-dialog  modal-dialog-scrollable modal-fullscreen">
+                          <div className="modal-dialog  modal-fullscreen">
                             <div className="modal-content">
                               <div className="modal-header">
                                 <h5
                                   className="modal-title"
                                   id="exampleModalLabel"
                                 >
-                                  Send Message to{" "}
+                                  
                                   <span className="text-danger">
                                     {row.student.full_name}
+                                  </span>
+                                  <span className="ms-5 btn btn-sm btn-secondary" title="Refresh">
+                                    <i className="bi bi-bootstrap-reboot"></i>
                                   </span>
                                 </h5>
                                 <button
@@ -113,27 +116,41 @@ function Myusers(props: any) {
                               </div>
                               <div className="modal-body">
                                 <div className="row">
-                                  <div className="col-md-9 mb-2 col-12 border-end" style={msgList}>
-                                    adfsafd
+                                  <div
+                                    className="col-md-8 mb-2 col-12 border-end"
+                                    style={msgList}
+                                  >
+                                    <div className="row">
+                                      {/* from another users */}
+                                      <div className="col-5">
+                                        <div className="alert alert-primary mb-1">
+                                         A simple primary alert
+                                        </div>
+                                         <small className="text-muted">time</small>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      {/* My messages */}
+                                      <div className="col-4 offset-7">
+                                        <div className="alert alert-success mb-1">
+                                          A simple primary alert
+                                        </div>
+                                          <small className="text-muted">time</small>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="col-md-3 col-12">adfadf</div>
+                                  <div className="col-md-3 col-12">
+                                  <form>
+                                      <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail" className="form-label">Message</label>
+                                        <textarea className="form-control" rows={10}></textarea>
+                                      </div>
+                                      <button type="submit" className="btn btn-primary">Send</button>
+                                    </form>
+                                  </div>
                                 </div>
                               </div>
-                              <div className="modal-footer">
-                                <button
-                                  type="button"
-                                  className="btn btn-secondary"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary"
-                                >
-                                  Send
-                                </button>
-                              </div>
+                    
                             </div>
                           </div>
                         </div>

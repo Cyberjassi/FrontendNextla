@@ -249,6 +249,7 @@ try{
                  className="btn btn-primary">
                   Login
                 </button>
+                <p className="mt-3"><Link href='/student-forgot-password' className="text-danger">Forget Password?</Link></p>
               </form>}
               </div>
             </div>

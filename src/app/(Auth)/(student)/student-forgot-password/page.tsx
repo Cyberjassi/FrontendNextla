@@ -9,15 +9,15 @@ function FogotPassword() {
 
   // const router = useRouter()
  useEffect(()=>{
-  document.title='Teacher Forgot Password'
+  document.title='Student Forgot Password'
  })
 
-interface TeacherData {
+interface StudentData {
   'email': string;
 
 }
 
-const [teacherData, setTeacherData] = useState<TeacherData>({
+const [StudentData, setStudentData] = useState<StudentData>({
   'email': "",
 
 });
@@ -27,23 +27,23 @@ const [successMsg,setSuccessMsg] = useState("");
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   // const { name, value } = event.target;
-  setTeacherData({
-    // we pass referance teacherData and then change our name and value acording to event 
-    ...teacherData,
+  setStudentData({
+    // we pass referance StudentData and then change our name and value acording to event 
+    ...StudentData,
     [event.target.name]: event.target.value
   });
 };
-console.log(teacherData)
+console.log(StudentData)
 
 const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-  // console.log(teacherData.status)
+  // console.log(StudentData.status)
   e.preventDefault();
-  const teacherFormData = new FormData();
-  teacherFormData.append('email', teacherData.email);
-  // teacherFormData.append('password', teacherData.password);
+  const studentFormData = new FormData();
+  studentFormData.append('email', StudentData.email);
+  // studentFormData.append('password', StudentData.password);
 try{
-  // console.log(teacherFormData)
-  axios.post("http://127.0.0.1:8000/api/teacher-forgot-password/", teacherFormData)
+  // console.log(studentFormData)
+  axios.post("http://127.0.0.1:8000/api/student-forgot-password/", studentFormData)
     .then((response) => {
       console.log(response.data);
       // if backend server response bool is true then we set in local storage
@@ -51,6 +51,7 @@ try{
       if(response.data.bool==true){
         setSuccessMsg(response.data.msg)
         setErrorMsg('');
+        StudentData.email=''
 
       }else{
         setErrorMsg(response.data.msg)
@@ -58,16 +59,11 @@ try{
       }
     })
   }catch(error){
-    // setTeacherData({...teacherData,status:'error'})
-    // console.log(teacherData.status)
+    // setStudentData({...StudentData,status:'error'})
+    // console.log(StudentData.status)
     console.log(error);
   }
-  // get the localStorage data if it's true then redirect to teacher dashboard
-  const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
-  if(teacherLoginStatus == 'true'){
-    window.location.href='/teacher/dashboard';
-
-  }
+  
 };
 
 
@@ -94,8 +90,10 @@ try{
 
                     <input  name="email" type="email"   
                     onChange={handleChange} 
-                    value={teacherData.email}
-                    placeholder="Enter Your Email" className="form-control" />
+                    value={StudentData.email}
+
+                    placeholder="Enter Your Email"
+                     className="form-control" />
                   </div>
                   <button type="submit"
                    className="btn btn-primary">

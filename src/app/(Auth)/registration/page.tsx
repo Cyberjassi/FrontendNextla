@@ -9,7 +9,6 @@ function TeacherRegister() {
   useEffect(() => {
     document.title = "Auth Registeration";
   }, []);
-  const [check, setCheck] = useState<String>("Student");
   interface TeacherData {
     full_name: string;
     email: string;
@@ -23,6 +22,9 @@ function TeacherRegister() {
     verify_status: boolean;
     status: boolean | string;
   }
+
+  const [check, setCheck] = useState<String>("Student");
+  const [errorMsg, setErrorMsg] = useState<String>("");
   const [teacherData, setTeacherData] = useState<TeacherData>({
     full_name: "",
     email: "",
@@ -97,10 +99,11 @@ function TeacherRegister() {
           // window.location.href='/login'
           // }
         });
-      console.log(teacherData.status);
+      // console.log(teacherData.status);
     } catch (error) {
       setTeacherData({ ...teacherData, status: "error" });
-      console.log(teacherData.status);
+      
+      // console.log(teacherData.status);
       console.log(error);
     }
 
@@ -216,12 +219,13 @@ function TeacherRegister() {
       <div className="container mt-4">
         <div className="row">
           <div className="col-6 offset-3">
-            {teacherData.status == "success" && (
+            {/* {teacherData.status == "success" && (
               <p className="text-success">Thanks for Your Registeration</p>
             )}
             {teacherData.status == "error" && (
               <p className="text-danger">Something Wrong Happen</p>
-            )}
+            )} */}
+           {errorMsg && <p className="text-danger">{errorMsg}</p>}
             <div className="card">
               <h3 className="card-header">Teacher Regsiteration Form</h3>
               <div className="card-body">

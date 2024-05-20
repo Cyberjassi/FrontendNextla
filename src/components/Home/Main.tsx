@@ -6,8 +6,6 @@ import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 
-
-
 function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
@@ -68,9 +66,11 @@ function Main() {
 
     // console.log("your token is, ",token);
 }, []);
+console.log("this is your course ",allCourses)
   return (
     <div>
       <>
+
         <div className="container mt-4">
           <h3 className="pb-1 my-4 text-start">
             Latest Courses
