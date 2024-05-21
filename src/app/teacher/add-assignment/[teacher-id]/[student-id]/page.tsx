@@ -1,5 +1,4 @@
 'use client'
-import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState } from "react";
 import axios from "axios";

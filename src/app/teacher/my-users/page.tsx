@@ -4,22 +4,26 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 
+
 // import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
 // import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 function Myusers(props: any) {
   // const currentCourse = props.params['course-id']
-  const [studentData, setStudentData] = useState<any>([]);
 
+  
+  const [studentData, setStudentData] = useState<any>([]);
+  
   // to get teacher id from local storage---
-  const teacherId = localStorage.getItem("teacherId");
+  const teacher_id = localStorage.getItem("teacherId");
+
 
   useEffect(() => {
     try {
       axios
         .get(
-          `http://127.0.0.1:8000/api/fatch-all-enrolled-students/${teacherId}`
+          `http://127.0.0.1:8000/api/fatch-all-enrolled-students/${teacher_id}`
         )
         .then((res) => {
           setStudentData(res.data);
@@ -28,6 +32,52 @@ function Myusers(props: any) {
       console.log(error);
     }
   }, []);
+
+
+  const [msgData, setmsgData] = useState<any>({
+    msg_text: '',
+
+  });
+
+  const [successMsg,setSuccessMsg]=useState('');
+  const [errorMsg,setErrorMsg]=useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+    setmsgData({
+      ...msgData,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const submitForm = (student_id:any) => {
+    // e.preventDefault();
+    const msgFormData = new FormData();
+
+    msgFormData.append('teacher', teacher_id as any);
+    msgFormData.append('student', student_id);
+    msgFormData.append('msg_text', msgData.msg_text);
+    msgFormData.append('msg_from', 'teacher');
+  
+    
+      // console.log("here course form data", [...msgFormData.entries()]);
+      
+      axios.post(`http://127.0.0.1:8000/api/send-message/${teacher_id}/${student_id}`, msgFormData,)
+      .then((response) => {
+        if(response.data.bool == true){
+          setSuccessMsg(response.data.msg);
+          setErrorMsg('');
+        }else{
+          setSuccessMsg('');
+          setErrorMsg(response.data.msg);
+        }
+      }).catch((error) => {
+        console.error('Error:', error)
+     });
+    
+      
+  };
+
 
   const msgList = {
     height: "500px",
@@ -43,6 +93,8 @@ function Myusers(props: any) {
           <div className="card">
             <h5 className="card-header">All Student List</h5>
             <div className="card-body">
+              {successMsg && <p className="text-success">{successMsg}</p>}
+              {errorMsg && <p className="text-danger">{errorMsg}</p>}
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -65,13 +117,13 @@ function Myusers(props: any) {
                       </td>
                       <td className="text-center">
                         <Link
-                          href={`assignments/${teacherId}/${row.student.id}`}
+                          href={`assignments/${teacher_id}/${row.student.id}`}
                           className="btn btn-sm btn-warning mb-2 me-2"
                         >
                           Assignments
                         </Link>
                         <Link
-                          href={`add-assignment/${teacherId}/${row.student.id}`}
+                          href={`add-assignment/${teacher_id}/${row.student.id}`}
                           className="btn btn-sm btn-success mb-2 me-2"
                         >
                           Add Assignment
@@ -143,9 +195,9 @@ function Myusers(props: any) {
                                   <form>
                                       <div className="mb-3">
                                         <label htmlFor="exampleInputEmail" className="form-label">Message</label>
-                                        <textarea className="form-control" rows={10}></textarea>
+                                        <textarea onChange={handleChange} name="msg_text" className="form-control" rows={10}></textarea>
                                       </div>
-                                      <button type="submit" className="btn btn-primary">Send</button>
+                                      <button onClick={()=>submitForm(row.student.id)} type="button" className="btn btn-primary">Send</button>
                                     </form>
                                   </div>
                                 </div>
