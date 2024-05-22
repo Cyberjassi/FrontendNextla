@@ -35,12 +35,15 @@ function Myusers(props: any) {
     msg_text: "",
   });
 
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  
   const [groupMsgData, setgroupMsgData] = useState<any>({
     msg_text: "",
   });
 
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [groupsuccessMsg, setgroupsuccessMsg] = useState("");
+  const [grouperrorMsg, setgrouperrorMsg] = useState("");
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -89,33 +92,39 @@ function Myusers(props: any) {
     overflow: "atuo",
   };
 
+  const grouphandleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setgroupMsgData({
+      ...groupMsgData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const groupFormSubmit = () => {
     // e.preventDefault();
     const msgFormData = new FormData();
 
-    msgFormData.append("teacher", teacher_id as any);
-    msgFormData.append("student", student_id);
-    msgFormData.append("msg_text", msgData.msg_text);
+    msgFormData.append("msg_text", groupMsgData.msg_text);
     msgFormData.append("msg_from", "teacher");
 
     // console.log("here course form data", [...msgFormData.entries()]);
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/send-message/${teacher_id}/${student_id}`,
+        `http://127.0.0.1:8000/api/send-group-message/${teacher_id}`,
         msgFormData
       )
       .then((response) => {
         if (response.data.bool == true) {
-          setmsgData({
+          setgroupMsgData({
             msg_text: "",
           });
-          setSuccessMsg(response.data.msg);
-          setErrorMsg("");
+          setgroupsuccessMsg(response.data.msg);
+          setgrouperrorMsg("");
         } else {
-          setSuccessMsg("");
-          setErrorMsg(response.data.msg);
+          setgroupsuccessMsg("");
+          setgrouperrorMsg(response.data.msg);
         }
       })
       .catch((error) => {
@@ -123,10 +132,7 @@ function Myusers(props: any) {
       });
   };
 
-  const msgList = {
-    height: "500px",
-    overflow: "atuo",
-  };
+ 
   return (
     <div className="container mt-4">
       <div className="row">
@@ -180,7 +186,7 @@ function Myusers(props: any) {
                           Message
                         </label>
                         <textarea
-                          onChange={handleChange}
+                          onChange={grouphandleChange}
                           value={groupMsgData.msg_text}
                           name="msg_text"
                           className="form-control"
@@ -188,7 +194,7 @@ function Myusers(props: any) {
                         ></textarea>
                       </div>
                       <button
-                        onClick={() => groupFormSubmit}
+                        onClick={groupFormSubmit}
                         type="button"
                         className="btn btn-primary"
                       >
@@ -196,18 +202,7 @@ function Myusers(props: any) {
                       </button>
                     </form>
                   </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button type="button" className="btn btn-primary">
-                      Save changes
-                    </button>
-                  </div>
+                 
                 </div>
               </div>
             </div>

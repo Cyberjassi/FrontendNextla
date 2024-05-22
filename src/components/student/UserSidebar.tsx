@@ -33,6 +33,12 @@ function Sidebar() {
                 My Courses
               </Link>
               <Link
+                href="/student/my-teachers"
+                className="list-group-item list-group-item-action"
+              >
+                My Teachers
+              </Link>
+              <Link
                 href="/student/favorite-courses"
                 className="list-group-item list-group-item-action"
               >
