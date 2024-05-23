@@ -39,6 +39,7 @@ function MessageList(props: any) {
     height: "500px",
     overflow: "auto",
   };
+  console.log("this is your message list dd",msgData)
   return (
     <>
     <p> <span className="ms-1 btn btn-sm btn-secondary" onClick={fetchMsgs} title="Refresh"><i className="bi bi-bootstrap-reboot"></i></span></p>
@@ -46,7 +47,7 @@ function MessageList(props: any) {
       {msgData.map((row: any, index: any) => (
         
           <div className="row mb-4">
-            {row.msg_from == "teacher" &&
+            {row.msg_from == "student" &&
             <div className="col-4 offset-7">
               <div className="alert alert-primary mb-1">
                 {row.msg_text}
@@ -54,7 +55,7 @@ function MessageList(props: any) {
               <small className="text-muted">{row.msg_time}</small>
             </div>
             }
-            {row.msg_from != "teacher" &&
+            {row.msg_from != "student" &&
             <div className="col-5">
               <div className="alert alert-success mb-1">
                 {/* {row.msg_text} */}

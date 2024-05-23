@@ -4,7 +4,7 @@ import { useEffect ,useState} from 'react';
 import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
-
+import MessageList from "./MessageList";
 
 function MyTeachers() {
   const [teacherData,setteacherData] = useState<any>([])
@@ -21,9 +21,64 @@ function MyTeachers() {
       console.log(error)
     }
   },[])
-  console.log("this is teacher detail",teacherData)
 
-console.log("this is teacher data",teacherData)
+
+//   msg ---
+  const [msgData, setmsgData] = useState<any>({
+    msg_text: "",
+  });
+
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  
+  
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setmsgData({
+      ...msgData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const submitForm = (teacher_id: any) => {
+    // e.preventDefault();
+    const msgFormData = new FormData();
+
+    // msgFormData.append("teacher", teacher_id as any);
+    // msgFormData.append("student", student_id);
+    msgFormData.append("msg_text", msgData.msg_text);
+    msgFormData.append("msg_from", "student");
+
+    // console.log("here course form data", [...msgFormData.entries()]);
+
+    axios
+      .post(
+        `http://127.0.0.1:8000/api/send-message/${teacher_id}/${studentId}`,
+        msgFormData
+      )
+      .then((response) => {
+        if (response.data.bool == true) {
+          setmsgData({
+            msg_text: "",
+          });
+          setSuccessMsg(response.data.msg);
+          setErrorMsg("");
+        } else {
+          setSuccessMsg("");
+          setErrorMsg(response.data.msg);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const msgList = {
+    height: "500px",
+    overflow: "atuo",
+  };
+  
   return (
     <div className="container mt-4">
       <div className="row">
@@ -46,7 +101,105 @@ console.log("this is teacher data",teacherData)
                   <tr>
                     <td><Link href={`/teacher-detail/${row.teacher.id}`}>{row.teacher.full_name}</Link></td>
                    <td>
-                        <i className="bi bi-chat-fill"></i>
+                        
+
+
+                   <button
+                          data-bs-toggle="modal"
+                          data-bs-target={`#msgModel${index}`}
+                          className="btn btn-sm btn-dark mb-2"
+                          title="Send Message"
+                        >
+                          <i className="bi bi-chat-fill"></i>
+                        </button>
+
+                        <div
+                          className="modal fade"
+                          id={`msgModel${index}`}
+                          tabindex="-1"
+                          aria-labelledby="exampleModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div className="modal-dialog  modal-fullscreen">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5
+                                  className="modal-title"
+                                  id="exampleModalLabel"
+                                >
+                                  <span className="text-danger">
+                                    {row.teacher.full_name}
+                                  </span>
+                                  <span
+                                    className="ms-5 btn btn-sm btn-danger"
+                                    title="Messages"
+                                  >
+                                    <i className="bi bi-chat-dots"></i>
+                                  </span>
+                                </h5>
+
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                <div className="row">
+                                  <div
+                                    className="col-md-8 mb-2 col-12 border-end"
+                                    style={msgList}
+                                  >
+                                    <div className="row">
+                                      {/* from another users */}
+                                      <MessageList
+                                        teacher_id={row.teacher.id}
+                                        student_id={studentId}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3 col-12">
+                                    {successMsg && (
+                                      <p className="text-success">
+                                        {successMsg}
+                                      </p>
+                                    )}
+                                    {errorMsg && (
+                                      <p className="text-danger">{errorMsg}</p>
+                                    )}
+                                    <form>
+                                      <div className="mb-3">
+                                        <label
+                                          htmlFor="exampleInputEmail"
+                                          className="form-label"
+                                        >
+                                          Message
+                                        </label>
+                                        <textarea
+                                          onChange={handleChange}
+                                          value={msgData.msg_text}
+                                          name="msg_text"
+                                          className="form-control"
+                                          rows={10}
+                                        ></textarea>
+                                      </div>
+                                      <button
+                                        onClick={() =>
+                                          submitForm(row.teacher.id)
+                                        }
+                                        type="button"
+                                        className="btn btn-primary"
+                                      >
+                                        Send
+                                      </button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                    </td>
                   
                   </tr>

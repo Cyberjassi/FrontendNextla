@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
-import MessageList from "@/components/Message/MessageList";
+import MessageList from "./MessageList";
 
 // import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
 // import { useDispatch, useSelector } from "react-redux";
@@ -38,13 +38,7 @@ function Myusers(props: any) {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   
-  const [groupMsgData, setgroupMsgData] = useState<any>({
-    msg_text: "",
-  });
-
-  const [groupsuccessMsg, setgroupsuccessMsg] = useState("");
-  const [grouperrorMsg, setgrouperrorMsg] = useState("");
-
+  
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -58,8 +52,8 @@ function Myusers(props: any) {
     // e.preventDefault();
     const msgFormData = new FormData();
 
-    msgFormData.append("teacher", teacher_id as any);
-    msgFormData.append("student", student_id);
+    // msgFormData.append("teacher", teacher_id as any);
+    // msgFormData.append("student", student_id);
     msgFormData.append("msg_text", msgData.msg_text);
     msgFormData.append("msg_from", "teacher");
 
@@ -91,6 +85,15 @@ function Myusers(props: any) {
     height: "500px",
     overflow: "atuo",
   };
+
+// Group Messages--
+  const [groupMsgData, setgroupMsgData] = useState<any>({
+    msg_text: "",
+  });
+
+  const [groupsuccessMsg, setgroupsuccessMsg] = useState("");
+  const [grouperrorMsg, setgrouperrorMsg] = useState("");
+
 
   const grouphandleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

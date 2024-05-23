@@ -97,6 +97,8 @@ console.log("this is your course ",allCourses)
                     </h5>
                   </div>
                   <div className="card-footer">
+                  <p>Price: ₹{course.price}</p>
+
                   </div>
                 </div>
               </div>
