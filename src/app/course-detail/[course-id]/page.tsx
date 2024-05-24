@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import useRazorpay from "react-razorpay"
+
 
 function page(props: any) {
   const currentCourse = props.params["course-id"];
@@ -27,6 +29,91 @@ function page(props: any) {
   const [courseView, setcourseViews] = useState(0);
   const [Avgrating, setAvgrating] = useState(0);
   const [favoriteStatus, setfavoriteStatus] = useState<any>();
+
+
+  // payment-
+  const [amount, setAmount] = useState(500);
+  const Razorpay = useRazorpay();
+
+  const complete_order = (paymentID:any, orderID:any, signature:any)=>{
+    axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/order/complete/',
+        data: {
+            "payment_id": paymentID,
+            "order_id": orderID,
+            "signature": signature,
+            "amount": amount
+        }
+    })
+    .then((response)=>{
+        console.log(response.data);
+    })
+    .catch((error)=>{
+        console.log(error.response.data);
+    })
+}
+
+ 
+  const razorpayPayment= ()=>{
+    axios
+    .post(
+      `${process.env.BASE_URL}order/create/`,{
+        "amount":amount,
+        "currency":"INR"
+      }
+    )
+    .then((response) => {
+      console.log("this is a response for razorpay", response.data.data);
+      const order_id = response.data.data.id
+
+      const options = {
+        key: process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+        name: "Acme Corp",
+        description: "Test Transaction",
+        image: "https://example.com/your_logo",
+        order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
+        handler: function (response:any) {
+
+            //complete order
+            complete_order(
+                response.razorpay_payment_id,
+                response.razorpay_order_id,
+                response.razorpay_signature
+            )
+        },
+        prefill: {
+        name: "jaswant khatri",
+        email: "jaswantkhatri30@gmail.com",
+        contact: "9302211341",
+        },
+        notes: {
+        address: "Razorpay Corporate Office",
+        },
+        theme: {
+        color: "#3399cc",
+        },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response:any) {
+        // alert(response.error.code);
+        alert(response.error.description);
+        // alert(response.error.source);
+        // alert(response.error.step);
+        // alert(response.error.reason);
+        // alert(response.error.metadata.order_id);
+        // alert(response.error.metadata.payment_id);
+    });
+    rzp1.open();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  }
+
+
+  //end payment
 
   useEffect(() => {
     axios
@@ -426,7 +513,7 @@ function page(props: any) {
             {userLoginStatus == "success" && (
             <div>
               <p className="fw-bold mb-0">Price: ₹{course.price}</p>
-              <button className="btn btn-primary mt-2">
+              <button onClick={razorpayPayment} className="btn btn-primary mt-2">
                 Buy Now <i className="bi bi-cart"></i>
               </button>
             </div>
