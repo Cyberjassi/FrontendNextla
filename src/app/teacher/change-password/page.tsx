@@ -43,16 +43,15 @@ function TeacherChangePassword() {
           console.log(response.data);
           if (response.status == 200) {
             window.location.href='/logout'
-            // Swal.fire({
-            //   title: "Password has been Updated",
-            //   icon: "success",
-            //   toast: true,
-            //   timer: 3000,
-            //   position: "top-right",
-            //   timerProgressBar: true,
-            //   showConfirmButton: false,
-            // });
-          }else{
+            Swal.fire({
+              title:'Data has been added',
+              icon:'success',
+              toast:true,
+              timer: 5000,
+              position:'top-right',
+              timerProgressBar:true,
+              showConfirmButton: false,
+            });          }else{
             alert("Oops Some Error Occure!")
           }
           
