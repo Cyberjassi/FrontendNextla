@@ -71,7 +71,6 @@ try{
 };
 
 
-
   return (
     <div>
       <div className="container mt-4">
@@ -82,6 +81,7 @@ try{
               <div className="card-body">
                 {successMsg && <p className="text-success">{successMsg}</p>}
                 {errorMsg && <p className="text-danger">{errorMsg}</p>}
+        
                 <form onSubmit={submitForm}>
                
                   <div className="mb-3">
@@ -89,13 +89,13 @@ try{
                     //   for="exampleInputEmail1"
                       className="form-label text-start"
                     >
-                     Email
+                     Password
                     </label>
 
                     <input  name="password" type="password"   
                     onChange={handleChange} 
                     value={teacherData.password}
-                    placeholder="Enter Your Email" className="form-control" />
+                    placeholder="Enter Your New Password" className="form-control" />
                   </div>
                   <button type="submit"
                    className="btn btn-primary">

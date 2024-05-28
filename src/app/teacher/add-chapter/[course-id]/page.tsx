@@ -5,6 +5,8 @@ import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+// import { CldUploadWidget } from 'next-cloudinary';
+ 
 
 function AddChapter(props:any) {
 

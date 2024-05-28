@@ -25,6 +25,7 @@ function TeacherRegister() {
 
   const [check, setCheck] = useState<String>("Student");
   const [errorMsg, setErrorMsg] = useState<String>("");
+  const [errorEmail,setErrorEmail] = useState<String>("");
   const [teacherData, setTeacherData] = useState<TeacherData>({
     full_name: "",
     email: "",
@@ -38,6 +39,7 @@ function TeacherRegister() {
     verify_status: false,
     status: false,
   });
+  
 
   const handleChangeTeacher = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -81,38 +83,28 @@ function TeacherRegister() {
         .post("http://127.0.0.1:8000/api/teacher/", teacherFormData)
         .then((response:any) => {
           console.log(response.data);
-          // if(response.status==200 || response.status==201){
-          //   Swal.fire({
-          //     title:'Successfully Register!',
-          //     icon:'success',
-          //     toast:true,
-          //     timer: 5000,
-          //     position:'top-right',
-          //     timerProgressBar:true,
-          //     showConfirmButton: false,
-          //   });
-          //   window.location.href='/login'
-          // }
-          window.location.href=`/verify-teacher/${response.data.id}/`
+          if (response.status === 400 && response.data) {
+            setErrorMsg(response.data);
+          } else {
+            // No errors, redirect or perform other actions
+            window.location.href=`/verify-teacher/${response.data.id}/`;
+          }
+          // window.location.href=`/verify-teacher/${response.data.id}/`
           // if(response.data.bool==true){
           //   localStorage.setItem('teacherLoginStatus','true')
           // window.location.href='/login'
           // }
+         
         });
       // console.log(teacherData.status);
-    } catch (error) {
+    } catch (error:any) {
       setTeacherData({ ...teacherData, status: "error" });
       
       // console.log(teacherData.status);
       console.log(error);
     }
-
-    // const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
-    // if(teacherLoginStatus == 'true'){
-    //   window.location.href='/login'
-    // }
   };
-
+console.log("this is error from email ",errorMsg)
   interface studentData {
     full_name: string;
     email: string;
@@ -207,10 +199,10 @@ function TeacherRegister() {
       console.log(error);
     }
 
-    const studentLoginStatus = localStorage.getItem("studentLoginStatus");
-    if (studentLoginStatus == "true") {
-      window.location.href = "/student/login";
-    }
+    // const studentLoginStatus = localStorage.getItem("studentLoginStatus");
+    // if (studentLoginStatus == "true") {
+    //   window.location.href = "/student/login";
+    // }
   };
 
   console.log("this is check", check);
@@ -226,6 +218,7 @@ function TeacherRegister() {
               <p className="text-danger">Something Wrong Happen</p>
             )} */}
            {errorMsg && <p className="text-danger">{errorMsg}</p>}
+           {errorEmail && <p className="text-danger">{errorEmail}</p>}
             <div className="card">
               <h3 className="card-header">Teacher Regsiteration Form</h3>
               <div className="card-body">

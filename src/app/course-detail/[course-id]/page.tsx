@@ -80,6 +80,7 @@ function page(props: any) {
                 response.razorpay_payment_id,
                 response.razorpay_order_id,
                 response.razorpay_signature
+                
             )
         },
         prefill: {
@@ -95,7 +96,7 @@ function page(props: any) {
         },
     };
 
-    const rzp1 = new window.Razorpay(options);
+    const rzp1 = new (window as any).Razorpay(options);
     rzp1.on("payment.failed", function (response:any) {
         // alert(response.error.code);
         alert(response.error.description);
@@ -200,17 +201,11 @@ function page(props: any) {
 
   const enrollCourse = () => {
     const studentID = localStorage.getItem("studentId");
-    // e.preventDefault();
     const courseFormData = new FormData();
-    // Object.entries(CourseData).forEach(([key, value]) => {
-    //   courseFormData.append(key, value as string | Blob);
-    // });
     courseFormData.append("course", currentCourse);
     courseFormData.append("student", studentID as any);
-
     try {
       // console.log("here course form data",[...courseFormData.entries()])
-
       axios
         .post(
           "http://127.0.0.1:8000/api/student-enroll-course/",
@@ -287,11 +282,9 @@ function page(props: any) {
   //Remove favorite Course
   const removeFavorite = () => {
     const favCourseFormData = new FormData();
-
     favCourseFormData.append("course", currentCourse);
     favCourseFormData.append("student", studentId as any);
     favCourseFormData.append("status", false as any);
-
     try {
       axios
         .post(
@@ -450,7 +443,7 @@ function page(props: any) {
                   <div
                     className="modal fade"
                     id="ratingModal"
-                    tabIndex="-1"
+                    // tabIndex="-1"
                     role="dialog"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"

@@ -29,7 +29,8 @@ function Search(props:any) {
             </Link>
           </h3>
           <div className="row mb-4">
-            {allCourses.map((course:any,index:number)=>
+            {allCourses.length == 0 && <p>No Course there for for {searchString}</p>}
+            {allCourses && allCourses.map((course:any,index:number)=>
               <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link href={`/course-detail/${course.id}`}>
