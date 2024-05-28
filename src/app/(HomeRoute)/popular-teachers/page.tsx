@@ -37,14 +37,11 @@ export default function PopularTeachers() {
 
           <h3 className="pb-1 my-4 text-start">
             Popular Teachers
-            <Link href="/popular-teachers" className="float-end btn btn-danger">
-              See All
-            </Link>
           </h3>
           <div className="row mb-4">
             {popularTeacherData.map((teacher:any,index:number)=>
               <div className="col-md-3" key={index}>
-                <div className="card">
+                <div className="card shadow-lg">
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image
                       className="card-img-top"

@@ -35,7 +35,7 @@ export default function AllCourses() {
       <div className="row mb-4">
         {allCourses.map((course: any, index: number) => (
           <div className="col-md-3" key={index}>
-            <div className="card">
+            <div className="card shadow-lg">
               <Link href={`/course-detail/${course.id}`}>
                 <img
                   className="card-img-top"

@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import useRazorpay from "react-razorpay";
 
+
 function page(props: any) {
   const currentCourse = props.params["course-id"];
   const studentId = localStorage.getItem("studentId");

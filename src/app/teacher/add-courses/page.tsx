@@ -29,6 +29,7 @@ function AddCourse() {
     'title': any;
     'description': any;
     'featured_img': File |string|any;
+    'price':any;
     'techs': any;
   
   }
@@ -40,6 +41,7 @@ function AddCourse() {
     title: '',
     description: '',
     featured_img: null,
+    price: '',
     techs: '',
   });
 
@@ -79,6 +81,7 @@ function AddCourse() {
     courseFormData.append('description',CourseData.description);
     courseFormData.append('featured_img',CourseData.featured_img);
     courseFormData.append('techs',CourseData.techs);
+    courseFormData.append('price',CourseData.price);
   
   try{
     // console.log("here course form data",[...courseFormData.entries()])
@@ -176,6 +179,19 @@ function AddCourse() {
                   type="file"
                   className="form-control"
                   id="video"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label ">
+                  Price
+                </label>
+                <input
+                  onChange={handleChange}
+                  name="price"
+                  type="number"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
                 />
               </div>
               <div className="mb-3">

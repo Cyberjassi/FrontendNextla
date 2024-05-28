@@ -7,9 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import Button from "@mui/material/Button";
-import { makeStyles } from '@mui/styles';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import { makeStyles } from "@mui/styles";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
@@ -99,13 +98,13 @@ function Main() {
           <div className="row mb-4">
             {allCourses.map((course: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card">
+                <div className="card shadow-lg">
                   <Link href={`/course-detail/${course.id}`}>
                     <Image
                       className="card-img-top"
                       src={`${course.featured_img}`}
                       alt={course.title}
-                      height={300}
+                      height={250}
                       width={150}
                     />
                   </Link>
@@ -131,7 +130,7 @@ function Main() {
             <Button
               variant="contained"
               color="primary"
-              href="/all-courses"
+              href="/popular-courses"
               className="float-end"
             >
               See All
@@ -140,13 +139,13 @@ function Main() {
           <div className="row mb-4">
             {popularCourseData.map((row: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card">
+                <div className="card shadow-lg">
                   <Link href={`/course-detail/${row.course.id}`}>
                     <Image
                       className="card-img-top"
                       src={`${row.course.featured_img}`}
                       alt={row.course.title}
-                      height={300}
+                      height={250}
                       width={150}
                     />
                   </Link>
@@ -177,7 +176,7 @@ function Main() {
             <Button
               variant="contained"
               color="primary"
-              href="/all-courses"
+              href="/popular-teachers"
               className="float-end"
             >
               See All
@@ -186,13 +185,15 @@ function Main() {
           <div className="row mb-4">
             {popularTeacherData.map((teacher: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card">
+                <div className="card shadow-lg">
+                  {" "}
+                  {/* Add shadow-sm class for a small shadow */}
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image
                       className="card-img-top"
                       src={`${teacher.profile_img}`}
                       alt={teacher.full_name}
-                      height={300}
+                      height={250}
                       width={150}
                     />
                   </Link>
@@ -205,13 +206,14 @@ function Main() {
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                      <span>Courses:{teacher.total_teacher_courses}</span>
+                      <span>Courses: {teacher.total_teacher_courses}</span>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
           <h3 className="pb-1 my-4 mt-4">Student Testimonial</h3>
           <div
             id="carouselExampleIndicators"
