@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularCourses from "@/app/(HomeRoute)/popular-courses/page";
 
+import Rating from './Rating'
 function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
@@ -164,7 +165,7 @@ function Main() {
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                      <span>Rating: {row.rating}/5</span>
+                    <span>Rating: <Rating rating={row.rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}
@@ -224,7 +225,7 @@ function Main() {
           <h3 className="pb-1 my-4 mt-4">Student Testimonial</h3>
           <div
             id="carouselExampleIndicators"
-            className="carousel slide bg-dark text-white py-5"
+            className="carousel slide bg-primary text-white py-5"
             data-bs-ride="carousel"
           >
             <div className="carousel-indicators">
@@ -256,7 +257,7 @@ function Main() {
                       <blockquote className="blockquote">
                         <p>{row.reviews}</p>
                       </blockquote>
-                      <figcaption className="blockquote-footer">
+                      <figcaption className="blockquote-footer text-white">
                         {row.course.title}
                         <cite title="Source Title">
                           {row.student.full_name}

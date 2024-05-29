@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import useRazorpay from "react-razorpay";
 
+import Rating from "@/components/Home/Rating";
+
 
 function page(props: any) {
   const currentCourse = props.params["course-id"];
@@ -419,7 +421,7 @@ function page(props: any) {
               Total Enrolled: {course.total_enrolled_students} Students
             </p>
             <p className="fw-bold">
-              Rating: {Avgrating}/5
+            <span>Rating: <Rating rating={course.rating} /></span>
               {enrollStatus === "success" && userLoginStatus === "success" && (
                 <>
                   {ratingStatus != "success" && (
