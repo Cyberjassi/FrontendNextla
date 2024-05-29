@@ -43,7 +43,7 @@ console.log("course data",courseData)
               Skills: &nbsp; 
             {skillList &&
                     skillList.map((skill: any, index: any) => (
-            <Link href={`/teacher-skills-courses/${skill.trim()}/${teacherData.id}`} className='badge badge-pill text-dark bg-warning'>{skill}</Link>
+            <Link key={index} href={`/teacher-skills-courses/${skill.trim()}/${teacherData.id}`} className='badge badge-pill text-dark bg-warning'>{skill}</Link>
             ))}
          
             </p>
@@ -58,7 +58,7 @@ console.log("course data",courseData)
             <h3 className="card-header">Course List</h3>
             <div className="list-group list-group-flush">
               {courseData.map((course:any,title:any)=>
-               <Link href={`/course-detail/${course.id}`} className='list-group-item text-start kust-group-item-action'>{course.title}</Link>
+               <Link key={course.id} href={`/course-detail/${course.id}`} className='list-group-item text-start kust-group-item-action'>{course.title}</Link>
               
               )}
               

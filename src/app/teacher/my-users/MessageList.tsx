@@ -46,7 +46,7 @@ function MessageList(props: any) {
     <div style={msgList} id="msgList">
       {msgData.map((row: any, index: any) => (
         
-          <div className="row mb-4">
+          <div key={index} className="row mb-4">
             {row.msg_from == "teacher" &&
             <div className="col-4 offset-7">
               <div className="alert alert-primary mb-1">
@@ -73,26 +73,4 @@ function MessageList(props: any) {
 
 export default MessageList;
 
-{/* <div className="col-5">
-<div className="alert alert-primary mb-1">
- A simple primary alert
-</div>
- <small className="text-muted">time</small> */}
-// </div>
-{/* My messages */}
-{/* <div className="col-4 offset-7">
-<div className="alert alert-success mb-1">
- heeef
-</div>
-  <small className="text-muted">time</small>
-</div> */}
 
-// {row.msg_from != "teacher" &&
-//   <div className="row mb-4">
-//     {/* from another users */}
-//     <div className="col-5">
-//       <div className="alert alert-primary mb-1">{row.msg_text}</div>
-//       <small className="text-muted">{row.msg_time}</small>
-//     </div>
-//   </div>
-// }

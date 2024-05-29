@@ -50,7 +50,7 @@ export default function PopularCourses() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/course-detail/${row.course.id}`}>
+                      <Link className="custom-link-style" href={`/course-detail/${row.course.id}`}>
                         {row.course.title}
                       </Link>
                     </h5>
@@ -58,8 +58,9 @@ export default function PopularCourses() {
                   <div className="card-footer">
                     <div className="title">
                       <span>Rating: {row.rating}/5</span>
+                      <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
                       {/* <span className="float-end">
-                        Views: {row.course.course_views}
+                        Views:{row.course.course_views}
                       </span> */}
                     </div>
                   </div>

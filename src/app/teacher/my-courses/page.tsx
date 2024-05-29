@@ -6,6 +6,8 @@ import TeacherSidebar from "@/components/Teacher/Sidebar";
 
 import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
 import { useDispatch, useSelector } from "react-redux";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 function TeacherMyCourses() {
@@ -49,8 +51,9 @@ function TeacherMyCourses() {
                 </thead>
                 <tbody>
                   {state.course.isLoading ? (
-                    <p>Loading....</p>
-                  ):(courseData&&
+                    <CircularProgress />
+                  ):
+                  (courseData&&
                     courseData.map((course:any,index:any)=>(
                  <tr key={index} >
                     <td>
@@ -69,7 +72,7 @@ function TeacherMyCourses() {
                     </td>
                     <td>
                     <Link className="btn btn-info btn-sm " href={`/teacher/edit-course/${course.id}`}>Edit</Link>
-                    <Link className="btn btn-warning btn-sm " href={`/teacher/study-material/${course.id}`}>Study Material</Link>
+                    <Link className="btn btn-warning btn-sm ms-2 " href={`/teacher/study-material/${course.id}`}>Study Material</Link>
                       <Link className="btn btn-success btn-sm  ms-2" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
                       <button className="btn btn-danger btn-sm  ms-2">Delete</button>
                     </td>
@@ -87,28 +90,4 @@ function TeacherMyCourses() {
 }
 
 export default TeacherMyCourses;
-{
-  /* <div className="card">
-            <h5 className="card-header">My Courses</h5>
-            <div className="card-body">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link href="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div> */
-}
+

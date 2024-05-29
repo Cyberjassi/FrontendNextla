@@ -28,7 +28,7 @@ export default function AllCourses() {
   const paginationHandler = (url: string) => {
     fetchData(url);
   };
-
+console.log(allCourses)
   return (
     <div className="container mt-4">
       <h3 className="pb-1 my-4 text-start">All Courses</h3>
@@ -45,12 +45,23 @@ export default function AllCourses() {
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link href={`/course-detail/${course.id}`}>
+                  <Link className="custom-link-style" href={`/course-detail/${course.id}`}>
                     {course.title}
                   </Link>
+                  <p className="description">
+                     {course.description}
+                  </p>
                 </h5>
               </div>
-              <div className="card-footer"></div>
+              <div className="card-footer">
+                    <div className="title">
+                      <span>Rating: {course.rating}/5</span>
+                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                      {/* <span className="float-end">
+                        Views:{row.course.course_views}
+                      </span> */}
+                    </div>
+                  </div>
             </div>
           </div>
         ))}

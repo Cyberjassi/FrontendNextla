@@ -53,7 +53,7 @@ export default function PopularTeachers() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/teacher-detail/${teacher.id}`}>{teacher.full_name}</Link>
+                      <Link className="custom-link-style" href={`/teacher-detail/${teacher.id}`}>{teacher.full_name}</Link>
                     </h5>
                   </div>
                   <div className="card-footer">

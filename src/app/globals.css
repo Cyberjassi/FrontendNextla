@@ -85,3 +85,28 @@
   h1{
     color: blue;
   }
+
+
+
+  .custom-link-style {
+    text-decoration: none; 
+    color: rgb(43, 42, 42); 
+    font-weight: bold; /* Make the title bold */
+ 
+  }
+  .custom-link-style:hover {
+    color:rgb(154, 25, 25)
+  }
+  .description {
+    font-size: small; /* Make the text very small */
+    font-weight: 300; /* Make the text lighter */
+  }
+
+  .card {
+    transition: transform 0.2s ease; /* Add transition effect for smooth animation */
+  }
+  
+  .card:hover {
+    transform: scale(1.05); /* Increase size by 5% on hover */
+  }
+  

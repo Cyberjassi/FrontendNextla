@@ -387,7 +387,7 @@ function page(props: any) {
         <div className="row">
           <div className="col-4">
             <img
-              className="img-thumbnail"
+              className="img-thumbnail card"
               src={course.featured_img}
               alt="image "
             />
@@ -397,7 +397,7 @@ function page(props: any) {
             <p>{course.description}</p>
             <p className="fw-bold">
               Course By:{" "}
-              <Link href={`/teacher-detail/${teacher.id}`}>
+              <Link className="custom-link-style" href={`/teacher-detail/${teacher.id}`}>
                 {teacher.full_name}
               </Link>
             </p>
@@ -408,7 +408,7 @@ function page(props: any) {
                   <Link
                     key={index}
                     href={`/category/${tech.trim()}`}
-                    className="badge badge-pill text-dark bg-warning"
+                    className="badge badge-pill text-dark bg-warning custom-link-style ml-1 card"
                   >
                     {tech}
                   </Link>
@@ -629,12 +629,13 @@ function page(props: any) {
         {/* EndCourse Videos */}
 
         {/* Ratlated Course */}
-        <h3 className="pb-1 my-4 text-start mt-5">
-          Realted Courses
+        {realtedCourseData.length!=0 &&
+        <h4 className="pb-1 my-4 text-start mt-5">
+          Releted Courses
           <a href="#" className="float-end">
             See All
           </a>
-        </h3>
+        </h4>}
         <div className="row mb-4">
           {realtedCourseData &&
             realtedCourseData.map((rcorse: any, index: any) => (
@@ -653,10 +654,14 @@ function page(props: any) {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/course-detail/${rcorse.pk}`}>
+                      <Link className="custom-link-style" href={`/course-detail/${rcorse.pk}`}>
                         {rcorse.fields.title}
                       </Link>
                     </h5>
+                  </div>
+                  <div className="card-footer">
+                  <span>Rating: {course.rating}/5</span>
+                    <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
                   </div>
                 </div>
               </div>

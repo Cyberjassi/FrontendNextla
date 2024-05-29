@@ -91,7 +91,7 @@ function Main() {
               variant="contained"
               color="primary"
               href="/all-courses"
-              className="float-end"
+              className="float-end custom-button card"
             >
               See All
             </Button>
@@ -112,13 +112,14 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/course-detail/${course.id}`}>
+                      <Link className="custom-link-style" href={`/course-detail/${course.id}`}>
                         {course.title}
                       </Link>
                     </h5>
                   </div>
                   <div className="card-footer">
-                    <p>Price: ₹{course.price}</p>
+                  <span>Rating: {course.rating}/5</span>
+                    <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
                   </div>
                 </div>
               </div>
@@ -133,7 +134,7 @@ function Main() {
               variant="contained"
               color="primary"
               href="/popular-courses"
-              className="float-end"
+              className="float-end card"
             >
               See All
             </Button>
@@ -153,10 +154,10 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/course-detail/${row.course.id}`}>
+                      <Link className="custom-link-style" href={`/course-detail/${row.course.id}`}>
                         {row.course.title}
                       </Link>
-                      <p className="card-text small text-muted mb-0">
+                      <p className="description">
                      {row.course.description}
                       </p>
                     </h5>
@@ -164,7 +165,7 @@ function Main() {
                   <div className="card-footer">
                     <div className="title">
                       <span>Rating: {row.rating}/5</span>
-                      <p>Price: ₹{row.course.price}</p>
+                      <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}
                       </span> */}
@@ -183,7 +184,7 @@ function Main() {
               variant="contained"
               color="primary"
               href="/popular-teachers"
-              className="float-end"
+              className="float-end card"
             >
               See All
             </Button>
@@ -205,7 +206,7 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/teacher-detail/${teacher.id}`}>
+                      <Link className="custom-link-style" href={`/teacher-detail/${teacher.id}`}>
                         {teacher.full_name}
                       </Link>
                     </h5>
