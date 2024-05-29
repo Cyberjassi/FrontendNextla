@@ -26,7 +26,7 @@ function page(props: any) {
   const [userLoginStatus, setUserLoginStatus] = useState("");
   const [enrollStatus, setEnrollStatus] = useState("");
   const [ratingStatus, setratingStatus] = useState("");
-  const [courseView, setcourseViews] = useState(0);
+  // const [courseView, setcourseViews] = useState(0);
   const [Avgrating, setAvgrating] = useState(0);
   const [favoriteStatus, setfavoriteStatus] = useState<any>();
 
@@ -53,10 +53,10 @@ function page(props: any) {
       });
   };
 
-  const razorpayPayment = () => {
+  const razorpayPayment = (price:any) => {
     axios
       .post(`${process.env.BASE_URL}order/create/`, {
-        amount: amount,
+        amount: price,
         currency: "INR",
       })
       .then((response) => {
@@ -70,6 +70,8 @@ function page(props: any) {
           image: "https://example.com/your_logo",
           order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
           handler: function (response: any) {
+            console.log("haksjdfkljaskdlfjklasjdfkljasdf")
+            enrollCourse();
             //complete order
             complete_order(
               response.razorpay_payment_id,
@@ -132,11 +134,11 @@ function page(props: any) {
       });
 
     // updateview
-    axios
-      .get(`http://127.0.0.1:8000/api/update-view/${currentCourse}`)
-      .then((res) => {
-        setcourseViews(res.data.views);
-      });
+    // axios
+    //   .get(`http://127.0.0.1:8000/api/update-view/${currentCourse}`)
+    //   .then((res) => {
+    //     setcourseViews(res.data.views);
+    //   });
 
     // fatch enroll status
     axios
@@ -404,6 +406,7 @@ function page(props: any) {
               {techListData &&
                 techListData.map((tech: any, index: any) => (
                   <Link
+                    key={index}
                     href={`/category/${tech.trim()}`}
                     className="badge badge-pill text-dark bg-warning"
                   >
@@ -494,13 +497,13 @@ function page(props: any) {
                 </>
               )}
             </p>
-            <p className="fw-bold">Views: {courseView}</p>
+            {/* <p className="fw-bold">Views: {courseView}</p> */}
 
-            {userLoginStatus == "success" && (
+            {userLoginStatus == "success" && enrollStatus !=="success" && (
               <div>
                 <p className="fw-bold mb-0">Price: ₹{course.price}</p>
                 <button
-                  onClick={razorpayPayment}
+                  onClick={()=>razorpayPayment(course.price)}
                   className="btn btn-primary mt-2"
                 >
                   Buy Now <i className="bi bi-cart"></i>
@@ -513,7 +516,7 @@ function page(props: any) {
                 <span>You are already enrolled in this course</span>
               </p>
             )}
-            {userLoginStatus == "success" && enrollStatus !== "success" && (
+            {/* {userLoginStatus == "success" && enrollStatus !== "success" && (
               <p>
                 <button
                   className="btn btn-success"
@@ -523,12 +526,12 @@ function page(props: any) {
                   Enroll in this course
                 </button>
               </p>
-            )}
+            )} */}
 
             {userLoginStatus == "success" && favoriteStatus !== "success" && (
               <p>
                 <button
-                  className="btn btn-outline-danger"
+                  className="btn btn-outline-danger mt-2"
                   onClick={marksAsFavorite}
                   title="Add in Your Favorite Course List"
                   type="button"
@@ -541,7 +544,7 @@ function page(props: any) {
             {userLoginStatus == "success" && favoriteStatus == "success" && (
               <p>
                 <button
-                  className="btn btn-outline-danger"
+                  className="btn btn-outline-danger mt-2"
                   onClick={removeFavorite}
                   title="Remove from your Your favorite Course List"
                   type="button"
@@ -635,7 +638,7 @@ function page(props: any) {
         <div className="row mb-4">
           {realtedCourseData &&
             realtedCourseData.map((rcorse: any, index: any) => (
-              <div className="col-md-3">
+              <div className="col-md-3" key={index}>
                 <div className="card">
                   <Link target="__blank" href={`/course-detail/${rcorse.pk}`}>
                     {/* here if we want to access the image we use whole path ,path means where our image is stored in python local dir  */}

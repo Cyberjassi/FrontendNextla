@@ -79,4 +79,9 @@
     border: 2px solid #ced4da; /* Use your preferred color */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
   }
-  
+  .color{
+    color: red;
+  }
+  h1{
+    color: blue;
+  }

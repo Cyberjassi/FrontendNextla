@@ -5,10 +5,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import './Home.module.css';
 
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import PopularCourses from "@/app/(HomeRoute)/popular-courses/page";
 
 function Main() {
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
@@ -76,9 +78,9 @@ function Main() {
         console.error("Error:", error);
       });
 
-    // console.log("your token is, ",token);
   }, []);
   console.log("this is your course ", allCourses);
+  console.log("popular course",popularCourseData)
   return (
     <div>
       <>
@@ -154,14 +156,18 @@ function Main() {
                       <Link href={`/course-detail/${row.course.id}`}>
                         {row.course.title}
                       </Link>
+                      <p className="card-text small text-muted mb-0">
+                     {row.course.description}
+                      </p>
                     </h5>
                   </div>
                   <div className="card-footer">
                     <div className="title">
                       <span>Rating: {row.rating}/5</span>
-                      <span className="float-end">
+                      <p>Price: ₹{row.course.price}</p>
+                      {/* <span className="float-end">
                         Views:{row.course.course_views}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                 </div>
@@ -224,6 +230,7 @@ function Main() {
               {studetTestimonnialData &&
                 studetTestimonnialData.map((row, index) => (
                   <button
+                   key={index}
                     type="button"
                     data-bs-target="#carouselExampleIndicators"
                     data-bs-slide-to={index}
@@ -237,6 +244,7 @@ function Main() {
               {studetTestimonnialData &&
                 studetTestimonnialData.map((row, i) => (
                   <div
+                  key={i}
                     className={
                       i == 0
                         ? "carousel-item text-center active"

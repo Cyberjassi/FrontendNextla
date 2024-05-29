@@ -3,7 +3,9 @@
 import AddUsers from './componentsPractice/AddUsers'
 import DisplayUser from './componentsPractice/DisplayUsers'
 import Main from '@/components/Home/Main';
-// import PopularCourses from './(HomeRoute)/popular-courses/page';
+import"./globals.css";
+
+
 
 export default function Home() {
   return (

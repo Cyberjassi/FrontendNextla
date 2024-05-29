@@ -1,6 +1,7 @@
 'use client'
 import { useEffect,useState } from "react";
 import axios from 'axios'
+import { cookies } from "next/headers";
 
 function StudentLogin() {
 
@@ -43,6 +44,7 @@ try{
       //  then we redirect to teacher dashboard and set it true
       if(response.data.bool==true){
         localStorage.setItem('studentLoginStatus','true')
+        // document.cookie = 'studentLoginStatus=true; path=/;';
         // set teacher id in local storage for future use---
         localStorage.setItem('studentId',response.data.student_id)
         localStorage.setItem('token',response.data.token['access'])

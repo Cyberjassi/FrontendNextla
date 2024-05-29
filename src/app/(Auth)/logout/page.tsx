@@ -1,24 +1,16 @@
-'use client'
+'use client';
 
 function TeacherLogout() {
-  // {localStorage.getItem('teacherId') &&
-  // localStorage.removeItem('teacherLoginStatus')
-  // localStorage.removeItem('token')
-  // localStorage.removeItem('teacherId')
-  // }
-  
-  // {localStorage.getItem('studentId') &&
-  // localStorage.removeItem('studentLoginStatus')
-  // localStorage.removeItem('token')
-  // localStorage.removeItem('studentId')
-  // }
-  localStorage.clear()
-  window.location.href='/login'
-  return (
-    <div>
-      
-    </div>
-  )
+  // Clearing cookies
+  document.cookie.split(";").forEach((cookie) => {
+    const [name] = cookie.split("=");
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+
+  // Redirect to the login page
+  window.location.href = '/login';
+localStorage.clear()
+  return null;
 }
 
-export default TeacherLogout
+export default TeacherLogout;

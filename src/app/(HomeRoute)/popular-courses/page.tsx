@@ -58,9 +58,9 @@ export default function PopularCourses() {
                   <div className="card-footer">
                     <div className="title">
                       <span>Rating: {row.rating}/5</span>
-                      <span className="float-end">
+                      {/* <span className="float-end">
                         Views: {row.course.course_views}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                 </div>

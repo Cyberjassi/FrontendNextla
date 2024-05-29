@@ -21,7 +21,7 @@ export default function Footer() {
         <li className="nav-item"><Link href="/" className="nav-link px-2 text-muted">Home</Link></li>
         <li className="nav-item"><Link href="/Faq" className="nav-link px-2 text-muted">FAQs</Link></li>
         {pagesData && pagesData.map((row,index)=>
-        <li className="nav-item"><Link href={`/page/${row.id}${row.url}`} className="nav-link px-2 text-muted">{row.title}</Link></li>
+        <li key={index} className="nav-item"><Link href={`/page/${row.id}${row.url}`} className="nav-link px-2 text-muted">{row.title}</Link></li>
         )}
         <li className="nav-item"><Link href="/contact-us" className="nav-link px-2 text-muted">Contact Us</Link></li>
 
