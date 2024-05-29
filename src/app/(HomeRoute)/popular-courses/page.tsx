@@ -38,7 +38,7 @@ export default function PopularCourses() {
           <div className="row mb-4">
             {popularCourseData.map((row: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card shadow-lg">
+                <div className="ccard card shadow-lg">
                   <Link href={`/course-detail/${row.course.id}`}>
                     <Image
                       className="card-img-top"

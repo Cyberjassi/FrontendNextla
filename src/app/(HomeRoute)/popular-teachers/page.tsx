@@ -41,7 +41,7 @@ export default function PopularTeachers() {
           <div className="row mb-4">
             {popularTeacherData.map((teacher:any,index:number)=>
               <div className="col-md-3" key={index}>
-                <div className="card shadow-lg">
+                <div className="ccard card shadow-lg">
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image
                       className="card-img-top"

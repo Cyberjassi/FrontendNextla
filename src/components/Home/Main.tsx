@@ -92,7 +92,7 @@ function Main() {
               variant="contained"
               color="primary"
               href="/all-courses"
-              className="float-end custom-button card"
+              className="float-end custom-button ccard"
             >
               See All
             </Button>
@@ -101,7 +101,7 @@ function Main() {
           <div className="row mb-4">
             {allCourses.map((course: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card shadow-lg">
+                <div className="ccard card shadow-lg">
                   <Link href={`/course-detail/${course.id}`}>
                     <Image
                       className="card-img-top"
@@ -135,7 +135,7 @@ function Main() {
               variant="contained"
               color="primary"
               href="/popular-courses"
-              className="float-end card"
+              className="float-end ccard"
             >
               See All
             </Button>
@@ -143,7 +143,7 @@ function Main() {
           <div className="row mb-4">
             {popularCourseData.map((row: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card shadow-lg">
+                <div className="ccard card shadow-lg">
                   <Link href={`/course-detail/${row.course.id}`}>
                     <Image
                       className="card-img-top"
@@ -185,7 +185,7 @@ function Main() {
               variant="contained"
               color="primary"
               href="/popular-teachers"
-              className="float-end card"
+              className="float-end ccard"
             >
               See All
             </Button>
@@ -193,8 +193,7 @@ function Main() {
           <div className="row mb-4">
             {popularTeacherData.map((teacher: any, index: number) => (
               <div className="col-md-3" key={index}>
-                <div className="card shadow-lg">
-                  {" "}
+                <div className="ccard card shadow-lg">
                   {/* Add shadow-sm class for a small shadow */}
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image

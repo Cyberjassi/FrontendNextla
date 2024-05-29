@@ -102,11 +102,11 @@
     font-weight: 300; /* Make the text lighter */
   }
 
-  .card {
+  .ccard {
     transition: transform 0.2s ease; /* Add transition effect for smooth animation */
   }
   
-  .card:hover {
+  .ccard:hover {
     transform: scale(1.05); /* Increase size by 5% on hover */
   }
   
