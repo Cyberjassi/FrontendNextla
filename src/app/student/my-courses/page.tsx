@@ -13,7 +13,7 @@ function MyCourses() {
 
   useEffect (()=>{
     try{
-        axios.get(`http://127.0.0.1:8000/api/fatch-enrolled-courses/${studentId}`)
+        axios.get(`${process.env.BASE_URL}fatch-enrolled-courses/${studentId}`)
         .then((res)=>{
           setCourseData(res.data)
         })
@@ -24,13 +24,13 @@ function MyCourses() {
 
 console.log("this is teacher data",courseData)
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <UserSidebar></UserSidebar>
         </aside>
         <section className="col-md-9">
-         <div className="card">
+         <div className="card shadow">
             <h5 className="card-header">My Courses</h5>
             <div className="card-body">
               <table className="table table-bordered">
@@ -44,12 +44,12 @@ console.log("this is teacher data",courseData)
                 <tbody>
                 {courseData.map((row:any,index:any)=>
                   <tr key={index}>
-                    <td><Link href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
+                    <td><Link className="link-none" href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
                     <td>
-                      <Link href={`/teacher-detail/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link>
+                      <Link className="link-none" href={`/teacher-detail/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link>
                     </td>
                    <td>
-                       <Link className="btn btn-warning btn-sm ms-2" href={`study-material/${row.course.id}`}>Study Material</Link>
+                       <Link className="btn btn-warning btn-sm ms-2 ccard" href={`study-material/${row.course.id}`}>Study Material</Link>
                    </td>
                   
                   </tr>

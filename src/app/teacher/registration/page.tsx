@@ -53,7 +53,7 @@ function TeacherRegister() {
       teacherFormData.append(key, value as string | Blob);
     });
   try{
-    axios.post("http://127.0.0.1:8000/api/teacher/", teacherFormData)
+    axios.post(`${process.env.BASE_URL}teacher/`, teacherFormData)
       .then((response) => {
         console.log(response.data);
         setTeacherData(
@@ -130,7 +130,7 @@ function TeacherRegister() {
   
   try{
     
-    axios.post("http://127.0.0.1:8000/api/student/", teacherFormData)
+    axios.post(`${process.env.BASE_URL}student/`, teacherFormData)
       .then((response) => {
         console.log(response.data);
         setstudentData(

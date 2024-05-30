@@ -1,24 +1,28 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import studentRegister from "@/app/user/registration/page"
 import Swal from "sweetalert2";
+import * as Yup from 'yup';
+import  validationSchema  from './YupTeacher'
+import { useRouter } from "next/navigation";
 
-// use for set title in next app
+
+
 function TeacherRegister() {
   useEffect(() => {
     document.title = "Auth Registeration";
   }, []);
+  const router  = useRouter()
   interface TeacherData {
     full_name: string;
     email: string;
     password: string;
+    confirm_password: string;
     qualification: string;
     mobile_no: string;
     skills: string;
     otp_digit: string|number;
     profile_img: string | File;
-    // 'teacher_courses': number[];
     verify_status: boolean;
     status: boolean | string;
   }
@@ -30,12 +34,12 @@ function TeacherRegister() {
     full_name: "",
     email: "",
     password: "",
+    confirm_password: "",
     qualification: "",
     mobile_no: "",
     skills: "",
     otp_digit: "",
     profile_img: "",
-    // 'teacher_courses': [4],
     verify_status: false,
     status: false,
   });
@@ -44,9 +48,7 @@ function TeacherRegister() {
   const handleChangeTeacher = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    // const { name, value } = event.target;
     setTeacherData({
-      // we pass referance teacherData and then change our name and value acording to event
       ...teacherData,
       [event.target.name]: [event.target.value],
     });
@@ -57,17 +59,18 @@ function TeacherRegister() {
   ) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Get the first file from the input
+      const file = files[0];
       setTeacherData({
         ...teacherData,
-        profile_img: file, // Set the file directly to the featured_img field
+        profile_img: file, 
       });
     }
   };
 
-  const submitFormTeacher = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(teacherData.status);
+  const  submitFormTeacher = async (e: React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
+   
     const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
     const teacherFormData = new FormData();
     teacherFormData.append("full_name", teacherData.full_name);
@@ -78,9 +81,13 @@ function TeacherRegister() {
     teacherFormData.append("skills", teacherData.skills);
     teacherFormData.append("profile_img", teacherData.profile_img);
     teacherFormData.append("otp_digit", otp_digit as any);
+
+    const isValid = await validationSchema.isValid(teacherFormData)
+
+    console.log("this is from validation",isValid)
     try {
-      axios
-        .post("http://127.0.0.1:8000/api/teacher/", teacherFormData)
+     const res= await axios
+        .post(`${process.env.BASE_URL}teacher/`, teacherFormData)
         .then((response:any) => {
           console.log(response.data);
           if (response.status === 400 && response.data) {
@@ -89,21 +96,17 @@ function TeacherRegister() {
             // No errors, redirect or perform other actions
             window.location.href=`/verify-teacher/${response.data.id}/`;
           }
-          // window.location.href=`/verify-teacher/${response.data.id}/`
-          // if(response.data.bool==true){
-          //   localStorage.setItem('teacherLoginStatus','true')
-          // window.location.href='/login'
-          // }
-         
+
         });
-      // console.log(teacherData.status);
+
+      
+
     } catch (error:any) {
       setTeacherData({ ...teacherData, status: "error" });
-      
-      // console.log(teacherData.status);
       console.log(error);
     }
   };
+  
 console.log("this is error from email ",errorMsg)
   interface studentData {
     full_name: string;
@@ -115,6 +118,7 @@ console.log("this is error from email ",errorMsg)
     otp_digit: string|number;
     verify_status: boolean;
     status: boolean | string;
+    confirm_password: string;
   }
 
   const [studentData, setstudentData] = useState<studentData>({
@@ -125,6 +129,7 @@ console.log("this is error from email ",errorMsg)
     profile_img:"",
     interested_categories: "",
     otp_digit:"",
+    confirm_password:"",
     verify_status: false,
     status: false,
   });
@@ -132,9 +137,7 @@ console.log("this is error from email ",errorMsg)
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    // const { name, value } = event.target;
     setstudentData({
-      // we pass referance studentData and then change our name and value acording to event
       ...studentData,
       [event.target.name]: event.target.value,
     });
@@ -146,10 +149,10 @@ console.log("this is error from email ",errorMsg)
   ) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Get the first file from the input
+      const file = files[0];
       setstudentData({
         ...studentData,
-        profile_img: file, // Set the file directly to the featured_img field
+        profile_img: file, 
       });
     }
   };
@@ -171,26 +174,10 @@ console.log("this is error from email ",errorMsg)
 
     try {
       axios
-        .post("http://127.0.0.1:8000/api/student/", teacherFormData)
+        .post(`${process.env.BASE_URL}student/`, teacherFormData)
         .then((response) => {
           console.log(response.data);
           window.location.href=`/verify-student/${response.data.id}/`
-          // if(response.status==200 || response.status==201){
-          //   Swal.fire({
-          //     title:'Successfully Register!',
-          //     icon:'success',
-          //     toast:true,
-          //     timer: 5000,
-          //     position:'top-right',
-          //     timerProgressBar:true,
-          //     showConfirmButton: false,
-          //   });
-          // }
-          
-          // if(response.data.bool==true){
-          //   localStorage.setItem('studentLoginStatus','true')
-          //   window.location.href='/student/login'
-          // }
         });
       console.log(studentData.status);
     } catch (error) {
@@ -198,17 +185,13 @@ console.log("this is error from email ",errorMsg)
       console.log(studentData.status);
       console.log(error);
     }
-
-    // const studentLoginStatus = localStorage.getItem("studentLoginStatus");
-    // if (studentLoginStatus == "true") {
-    //   window.location.href = "/student/login";
-    // }
   };
 
-  console.log("this is check", check);
+ console.log("this is student handlechange",studentData)
+ console.log("this is teacher handlechange",teacherData)
   return (
     <div>
-      <div className="container mt-4">
+      <div className="container mt-10">
         <div className="row">
           <div className="col-6 offset-3">
             {/* {teacherData.status == "success" && (
@@ -219,8 +202,8 @@ console.log("this is error from email ",errorMsg)
             )} */}
            {errorMsg && <p className="text-danger">{errorMsg}</p>}
            {errorEmail && <p className="text-danger">{errorEmail}</p>}
-            <div className="card">
-              <h3 className="card-header">Teacher Regsiteration Form</h3>
+            <div className="card shadow">
+              <h3 className="card-header"> Regsiteration Form</h3>
               <div className="card-body">
                 {/* submit the data thorugh form onsubmit */}
                 {/* if we select teacher then that display other wise student form--- */}
@@ -324,6 +307,23 @@ console.log("this is error from email ",errorMsg)
                     </div>
                     <div className="mb-3">
                       <label
+                        htmlFor="exampleInputPassword1"
+                        className="form-label"
+                      >
+                        Confirm Password
+                      </label>
+                      <input
+                        onChange={handleChangeTeacher}
+                        name="confirm_password"
+                        value={teacherData.confirm_password}
+                        placeholder="Enter Your Password"
+                        type="password"
+                        className="form-control"
+                        id="exampleInputPassword1"
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
@@ -372,7 +372,7 @@ console.log("this is error from email ",errorMsg)
                         Php,Python,JavaScript,etc
                       </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary ccard">
                       Register
                     </button>
                   </form>
@@ -462,6 +462,23 @@ console.log("this is error from email ",errorMsg)
                     </div>
                     <div className="mb-3">
                       <label
+                        htmlFor="exampleInputPassword1"
+                        className="form-label"
+                      >
+                        Confirm Password
+                      </label>
+                      <input
+                        onChange={handleChange}
+                        value={studentData.confirm_password}
+                        placeholder="Enter Your Password"
+                        name="confirm_password"
+                        type="password"
+                        className="form-control"
+                        id="exampleInputPassword1"
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
@@ -479,7 +496,7 @@ console.log("this is error from email ",errorMsg)
                       </div>
                     </div>
 
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary ccard">
                       Register
                     </button>
                   </form>

@@ -4,12 +4,13 @@ import React, { useEffect, useState } from 'react';
 // import Footer from './Footer';
 import axios from 'axios';
 import Link from 'next/link';
+import Rating from '@/components/Home/Rating';
 
 function Search(props:any) {
   const searchString = props.params['searchString']
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/course/?searchString=${searchString}`)
+    axios.get(`${process.env.BASE_URL}course/?searchString=${searchString}`)
     .then(response => {
         console.log('Data:', response.data);
         setAllCourses(response.data.results);
@@ -31,8 +32,8 @@ function Search(props:any) {
           <div className="row mb-4">
             {allCourses.length == 0 && <p>No Course there for for {searchString}</p>}
             {allCourses && allCourses.map((course:any,index:number)=>
-              <div className="col-md-3" key={index}>
-                <div className="card">
+              <div className="col-md-3" key={course.id}>
+                <div className="card ccard shadow">
                   <Link href={`/course-detail/${course.id}`}>
                     <img
                       className="card-img-top"
@@ -42,12 +43,26 @@ function Search(props:any) {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link href={`/course-detail/${course.id}`}>{course.title}</Link>
+                      <Link className='custom-link-style' href={`/course-detail/${course.id}`}>{course.title}</Link>
                     </h5>
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                      <span>Rating: 4.5/5</span>
+                    {course.course_rating == null && (
+                    <span>
+                      Rating: <Rating rating={0} />
+                    </span>
+                  )}
+                  {course.course_rating && (
+                    <span>
+                      Rating: <Rating rating={course.course_rating} />
+                    </span>
+                  )}
+                    
+                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                      {/* <span className="float-end">
+                        Views:{row.course.course_views}
+                      </span> */}
                     </div>
                   </div>
                 </div>

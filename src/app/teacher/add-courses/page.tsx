@@ -86,7 +86,7 @@ function AddCourse() {
   try{
     // console.log("here course form data",[...courseFormData.entries()])
     
-    axios.post("http://127.0.0.1:8000/api/course/", courseFormData,{
+    axios.post(`${process.env.BASE_URL}course/`, courseFormData,{
       headers: {
         'Content-Type': 'multipart/form-data',
       }
@@ -115,13 +115,13 @@ function AddCourse() {
   
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">Add Courses</h5>
             <form onSubmit={submitForm} className="container" >
               <div className="mb-3">
@@ -208,7 +208,7 @@ function AddCourse() {
                   ></textarea>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary ccard">
                 Submit
               </button>
             </form>

@@ -9,7 +9,7 @@ export default function CategoryCourses(props:any) {
   const [categoryData, setcategoryData] = useState<any[]>([]); // Specify the type as an array of any
 //   const currentSkill = props.params['skill']
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/category/`)
+    axios.get(`${process.env.BASE_URL}category/`)
       .then(response => {
         console.log('Data:', response.data);
         setcategoryData(response.data);

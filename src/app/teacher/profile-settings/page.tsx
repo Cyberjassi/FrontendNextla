@@ -33,7 +33,7 @@ function TeacherProfileSettings() {
   useEffect(() => {
     // fetch current teacher data
     axios
-      .get(`http://127.0.0.1:8000/api/teacher/${teacherId}`)
+      .get(`${process.env.BASE_URL}teacher/${teacherId}`)
       .then((response) => {
        
         console.log("this is the teacher data",response.data)
@@ -93,7 +93,7 @@ function TeacherProfileSettings() {
 
       axios
         .put(
-          `http://127.0.0.1:8000/api/teacher/${teacherId}/`,
+          `${process.env.BASE_URL}teacher/${teacherId}/`,
           teacherFormData,
           {
             headers: {
@@ -123,13 +123,13 @@ function TeacherProfileSettings() {
 
 console.log(teacherData)
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">Profile Settings</h5>
             <div className="card-body">
               <div className="mb-3 row">
@@ -225,11 +225,11 @@ console.log(teacherData)
                     className="form-control"
                     id="floatingTextarea2"
                   ></textarea>
-                  <div id="emailHelp" className="form-text">BCA | MCA | B.Tech</div>
+                  <div id="emailHelp" className="form-text">BCA | MCA | B.Tech ....</div>
                 </div>
               </div>
               <hr />
-              <button onClick={submitForm as any} className="btn btn-primary">Update</button>
+              <button onClick={submitForm as any} className="btn btn-primary ccard">Update</button>
             </div>
           </div>
         </section>

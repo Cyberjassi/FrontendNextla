@@ -48,7 +48,7 @@ function studentRegister() {
   
   try{
     
-    axios.post("http://127.0.0.1:8000/api/student/", teacherFormData)
+    axios.post(`${process.env.BASE_URL}student/`, teacherFormData)
       .then((response) => {
         console.log(response.data);
         setstudentData(

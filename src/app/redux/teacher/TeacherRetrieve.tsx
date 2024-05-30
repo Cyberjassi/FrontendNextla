@@ -16,7 +16,7 @@ interface TeacherState {
 }
 
 export const getTeacherInfo = createAsyncThunk<Teacher[]>('getTeacherInfo', async () => {
-    const response = await axios.get("http://localhost:8000/api/teacher");
+    const response = await axios.get(`${process.env.BASE_URL}teacher`);
     return response.data;
 });
 

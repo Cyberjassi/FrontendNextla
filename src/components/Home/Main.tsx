@@ -30,7 +30,7 @@ function Main() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://127.0.0.1:8000/api/course/?result=4", {
+      .get(`${process.env.BASE_URL}course/?result=4`, {
         // headers: {
         //     'Authorization': `Bearer ${token}`
         // },
@@ -48,7 +48,7 @@ function Main() {
 
     //  fatch popular courses according to rating-
     axios
-      .get("http://127.0.0.1:8000/api/popular-courses/?popular=1")
+      .get(`${process.env.BASE_URL}popular-courses/?popular=1`)
       .then((response) => {
         console.log("Data:", response.data);
         setpopularCourseData(response.data.results);
@@ -59,7 +59,7 @@ function Main() {
 
     //fatch popular teachers-
     axios
-      .get("http://127.0.0.1:8000/api/popular-teachers/?popular=1")
+      .get(`${process.env.BASE_URL}popular-teachers/?popular=1`)
       .then((response) => {
         console.log("Data:", response.data);
         setpopularTeacherData(response.data.results);
@@ -70,7 +70,7 @@ function Main() {
 
     // fatch studet testimonial
     axios
-      .get("http://127.0.0.1:8000/api/student-testimonial")
+      .get(`${process.env.BASE_URL}student-testimonial`)
       .then((response) => {
         console.log("Data:", response.data);
         setstudetTestimonnialData(response.data.results);
@@ -119,7 +119,8 @@ function Main() {
                     </h5>
                   </div>
                   <div className="card-footer">
-                  <span>Rating: {course.rating}/5</span>
+                  {/* <span>Rating: {course.course_rating}/5</span> */}
+                  <span>Rating: <Rating rating={course.course_rating} /></span>
                     <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
                   </div>
                 </div>

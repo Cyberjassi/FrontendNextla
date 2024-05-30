@@ -5,7 +5,7 @@ import  Link from 'next/link';
 
 function TeacherSidebar() {
   return (
-    <div className="card">
+    <div className="card shadow">
       <div className="list-group">
         <Link href="/teacher/dashboard" className="list-group-item list-group-item-action">
           Dashboard

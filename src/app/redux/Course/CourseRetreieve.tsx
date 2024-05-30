@@ -18,7 +18,7 @@ interface CourseState {
 
 export const getCourseInfo = createAsyncThunk<Course[]>('getCourseInfo', async () => {
     const teacherId = localStorage.getItem("teacherId")
-    const response = await axios.get(`http://localhost:8000/api/teacher-courses/${teacherId}`);
+    const response = await axios.get(`${process.env.BASE_URL}teacher-courses/${teacherId}`);
     return response.data;
 });
 

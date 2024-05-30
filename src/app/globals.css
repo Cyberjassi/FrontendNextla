@@ -97,6 +97,12 @@
   .custom-link-style:hover {
     color:rgb(154, 25, 25)
   }
+
+  .link-none{
+    text-decoration: none; 
+    color: rgb(36, 36, 36);
+  }
+
   .description {
     font-size: small; /* Make the text very small */
     font-weight: 300; /* Make the text lighter */
@@ -108,5 +114,9 @@
   
   .ccard:hover {
     transform: scale(1.05); /* Increase size by 5% on hover */
+  }
+
+  .color-primary{
+    color: rgb(75, 78, 255);
   }
   

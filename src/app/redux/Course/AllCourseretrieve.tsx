@@ -17,7 +17,7 @@ interface CourseState {
 }
 
 export const getAllCourseInfo = createAsyncThunk<Course[]>('getAllCourseInfo', async () => {
-    const response = await axios.get(`http://localhost:8000/api/course/`);
+    const response = await axios.get(`${process.env.BASE_URL}course/`);
     return response.data;
 });
 

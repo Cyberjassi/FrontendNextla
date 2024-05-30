@@ -6,7 +6,7 @@ import axios from "axios";
 export default function Footer() {
   const [pagesData, setpagesData] = useState<any[]>([]); // Specify the type as an array of any
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/pages/`)
+    axios.get(`${process.env.BASE_URL}pages/`)
       .then(response => {
         console.log('Data:', response.data);
         setpagesData(response.data);

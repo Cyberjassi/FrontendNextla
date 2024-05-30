@@ -63,7 +63,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   
     // console.log("here course form data", [...formData.entries()]);
     
-    axios.post(`http://127.0.0.1:8000/api/study-materials/${currentCourse}`, formData, {
+    axios.post(`${process.env.BASE_URL}study-materials/${currentCourse}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }

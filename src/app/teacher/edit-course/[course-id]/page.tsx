@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +36,7 @@ function EditCourse(props: any) {
 
     // fetch current course data
     axios
-      .get(`http://127.0.0.1:8000/api/teacher-courses-detail/${currentCourse}`)
+      .get(`${process.env.BASE_URL}teacher-courses-detail/${currentCourse}`)
       .then((response) => {
         console.log("this is res",response)
         setCourseData(response.data);
@@ -105,7 +104,7 @@ function EditCourse(props: any) {
 
       axios
         .put(
-          `http://127.0.0.1:8000/api/teacher-courses-detail/${currentCourse}`,
+          `${process.env.BASE_URL}teacher-courses-detail/${currentCourse}`,
           courseFormData,
           {
             headers: {
@@ -133,13 +132,13 @@ function EditCourse(props: any) {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">Edit Course</h5>
             <form onSubmit={submitForm} className="container">
               <div className="mb-3">
@@ -233,7 +232,7 @@ function EditCourse(props: any) {
                   ></textarea>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary ccard">
                 Submit
               </button>
             </form>

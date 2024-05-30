@@ -28,7 +28,7 @@ function ProfileSettings() {
   useEffect(() => {
     // fetch current teacher data
     axios
-      .get(`http://127.0.0.1:8000/api/student/${studentId}`)
+      .get(`${process.env.BASE_URL}student/${studentId}`)
       .then((response) => {
        
         console.log("this is the student data",response.data)
@@ -93,7 +93,7 @@ function ProfileSettings() {
 
       axios
         .put(
-          `http://127.0.0.1:8000/api/student/${studentId}/`,
+          `${process.env.BASE_URL}student/${studentId}/`,
           studentFormData,
           {
             headers: {
@@ -122,13 +122,13 @@ function ProfileSettings() {
    
   };
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <UserSidebar></UserSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">Profile Settings</h5>
             <div className="card-body">
             <div className="mb-3 row">
@@ -227,7 +227,7 @@ function ProfileSettings() {
                 </div>
               </div>
                 <hr />
-                <button className="btn btn-primary" onClick={submitForm as any}>Update</button>
+                <button className="btn btn-primary ccard" onClick={submitForm as any}>Update</button>
           
             </div>
           </div>

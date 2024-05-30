@@ -21,7 +21,7 @@ function Myusers(props: any) {
     try {
       axios
         .get(
-          `http://127.0.0.1:8000/api/fatch-all-enrolled-students/${teacher_id}`
+          `${process.env.BASE_URL}fatch-all-enrolled-students/${teacher_id}`
         )
         .then((res) => {
           setStudentData(res.data);
@@ -61,7 +61,7 @@ function Myusers(props: any) {
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/send-message/${teacher_id}/${student_id}`,
+        `${process.env.BASE_URL}send-message/${teacher_id}/${student_id}`,
         msgFormData
       )
       .then((response) => {
@@ -115,7 +115,7 @@ function Myusers(props: any) {
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/send-group-message/${teacher_id}`,
+        `${process.env.BASE_URL}send-group-message/${teacher_id}`,
         msgFormData
       )
       .then((response) => {
@@ -137,18 +137,18 @@ function Myusers(props: any) {
 
  
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">
               All Student List
               <button
                 type="button"
-                className="btn btn-primary float-end btn-sm"
+                className="btn btn-primary float-end btn-sm ccard"
                 data-bs-toggle="modal"
                 data-bs-target="#groupMsgModal"
               >
@@ -159,7 +159,7 @@ function Myusers(props: any) {
             <div
               className="modal fade"
               id="groupMsgModal"
-              tabindex="-1"
+              // tabIndex="-1"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
@@ -199,7 +199,7 @@ function Myusers(props: any) {
                       <button
                         onClick={groupFormSubmit}
                         type="button"
-                        className="btn btn-primary"
+                        className="btn btn-primary ccard"
                       >
                         Send
                       </button>
@@ -234,13 +234,13 @@ function Myusers(props: any) {
                       <td className="text-center">
                         <Link
                           href={`assignments/${teacher_id}/${row.student.id}`}
-                          className="btn btn-sm btn-warning mb-2 me-2"
+                          className="btn btn-sm btn-warning mb-2 me-2 ccard"
                         >
                           Assignments
                         </Link>
                         <Link
                           href={`add-assignment/${teacher_id}/${row.student.id}`}
-                          className="btn btn-sm btn-success mb-2 me-2"
+                          className="btn btn-sm btn-success mb-2 me-2 ccard"
                         >
                           Add Assignment
                         </Link>
@@ -250,13 +250,13 @@ function Myusers(props: any) {
                           className="btn btn-sm btn-dark mb-2"
                           title="Send Message"
                         >
-                          <i className="bi bi-chat-fill"></i>
+                          <i className="bi bi-chat-fill ccard"></i>
                         </button>
 
                         <div
                           className="modal fade"
                           id={`msgModel${index}`}
-                          tabindex="-1"
+                          // tabindex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >

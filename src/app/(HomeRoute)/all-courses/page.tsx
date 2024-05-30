@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import Rating from '@/components/Home/Rating';
 
 export default function AllCourses() {
-  const baseUrl = 'http://127.0.0.1:8000/api/course/';
+  const baseUrl = `${process.env.BASE_URL}course/`;
   const [allCourses, setAllCourses] = useState<any[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [previousUrl, setPreviousUrl] = useState<string | null>(null);
@@ -55,7 +56,8 @@ console.log(allCourses)
               </div>
               <div className="card-footer">
                     <div className="title">
-                      <span>Rating: {course.rating}/5</span>
+                      {/* <span>Rating: {course.rating}/5</span> */}
+                      <span>Rating: <Rating rating={course.course_rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}

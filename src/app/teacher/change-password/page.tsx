@@ -36,7 +36,7 @@ function TeacherChangePassword() {
     try {
       axios
         .post(
-          `http://127.0.0.1:8000/api/teacher/change-password/${teacherId}/`,
+          `${process.env.BASE_URL}teacher/change-password/${teacherId}/`,
           teacherFormData,
         )
         .then((response) => {
@@ -64,14 +64,14 @@ function TeacherChangePassword() {
    
   };
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
-            <h5 className="card-header">Profile Settings</h5>
+          <div className="card shadow">
+            <h5 className="card-header">Change Password</h5>
             <div className="card-body">
              {/* {errorMsg && <p className="text-danger">{errorMsg}</p>} */}
             
@@ -93,7 +93,7 @@ function TeacherChangePassword() {
                 </div>
               </div>
                 <hr />
-                <button className="btn btn-primary" onClick={submitForm as any}>Update</button>
+                <button className="btn btn-primary ccard" onClick={submitForm as any}>Update</button>
           
             </div>
           </div>

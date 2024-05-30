@@ -13,7 +13,7 @@ function RecommendedCourses() {
 
   useEffect (()=>{
     try{
-        axios.get(`http://127.0.0.1:8000/api/fatch-recommended-courses/${studentId}`)
+        axios.get(`${process.env.BASE_URL}fatch-recommended-courses/${studentId}`)
         .then((res)=>{
           setCourseData(res.data)
         })
@@ -24,13 +24,13 @@ function RecommendedCourses() {
 
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <UserSidebar></UserSidebar>
         </aside>
         <section className="col-md-9">
-         <div className="card">
+         <div className="card shadow">
             <h5 className="card-header">Recommended Courses</h5>
             <div className="card-body">
               <table className="table table-bordered">
@@ -42,8 +42,8 @@ function RecommendedCourses() {
                 </thead>
                 <tbody>
                 {courseData.map((row:any,index:any)=>
-                  <tr>
-                    <td><Link href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
+                  <tr key={index}>
+                    <td><Link className="link-none" href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
                     <td>
                       {row.course.techs}
                     </td>

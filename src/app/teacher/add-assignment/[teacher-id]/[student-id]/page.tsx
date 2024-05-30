@@ -47,7 +47,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   
     // console.log("here course form data", [...chapterFormData.entries()]);
     
-    axios.post(`http://127.0.0.1:8000/api/student-assignment/${student_id}/${teacher_id}`, chapterFormData, {
+    axios.post(`${process.env.BASE_URL}student-assignment/${student_id}/${teacher_id}`, chapterFormData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
@@ -70,7 +70,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         notifData.append('notif_subject', 'assignment');
         notifData.append('notif_for', 'student');
         notifData.append('student', student_id);
-        axios.post(`http://127.0.0.1:8000/api/save-notification/`,notifData,{
+        axios.post(`${process.env.BASE_URL}save-notification/`,notifData,{
           headers: {
             'Content-Type': 'multipart/form-data',
           }

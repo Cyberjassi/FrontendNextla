@@ -62,9 +62,9 @@ function page(props: any) {
     chapterFormData.append('remarks', chapterData.remarks);
   
     try {
-      console.log("here course form data", [...chapterFormData.entries()]);
+      // console.log("here course form data", [...chapterFormData.entries()]);
       
-      axios.put(`http://127.0.0.1:8000/api/chapter/${currentChapter}`, chapterFormData, {
+      axios.put(`${process.env.BASE_URL}chapter/${currentChapter}`, chapterFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }

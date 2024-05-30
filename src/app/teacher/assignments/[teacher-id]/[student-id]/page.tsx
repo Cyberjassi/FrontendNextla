@@ -4,7 +4,7 @@ import TeacherSidebar from "@/components/Teacher/Sidebar";
 import Link from "next/link";
 
 // for sweetalert---
-import Swal from "sweetalert2";
+
 import axios from "axios";
 
 function ShowAssignment(props: any) {
@@ -15,7 +15,7 @@ function ShowAssignment(props: any) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/student-assignment/${student_id}/${teacher_id}`)
+      .get(`${process.env.BASE_URL}student-assignment/${student_id}/${teacher_id}`)
       .then((response) => {
         const data = response.data;
         setTotalResult(data.length)

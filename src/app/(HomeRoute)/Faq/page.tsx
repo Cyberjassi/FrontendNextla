@@ -8,7 +8,7 @@ export default function Faq(props: any) {
   //   const currentSkill = props.params['skill']
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/faq/`)
+      .get(`${process.env.BASE_URL}faq/`)
       .then((response) => {
         console.log("Data:", response.data);
         setFaqData(response.data);

@@ -15,7 +15,7 @@ function Page(props: any) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/course-chapters/${currentChapter}`)
+      .get(`${process.env.BASE_URL}course-chapters/${currentChapter}`)
       .then((response) => {
         const data = response.data;
         setTotalResult(data.length);
@@ -42,13 +42,13 @@ function Page(props: any) {
       if (result.isConfirmed) {
         try {
           axios
-            .delete(`http://localhost:8000/api/chapter/${chapter_id}`)
+            .delete(`${process.env.BASE_URL}chapter/${chapter_id}`)
             .then((res) => {
               console.log(res);
               Swal.fire('success','Data has been deleted. ')
               axios
                 .get(
-                  `http://localhost:8000/api/course-chapters/${currentChapter}`
+                  `${process.env.BASE_URL}course-chapters/${currentChapter}`
                 )
                 .then((response) => {
                   const data = response.data;

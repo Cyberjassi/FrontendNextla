@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
 export default function PopularTeachers() {
-  const baseUrl = 'http://127.0.0.1:8000/api/popular-teachers/'
+  const baseUrl = `${process.env.BASE_URL}popular-teachers/`
   const [popularTeacherData, setpopularTeacherData] = useState<any[]>([]); 
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [previousUrl, setPreviousUrl] = useState<string | null>(null);

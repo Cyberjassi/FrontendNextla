@@ -9,7 +9,7 @@ function MessageList(props: any) {
     try {
       axios
         .get(
-          `http://127.0.0.1:8000/api/get-messages/${props.teacher_id}/${props.student_id}`
+          `${process.env.BASE_URL}get-messages/${props.teacher_id}/${props.student_id}`
         )
         .then((Response) => {
           setmsgData(Response.data);
@@ -24,7 +24,7 @@ function MessageList(props: any) {
     try {
       axios
         .get(
-          `http://127.0.0.1:8000/api/get-messages/${props.teacher_id}/${props.student_id}`
+          `${process.env.BASE_URL}get-messages/${props.teacher_id}/${props.student_id}`
         )
         .then((Response) => {
           setmsgData(Response.data);
@@ -42,13 +42,13 @@ function MessageList(props: any) {
   console.log("this is your message list dd",msgData)
   return (
     <>
-    <p> <span className="ms-1 btn btn-sm btn-secondary" onClick={fetchMsgs} title="Refresh"><i className="bi bi-bootstrap-reboot"></i></span></p>
+    <p> <span className="ms-1 btn btn-sm btn-secondary ccard" onClick={fetchMsgs} title="Refresh"><i className="bi bi-bootstrap-reboot"></i></span></p>
     <div style={msgList} id="msgList">
       {msgData.map((row: any, index: any) => (
         
-          <div className="row mb-4">
+          <div key={index} className="row mb-4">
             {row.msg_from == "student" &&
-            <div className="col-4 offset-7">
+            <div className="col-4 offset-7 ccard">
               <div className="alert alert-primary mb-1">
                 {row.msg_text}
               </div>

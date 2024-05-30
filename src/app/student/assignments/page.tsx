@@ -4,7 +4,7 @@ import { useEffect ,useState} from 'react';
 import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
-import Swal from "sweetalert2";
+
 
 
 function studentAssignments() {
@@ -15,7 +15,7 @@ function studentAssignments() {
 
   useEffect (()=>{
     try{
-        axios.get(`http://127.0.0.1:8000/api/my-assignments/${studentId}`)
+        axios.get(`${process.env.BASE_URL}my-assignments/${studentId}`)
         .then((res)=>{
           setassignmentData(res.data)
         })
@@ -38,7 +38,7 @@ function studentAssignments() {
   try{
     // console.log("here course form data",[...courseFormData.entries()])
     
-    axios.put(`http://127.0.0.1:8000/api/update-assignments/${assignment_id}/`, formData,{
+    axios.put(`${process.env.BASE_URL}update-assignments/${assignment_id}/`, formData,{
       headers: {
         'Content-Type': 'multipart/form-data',
       }
@@ -68,13 +68,13 @@ console.log("this is assignment data ",assignmentData)
 
 // console.log("this is teacher data",courseData)
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <UserSidebar></UserSidebar>
         </aside>
         <section className="col-md-9">
-         <div className="card">
+         <div className="card shadow">
             <h5 className="card-header">My Assignments</h5>
             <div className="card-body">
               <table className="table table-bordered">
@@ -88,15 +88,15 @@ console.log("this is assignment data ",assignmentData)
                 </thead>
                 <tbody>
                 {assignmentData.map((row:any,index:any)=>
-                  <tr>
+                  <tr key={index}>
                     <td>{row.title}</td>
                     <td>{row.detail}</td>
                     <td>
-                      <Link href={`/teacher-detail/${row.teacher.id}`}>{row.teacher.full_name}</Link>
+                      <Link className="link-none" href={`/teacher-detail/${row.teacher.id}`}>{row.teacher.full_name}</Link>
                     </td>
                     <td>
                       {row.student_status==false &&
-                      <button onClick={()=>markAsDone(row.id,row.title,row.detail,row.student.id,row.teacher.id) as any} className="btn btn-success btn-sm">Mark as Done</button>
+                      <button onClick={()=>markAsDone(row.id,row.title,row.detail,row.student.id,row.teacher.id) as any} className="btn btn-success btn-sm ccard">Mark as Done</button>
                       }
                       {row.student_status== true &&
                       <span className="badge bg-primary">Completed</span>

@@ -46,7 +46,7 @@ function TeacherLogin() {
     try {
       // console.log(teacherFormData)
       axios
-        .post("http://127.0.0.1:8000/api/teacher-login/", teacherData)
+        .post(`${process.env.BASE_URL}teacher-login/`, teacherData)
         .then((response) => {
           console.log(response.data);
           // if backend server response bool is true then we set in local storage
@@ -114,7 +114,7 @@ function TeacherLogin() {
     try {
       // console.log(teacherFormData)
       axios
-        .post("http://127.0.0.1:8000/api/student-login/", StudentData)
+        .post(`${process.env.BASE_URL}student-login/`, StudentData)
         .then((response) => {
           console.log(response.data);
           // if backend server response bool is true then we set in local storage
@@ -151,10 +151,10 @@ function TeacherLogin() {
 
   return (
     <div>
-      <div className="container mt-4">
+      <div className="container mt-10">
         <div className="row">
           <div className="col-6 offset-3">
-            <div className="card">
+            <div className="card shadow">
               <h5 className="card-header">Login</h5>
               <div className="card-body">
                 {errorMsg && <p className="text-danger">{errorMsg}</p>}
@@ -226,7 +226,7 @@ function TeacherLogin() {
                         id="exampleInputPassword1"
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary ccard">
                       Login
                     </button>
                     <p className="mt-3">
@@ -276,7 +276,7 @@ function TeacherLogin() {
                         id="exampleInputPassword1"
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary ccard">
                       Login
                     </button>
                     <p className="mt-3">

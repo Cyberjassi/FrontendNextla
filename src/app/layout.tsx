@@ -2,7 +2,7 @@
 // import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/ui/navigation-menu";
+// import { Navbar } from "@/components/ui/navigation-menu";
 import { Providers } from "./redux/providers";
 
 
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Navbar></Navbar>
+      {/* <Navbar></Navbar> */}
         
         <Providers>
        <Header></Header>

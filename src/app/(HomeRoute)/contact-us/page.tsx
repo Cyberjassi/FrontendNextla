@@ -31,7 +31,7 @@ function ContactUs() {
       contactFormData.append(key, value as string | Blob);
     });
     try {
-      axios.post("http://127.0.0.1:8000/api/contact/", contactFormData)
+      axios.post(`${process.env.BASE_URL}/contact/`, contactFormData)
         .then((response) => {
           console.log(response.data);
           setContactData({

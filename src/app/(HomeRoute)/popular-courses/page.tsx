@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Rating from "@/components/Home/Rating";
 
 export default function PopularCourses() {
-  const baseUrl = "http://127.0.0.1:8000/api/popular-courses/";
+  const baseUrl = `${process.env.BASE_URL}popular-courses/`;
   const [popularCourseData, setpopularCourseData] = useState<any[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [previousUrl, setPreviousUrl] = useState<string | null>(null);
@@ -57,7 +58,8 @@ export default function PopularCourses() {
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                      <span>Rating: {row.rating}/5</span>
+                      {/* <span>Rating: {row.rating}/5</span> */}
+                      <span>Rating: <Rating rating={row.rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios';
+import "./usersidebar.module.css"
+
 
 function Sidebar() {
   const [notifData,setnotifData] = useState([]);
   const studentId = localStorage.getItem('studentId');
   useEffect(()=>{
     try{
-      axios.get(`http://127.0.0.1:8000/api/student/fetch-all-notification/${studentId}`)
+      axios.get(`${process.env.BASE_URL}student/fetch-all-notification/${studentId}`)
       .then((res)=>{
         setnotifData(res.data);
       })
@@ -17,7 +19,7 @@ function Sidebar() {
   },[])
   console.log("here the data for notification",notifData)
   return (
-    <div className="card">
+    <div className="card shadow">
       <div className="list-group">
         <Link href="/student/dashboard" className="list-group-item list-group-item-action">
           Dashboard

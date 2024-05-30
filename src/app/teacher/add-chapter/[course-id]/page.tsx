@@ -1,5 +1,4 @@
 'use client'
-import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState } from "react";
 import axios from "axios";
@@ -73,7 +72,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   
     // console.log("here course form data", [...chapterFormData.entries()]);
     
-    axios.post(`http://127.0.0.1:8000/api/course-chapters/${currentCourse}`, chapterFormData, {
+    axios.post(`${process.env.BASE_URL}course-chapters/${currentCourse}`, chapterFormData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
@@ -106,13 +105,13 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
 };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">Add Chapter</h5>
             <form className="container" onSubmit={submitForm}>
               <div className="mb-3">

@@ -31,13 +31,13 @@ function TeacherMyCourses() {
 
  
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-         <div className="card">
+         <div className="card shadow">
             <h5 className="card-header">My Courses</h5>
             <div className="card-body">
               <table className="table table-bordered">
@@ -57,24 +57,24 @@ function TeacherMyCourses() {
                     courseData.map((course:any,index:any)=>(
                  <tr key={index} >
                     <td>
-                      <Link href={`chapter/${course.id}`}>{course.title}</Link>
+                      <Link className="link-none" href={`chapter/${course.id}`}>{course.title}</Link>
                       <hr />
                       {course.course_rating && 
-                     <span>Rating: {course.course_rating}/5</span>
+                     <span className="description">Rating: {course.course_rating}/5</span>
                       }
                       {!course.course_rating && 
-                     <span>Rating: 0/5</span>
+                     <span className="description">Rating: 0/5</span>
                       }
                     </td>
                     <td><img src={course.featured_img} width="80" className="rounded" alt={course.title} /></td>
                     <td>
-                      <Link href={`enrolled-students/${course.id}`}>{course.total_enrolled_students}</Link>
+                      <Link className="link-none" href={`enrolled-students/${course.id}`}>{course.total_enrolled_students}</Link>
                     </td>
                     <td>
-                    <Link className="btn btn-info btn-sm " href={`/teacher/edit-course/${course.id}`}>Edit</Link>
-                    <Link className="btn btn-warning btn-sm ms-2 " href={`/teacher/study-material/${course.id}`}>Study Material</Link>
-                      <Link className="btn btn-success btn-sm  ms-2" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
-                      <button className="btn btn-danger btn-sm  ms-2">Delete</button>
+                    <Link className="btn btn-info btn-sm ccard" href={`/teacher/edit-course/${course.id}`}>Edit</Link>
+                    <Link className="btn btn-warning btn-sm ms-2 ccard" href={`/teacher/study-material/${course.id}`}>Study Material</Link>
+                      <Link className="btn btn-success btn-sm  ms-2 ccard" href={`/teacher/add-chapter/${course.id}`}>Add Chapters</Link>
+                      <button className="btn btn-danger btn-sm  ms-2 ccard">Delete</button>
                     </td>
                   </tr>
                     )) 

@@ -11,7 +11,7 @@ function TeacherDashboard() {
 
   useEffect(()=>{
     try{
-      axios.get(`http://127.0.0.1:8000/api/student/dashboard/${studentId}`)
+      axios.get(`${process.env.BASE_URL}student/dashboard/${studentId}`)
       .then((res:any)=>{
         console.log(res);
         setDashboard(res.data)
@@ -22,48 +22,48 @@ function TeacherDashboard() {
   },[]);
 console.log("this is data from dashboard",dashboard)
     return (
-      <div className="container mt-4">
+      <div className="container mt-10">
         <div className="row">
           <aside className="col-md-3">
             <UserSidebar></UserSidebar>
           </aside>
           <section className="col-md-9">
            <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-4 ccard">
               <div className="card border-primary">
                 <h5 className="card-header bg-primary text-white">Enrolled Courses</h5>
                 <div className="card-body">
-                  <h3><Link href='/student/my-courses'>
+                  <h3><Link className="custom-link-style color-primary" href='/student/my-courses'>
                     {dashboard.enrolled_courses}
                     </Link></h3>
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-4 ccard">
               <div className="card border-primary">
                 <h5 className="card-header bg-success text-white">Favorite Courses</h5>
                 <div className="card-body">
-                  <h3><Link href='/student/favorite-courses'>
+                  <h3><Link className="custom-link-style color-primary" href='/student/favorite-courses'>
                     {dashboard.favorite_courses}
                     </Link></h3>
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-4 ccard">
               <div className="card border-primary">
                 <h5 className="card-header bg-info text-white">Complete Assignments</h5>
                 <div className="card-body">
-                  <h3><Link href='/student/assignments'>
+                  <h3><Link className="custom-link-style color-primary" href='/student/assignments'>
                     {dashboard.complete_assignments}
                     </Link></h3>
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-4 mt-2 ccard">
               <div className="card border-primary">
                 <h5 className="card-header bg-danger text-white">Pending Assignments</h5>
                 <div className="card-body">
-                  <h3><Link href='/student/assignments'>
+                  <h3><Link className="custom-link-style color-primary" href='/student/assignments'>
                     {dashboard.pending_assignments}
                     </Link></h3>
                 </div>

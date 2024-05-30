@@ -1,7 +1,6 @@
 "use client"
 import React from "react";
 import { useEffect ,useState} from 'react';
-import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 
 // import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
@@ -18,7 +17,7 @@ function enrolledStudents(props:any) {
 
   useEffect (()=>{
     try{
-        axios.get(`http://127.0.0.1:8000/api/fatch-enrolled-students/${currentCourse}`)
+        axios.get(`${process.env.BASE_URL}fatch-enrolled-students/${currentCourse}`)
         .then((res)=>{
           setStudentData(res.data)
         })

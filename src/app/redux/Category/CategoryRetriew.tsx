@@ -16,7 +16,7 @@ interface CategoryState {
 }
 
 export const getCategoryInfo = createAsyncThunk<Category[]>('getCategoryInfo', async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/category/");
+    const response = await axios.get(`${process.env.BASE_URL}category/`);
     return response.data;
 });
 

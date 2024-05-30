@@ -43,7 +43,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   // studentFormData.append('password', StudentData.password);
 try{
   // console.log(studentFormData)
-  axios.post("http://127.0.0.1:8000/api/student-forgot-password/", studentFormData)
+  axios.post(`${process.env.BASE_URL}student-forgot-password/`, studentFormData)
     .then((response) => {
       console.log(response.data);
       // if backend server response bool is true then we set in local storage

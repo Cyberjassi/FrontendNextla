@@ -13,7 +13,7 @@ function MyTeachers() {
 
   useEffect (()=>{
     try{
-        axios.get(`http://127.0.0.1:8000/api/fatch-my-teachers/${studentId}`)
+        axios.get(`${process.env.BASE_URL}fatch-my-teachers/${studentId}`)
         .then((res)=>{
           setteacherData(res.data)
         })
@@ -54,7 +54,7 @@ function MyTeachers() {
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/send-message/${teacher_id}/${studentId}`,
+        `${process.env.BASE_URL}send-message/${teacher_id}/${studentId}`,
         msgFormData
       )
       .then((response) => {
@@ -80,7 +80,7 @@ function MyTeachers() {
   };
   
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <UserSidebar></UserSidebar>
@@ -88,7 +88,7 @@ function MyTeachers() {
         <section className="col-md-9">
          <div className="card">
             <h5 className="card-header">My Teachers</h5>
-            <div className="card-body">
+            <div className="card-body shadow">
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -98,8 +98,8 @@ function MyTeachers() {
                 </thead>
                 <tbody>
                 {teacherData.map((row:any,index:any)=>
-                  <tr>
-                    <td><Link href={`/teacher-detail/${row.teacher.id}`}>{row.teacher.full_name}</Link></td>
+                  <tr key={index}>
+                    <td><Link className="link-none" href={`/teacher-detail/${row.teacher.id}`}>{row.teacher.full_name}</Link></td>
                    <td>
                         
 
@@ -107,7 +107,7 @@ function MyTeachers() {
                    <button
                           data-bs-toggle="modal"
                           data-bs-target={`#msgModel${index}`}
-                          className="btn btn-sm btn-dark mb-2"
+                          className="btn btn-sm btn-dark mb-2 ccard" 
                           title="Send Message"
                         >
                           <i className="bi bi-chat-fill"></i>
@@ -116,7 +116,7 @@ function MyTeachers() {
                         <div
                           className="modal fade"
                           id={`msgModel${index}`}
-                          tabindex="-1"
+                          // tabIndex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >

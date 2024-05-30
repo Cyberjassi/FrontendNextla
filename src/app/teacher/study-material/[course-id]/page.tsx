@@ -15,7 +15,7 @@ function StudyMaterials(props: any) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/study-materials/${currentCourse}`)
+      .get(`${process.env.BASE_URL}study-materials/${currentCourse}`)
       .then((response) => {
         const data = response.data;
         setTotalResult(data.length);
@@ -42,12 +42,12 @@ function StudyMaterials(props: any) {
       if (result.isConfirmed) {
         try {
           axios
-            .delete(`http://localhost:8000/api/study-material/${study_id}`)
+            .delete(`${process.env.BASE_URL}study-material/${study_id}`)
             .then((res) => {
               console.log(res);
               Swal.fire('success','Data has been deleted. ')
               axios
-              .get(`http://localhost:8000/api/study-materials/${currentCourse}`)
+              .get(`${process.env.BASE_URL}study-materials/${currentCourse}`)
                 .then((response) => {
                   const data = response.data;                                   
                   setTotalResult(data.length);
@@ -70,14 +70,14 @@ function StudyMaterials(props: any) {
     });
   };
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
-            <h5 className="card-header">All Study Materials ({totalResult}) <Link href={`/teacher/add-study-material/${currentCourse}`} className="btn btn-sm btn-success float">Add Study Material</Link></h5>
+          <div className="card shadow">
+            <h5 className="card-header">All Study Materials ({totalResult}) <Link href={`/teacher/add-study-material/${currentCourse}`} className="btn btn-sm btn-success float ccard">Add Study Material</Link></h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
@@ -96,20 +96,20 @@ function StudyMaterials(props: any) {
                     studyData.map((row: any, index: any) => (
                       <tr key={index}>
                         <td>
-                          <Link href="/edit-study/">{row.title}</Link>
+                          <Link className="link-none" href="#">{row.title}</Link>
                         </td>
                         <td>
-                          <Link href={row.upload}>File</Link>
+                          <Link className="link-none" href={row.upload}>File</Link>
                         </td>
                         <td>
-                          <Link href="#">{row.remarks}</Link>
+                          <Link className="link-none" href="#">{row.remarks}</Link>
                         </td>
                         <td> 
                           <button
                             onClick={() => handleDeleteClick(row.id)}
-                            className="btn btn-danger btn-sm  ms-2"
+                            className="btn btn-danger btn-sm  ms-2 ccard"
                           >
-                            <i className="bi bi-trash"></i>
+                            <i className="bi bi-trash ccard"></i>
                           </button>
                         </td>
                       </tr>

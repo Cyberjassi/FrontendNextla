@@ -41,7 +41,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
   // studentFormData.append('password', StudentData.password);
 try{
   // console.log(studentFormData)
-  axios.post(`http://127.0.0.1:8000/api/verify-student/${student_id}/`, studentFormData)
+  axios.post(`${process.env.BASE_URL}verify-student/${student_id}/`, studentFormData)
     .then((response) => {
       console.log(response.data);
       // if backend server response bool is true then we set in local storage
@@ -85,7 +85,7 @@ try{
 
                     <input  name="otp_digit" type="number"   
                     onChange={handleChange} 
-                    value={StudentData.otp_digit}
+                    value={StudentData.otp_digit as any}
                     placeholder="Enter Your Email" className="form-control" />
                   </div>
                   <button type="submit"

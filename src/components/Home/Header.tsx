@@ -31,7 +31,7 @@ function Header() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div className="container d-flex justify-content-between align-items-center">
       {/* Left side */}
       <div className="d-flex align-items-center">

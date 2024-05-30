@@ -15,7 +15,7 @@ function StudyMaterials(props: any) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/study-materials/${currentCourse}`)
+      .get(`${process.env.BASE_URL}study-materials/${currentCourse}`)
       .then((response) => {
         const data = response.data;
         setTotalResult(data.length);

@@ -13,7 +13,7 @@ function FavoriteCourses() {
 
   useEffect (()=>{
     try{
-        axios.get(`http://127.0.0.1:8000/api/fatch-favorite-courses/${studentId}`)
+        axios.get(`${process.env.BASE_URL}fatch-favorite-courses/${studentId}`)
         .then((res)=>{
           setCourseData(res.data)
         })
@@ -24,7 +24,7 @@ function FavoriteCourses() {
 
 console.log("this is teacher data",courseData)
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <UserSidebar></UserSidebar>
@@ -32,7 +32,7 @@ console.log("this is teacher data",courseData)
         <section className="col-md-9">
          <div className="card">
             <h5 className="card-header">Favorite Courses</h5>
-            <div className="card-body">
+            <div className="card-body shadow">
               <table className="table table-bordered">
                 <thead>
                   <tr>

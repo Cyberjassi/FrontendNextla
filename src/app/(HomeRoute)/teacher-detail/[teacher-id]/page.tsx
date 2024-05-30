@@ -10,7 +10,7 @@ function TeacherDetail(props:any) {
   const [skillList,setskillList]=useState<any>([])
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/teacher/${currentTeacher}`)
+    axios.get(`${process.env.BASE_URL}teacher/${currentTeacher}`)
       .then(response => {
         console.log('Data:', response.data);
         setTeacherData(response.data);
@@ -25,7 +25,7 @@ console.log("teacher data",teacherData)
 console.log("course data",courseData)
   return (
     <div>
-      <div className="container mt-3">
+      <div className="container mt-10">
         <div className="row">
           <div className="col-4">
             <img
@@ -43,18 +43,18 @@ console.log("course data",courseData)
               Skills: &nbsp; 
             {skillList &&
                     skillList.map((skill: any, index: any) => (
-            <Link key={index} href={`/teacher-skills-courses/${skill.trim()}/${teacherData.id}`} className='badge badge-pill text-dark bg-warning'>{skill}</Link>
+            <Link key={index} href={`/teacher-skills-courses/${skill.trim()}/${teacherData.id}`} className='badge badge-pill text-dark bg-warning ml-1 link-none'>{skill}</Link>
             ))}
          
             </p>
-            <p className="fw-bold">Recent Course: <Link href="/course-detail/1">Php</Link></p>
+            <p className="fw-bold">Recent Course: <Link className='custom-link-style' href="/course-detail/1">Php</Link></p>
            
             <p className="fw-bold">Rating: 4.5/5 </p>
           </div>
         </div>
         {/* Course Videos */}
-        <div className="card mt-4">
-          <div className="card mt-4">
+       
+          <div className="card mt-4 shadow">
             <h3 className="card-header">Course List</h3>
             <div className="list-group list-group-flush">
               {courseData.map((course:any,title:any)=>
@@ -65,7 +65,7 @@ console.log("course data",courseData)
               
             </div>
           </div>
-        </div>
+       
         {/* EndCourse Videos */}
 
         {/* Ratlated Course */}

@@ -14,9 +14,10 @@ import Rating from "@/components/Home/Rating";
 function page(props: any) {
   const currentCourse = props.params["course-id"];
   const studentId = localStorage.getItem("studentId");
+  
   const imageUrl = "https://res.cloudinary.com/dr9wiqs2y/image/upload/v1/";
 
-  const siteUrl = "http://127.0.0.1:8000/";
+  // const siteUrl = "http://127.0.0.1:8000/";
   // console.log("this is param is",currentCourse)
   const [course, setCourse] = useState<any | String[]>([]);
   const [teacher, setTeacher] = useState<any | String[]>([]);
@@ -39,7 +40,7 @@ function page(props: any) {
   const complete_order = (paymentID: any, orderID: any, signature: any) => {
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/api/order/complete/",
+      url: `${process.env.BASE_URL}order/complete/`,
       data: {
         payment_id: paymentID,
         order_id: orderID,
@@ -115,7 +116,7 @@ function page(props: any) {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/course/${currentCourse}`)
+      .get(`${process.env.BASE_URL}course/${currentCourse}`)
       .then((response) => {
         console.log("Data:", response.data);
         setCourse(response.data);
@@ -145,7 +146,7 @@ function page(props: any) {
     // fatch enroll status
     axios
       .get(
-        `http://127.0.0.1:8000/api/fatch-enroll-status/${studentId}/${currentCourse}`
+        `${process.env.BASE_URL}fatch-enroll-status/${studentId}/${currentCourse}`
       )
       .then((response) => {
         console.log("this is a response for bool", response);
@@ -160,7 +161,7 @@ function page(props: any) {
     // fatch rating status-
     axios
       .get(
-        `http://127.0.0.1:8000/api/fatch-rating-status/${studentId}/${currentCourse}`
+        `${process.env.BASE_URL}fatch-rating-status/${studentId}/${currentCourse}`
       )
       .then((response) => {
         console.log("this is a response for bool", response);
@@ -174,7 +175,7 @@ function page(props: any) {
 
     axios
       .get(
-        `http://127.0.0.1:8000/api/fatch-favorite-status/${studentId}/${currentCourse}`
+        `${process.env.BASE_URL}fatch-favorite-status/${studentId}/${currentCourse}`
       )
       .then((response) => {
         console.log("this is a response for bool", response);
@@ -205,7 +206,7 @@ function page(props: any) {
       // console.log("here course form data",[...courseFormData.entries()])
       axios
         .post(
-          "http://127.0.0.1:8000/api/student-enroll-course/",
+          `${process.env.BASE_URL}student-enroll-course/`,
           courseFormData,
           {
             headers: {
@@ -246,7 +247,7 @@ function page(props: any) {
     try {
       axios
         .post(
-          `http://127.0.0.1:8000/api/student-add-favorite-course/`,
+          `${process.env.BASE_URL}student-add-favorite-course/`,
           favCourseFormData,
           {
             headers: {
@@ -285,7 +286,7 @@ function page(props: any) {
     try {
       axios
         .post(
-          `http://127.0.0.1:8000/api/student-remove-favorite-course/${currentCourse}/${studentId}`,
+          `${process.env.BASE_URL}student-remove-favorite-course/${currentCourse}/${studentId}`,
           favCourseFormData,
           {
             headers: {
@@ -356,7 +357,7 @@ function page(props: any) {
     // console.log("here course form data", [...chapterFormData.entries()]);
 
     axios
-      .post(`http://127.0.0.1:8000/api/course-rating/`, chapterFormData)
+      .post(`${process.env.BASE_URL}course-rating/`, chapterFormData)
       .then((response) => {
         console.log(response.data);
         if (response.status == 200 || response.status == 201) {
@@ -385,7 +386,7 @@ function page(props: any) {
   console.log("this is chapter data ", chapterData);
   return (
     <div>
-      <div className="container mt-3">
+      <div className="container mt-10">
         <div className="row">
           <div className="col-4">
             <img
@@ -421,12 +422,19 @@ function page(props: any) {
               Total Enrolled: {course.total_enrolled_students} Students
             </p>
             <p className="fw-bold">
-            <span>Rating: <Rating rating={course.rating} /></span>
+            {/* <span>Rating: {course.course_rating}/5</span> */}
+            {course.course_rating == null &&
+            <span>Rating: <Rating rating={0} /></span>
+            }
+            {course.course_rating &&
+            <span>Rating: <Rating rating={course.course_rating} /></span>
+            }
+            {/* <span>Rating: <Rating rating={course.course_rating} /></span> */}
               {enrollStatus === "success" && userLoginStatus === "success" && (
                 <>
                   {ratingStatus != "success" && (
                     <button
-                      className="btn btn-success btn-sm ms-2"
+                      className="btn btn-success btn-sm ms-2 mt-2"
                       data-bs-toggle="modal"
                       data-bs-target="#ratingModal"
                     >
@@ -567,7 +575,7 @@ function page(props: any) {
         </div>
         {/* Course Videos */}
         {enrollStatus == "success" && userLoginStatus == "success" && (
-          <div className="card mt-4">
+          <div className="card mt-10 shadow">
             <div className="card">
               <h3 className="card-header">Course Videos</h3>
               <ul className="list-group list-group-flush">
@@ -642,7 +650,7 @@ function page(props: any) {
           {realtedCourseData &&
             realtedCourseData.map((rcorse: any, index: any) => (
               <div className="col-md-3" key={index}>
-                <div className="card">
+                <div className="card ccard shadow">
                   <Link target="__blank" href={`/course-detail/${rcorse.pk}`}>
                     {/* here if we want to access the image we use whole path ,path means where our image is stored in python local dir  */}
                     <Image
@@ -662,7 +670,7 @@ function page(props: any) {
                     </h5>
                   </div>
                   <div className="card-footer">
-                  <span>Rating: {course.rating}/5</span>
+                  {/* <span>Rating: {rcorse.field.course_rating}/5</span> */}
                     <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
                   </div>
                 </div>
