@@ -18,8 +18,8 @@ function TeacherRegister() {
 
 
   const [check, setCheck] = useState<String>("Student");
-  const [teacherData, setTeacherData] = useState<any>();
-  const [studentData, setstudentData] = useState<any>();
+  const [teacherData, setTeacherData] = useState<any>("");
+  const [studentData, setstudentData] = useState<any>("");
 
   
   const handleFileChangeTeacher = (event: React.ChangeEvent<HTMLInputElement | any>) => {
@@ -82,7 +82,9 @@ const Formik = useFormik({
     teacherFormData.append("qualification", values.qualification);
     teacherFormData.append("mobile_no", values.mobile_no);
     teacherFormData.append("skills", values.skills);
+    {teacherData.profile_img && 
     teacherFormData.append("profile_img", teacherData.profile_img);
+    }
     teacherFormData.append("otp_digit", otp_digit as any);
     try {
      const response = await axios.post(`${process.env.BASE_URL}teacher/`, teacherFormData)
@@ -101,12 +103,6 @@ const Formik = useFormik({
 
             if (errorData.email) {
                 errorMessages.push(errorData.email[0]);
-            }
-            if (errorData.full_name) {
-                errorMessages.push(errorData.full_name[0]);
-            }
-            if (errorData.mobile_no) {
-                errorMessages.push(errorData.mobile_no[0]);
             }
             if (errorData.profile_img) {
               errorMessages.push(errorData.profile_img[0]);
@@ -176,16 +172,18 @@ const formik = useFormik({
     });
 
   const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
-  const teacherFormData = new FormData();
-  teacherFormData.append("full_name", values.full_name);
-  teacherFormData.append("email", values.email);
-  teacherFormData.append("password", values.password);
-  teacherFormData.append("username", values.username);
-  teacherFormData.append("profile_img", studentData.profile_img);
-  teacherFormData.append("interested_categories", values.interested_categories);
-  teacherFormData.append("otp_digit", otp_digit as any);
+  const sf = new FormData();
+  sf.append("full_name", values.full_name);
+  sf.append("email", values.email);
+  sf.append("password", values.password);
+  sf.append("username", values.username);
+  {studentData.profile_img && 
+  sf.append("profile_img", studentData.profile_img);
+  }
+  sf.append("interested_categories", values.interested_categories);
+  sf.append("otp_digit", otp_digit as any);
     try {
-     const response = await axios.post(`${process.env.BASE_URL}student/`, teacherFormData)
+     const response = await axios.post(`${process.env.BASE_URL}student/`, sf)
       if(response.status === 200 || response.status === 201) {
           console.log(response.data);
          
