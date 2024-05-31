@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { handleApiError } from "@/app/errorHandling";
 
 function AddCourse() {
 
@@ -83,7 +84,7 @@ function AddCourse() {
     courseFormData.append('techs',CourseData.techs);
     courseFormData.append('price',CourseData.price);
   
-  try{
+ 
     // console.log("here course form data",[...courseFormData.entries()])
     
     axios.post(`${process.env.BASE_URL}course/`, courseFormData,{
@@ -103,14 +104,37 @@ function AddCourse() {
             timerProgressBar:true,
             showConfirmButton: false,
           });
-          window.location.reload();
+          // window.location.reload();
         }
         // for reload-
         // window.location.href='/teacher/add-courses';
-      })   
-    }catch(error){
-      console.log(error);
-    }
+      }).catch((error: any) => {
+        if (error.response && error.response.status === 400) {
+            console.log("Error:", error.response.data);
+            const errorData = error.response.data;
+            const errorMessages = [];
+
+            if (errorData.category) {
+                errorMessages.push(errorData.category[0]);
+            }
+            if (errorData.title) {
+                errorMessages.push(errorData.title[0]);
+            }
+            if (errorData.featured_img) {
+                errorMessages.push(errorData.featured_img[0]);
+            }
+           
+          
+            if (errorMessages.length > 0) {
+                handleApiError(errorMessages);
+            }
+        } else {
+            // Handle other types of errors
+            console.error("Error:", error);
+        }
+    });
+   
+   
   };
   
 

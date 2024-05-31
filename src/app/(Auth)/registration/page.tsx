@@ -2,9 +2,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import * as Yup from 'yup';
-import  validationSchema  from './YupTeacher'
-import { useRouter } from "next/navigation";
+import {handleApiError} from '../../errorHandling'
+import {useFormik} from "formik"
+import TeacherValidationSchema from './YupTeacher'
+import StudentValidationSchema from './YupStudent'
+import './regisration.global.css'
+
 
 
 
@@ -12,25 +15,25 @@ function TeacherRegister() {
   useEffect(() => {
     document.title = "Auth Registeration";
   }, []);
-  const router  = useRouter()
-  interface TeacherData {
-    full_name: string;
-    email: string;
-    password: string;
-    confirm_password: string;
-    qualification: string;
-    mobile_no: string;
-    skills: string;
-    otp_digit: string|number;
-    profile_img: string | File;
-    verify_status: boolean;
-    status: boolean | string;
-  }
+
 
   const [check, setCheck] = useState<String>("Student");
-  const [errorMsg, setErrorMsg] = useState<String>("");
-  const [errorEmail,setErrorEmail] = useState<String>("");
-  const [teacherData, setTeacherData] = useState<TeacherData>({
+  const [teacherData, setTeacherData] = useState<any>();
+  const [studentData, setstudentData] = useState<any>();
+
+  
+  const handleFileChangeTeacher = (event: React.ChangeEvent<HTMLInputElement | any>) => {
+    const file = event.target.files[0];
+    if (file) {
+      const uploadPreviewUrl = window.URL.createObjectURL(file);
+      setTeacherData({
+        ...teacherData,
+        profile_img: file,
+      });
+    }
+  };
+
+let initialValues = {
     full_name: "",
     email: "",
     password: "",
@@ -38,111 +41,111 @@ function TeacherRegister() {
     qualification: "",
     mobile_no: "",
     skills: "",
-    otp_digit: "",
-    profile_img: "",
-    verify_status: false,
-    status: false,
-  });
-  
-
-  const handleChangeTeacher = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setTeacherData({
-      ...teacherData,
-      [event.target.name]: [event.target.value],
-    });
-  };
-
-  const handleTeacherFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      setTeacherData({
-        ...teacherData,
-        profile_img: file, 
-      });
+}
+const Formik = useFormik({
+  initialValues:initialValues,
+  validationSchema:TeacherValidationSchema,
+  onSubmit: async (values:any, { setSubmitting }) => {
+    try {
+      await submitFormTeacher(values);
+      // Formik.resetForm();
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setSubmitting(false);
     }
-  };
-
-  const  submitFormTeacher = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    e.preventDefault();
-   
+  },
+})
+//formikend
+  const submitFormTeacher = async (values:any) => {
+    Swal.fire({
+      title: 'Wait a moment....',
+      html: '<div class="full-screen-toast"><div class="loader"></div></div>',
+      icon: 'warning',
+      toast: true,
+      timer: 8000,
+      position: 'top-right',
+      timerProgressBar: true,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'full-screen-popup' // Add a CSS class for full-screen popup
+      }
+    });
+  
+    
+    // e.preventDefault();
     const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
     const teacherFormData = new FormData();
-    teacherFormData.append("full_name", teacherData.full_name);
-    teacherFormData.append("email", teacherData.email);
-    teacherFormData.append("password", teacherData.password);
-    teacherFormData.append("qualification", teacherData.qualification);
-    teacherFormData.append("mobile_no", teacherData.mobile_no);
-    teacherFormData.append("skills", teacherData.skills);
+    teacherFormData.append("full_name", values.full_name);
+    teacherFormData.append("email", values.email);
+    teacherFormData.append("password", values.password);
+    teacherFormData.append("qualification", values.qualification);
+    teacherFormData.append("mobile_no", values.mobile_no);
+    teacherFormData.append("skills", values.skills);
     teacherFormData.append("profile_img", teacherData.profile_img);
     teacherFormData.append("otp_digit", otp_digit as any);
-
-    const isValid = await validationSchema.isValid(teacherFormData)
-
-    console.log("this is from validation",isValid)
     try {
-     const res= await axios
-        .post(`${process.env.BASE_URL}teacher/`, teacherFormData)
-        .then((response:any) => {
+     const response = await axios.post(`${process.env.BASE_URL}teacher/`, teacherFormData)
+      if(response.status === 200 || response.status === 201) {
+        
           console.log(response.data);
-          if (response.status === 400 && response.data) {
-            setErrorMsg(response.data);
-          } else {
+         
             // No errors, redirect or perform other actions
             window.location.href=`/verify-teacher/${response.data.id}/`;
-          }
+        }
+      }catch(error:any) {
+        if (error.response && error.response.status === 400) {
+            console.log("Error:", error.response.data);
+            const errorData = error.response.data;
+            const errorMessages = [];
 
-        });
-
-      
-
-    } catch (error:any) {
-      setTeacherData({ ...teacherData, status: "error" });
-      console.log(error);
+            if (errorData.email) {
+                errorMessages.push(errorData.email[0]);
+            }
+            if (errorData.full_name) {
+                errorMessages.push(errorData.full_name[0]);
+            }
+            if (errorData.mobile_no) {
+                errorMessages.push(errorData.mobile_no[0]);
+            }
+            if (errorData.profile_img) {
+              errorMessages.push(errorData.profile_img[0]);
+            }
+            if (errorMessages.length > 0) {
+                handleApiError(errorMessages);
+            }
+        } else {
+            // Handle other types of errors
+            console.error("Error:", error);
+        }
     }
   };
-  
-console.log("this is error from email ",errorMsg)
-  interface studentData {
-    full_name: string;
-    email: string;
-    password: string;
-    username: string;
-    profile_img:string|File;
-    interested_categories: string;
-    otp_digit: string|number;
-    verify_status: boolean;
-    status: boolean | string;
-    confirm_password: string;
-  }
+  // teacher end
 
-  const [studentData, setstudentData] = useState<studentData>({
+
+
+let initialvalues = {
     full_name: "",
     email: "",
     password: "",
     username: "",
-    profile_img:"",
     interested_categories: "",
-    otp_digit:"",
     confirm_password:"",
-    verify_status: false,
-    status: false,
-  });
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setstudentData({
-      ...studentData,
-      [event.target.name]: event.target.value,
-    });
-  };
-  
+}
+const formik = useFormik({
+  initialValues:initialvalues,
+  validationSchema:StudentValidationSchema,
+  onSubmit: async (values:any, { setSubmitting }) => {
+    try {
+      await submitForm(values);
+      Formik.resetForm();
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  },
+})
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -157,51 +160,76 @@ console.log("this is error from email ",errorMsg)
     }
   };
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(studentData.status);
+  const submitForm = async (values:any) => {
+    Swal.fire({
+      title: 'Wait a moment....',
+      html: '<div class="full-screen-toast"><div class="loader"></div></div>',
+      icon: 'warning',
+      toast: true,
+      timer: 8000,
+      position: 'top-right',
+      timerProgressBar: true,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'full-screen-popup' // Add a CSS class for full-screen popup
+      }
+    });
 
-    e.preventDefault();
-    const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
-    const teacherFormData = new FormData();
-    teacherFormData.append("full_name", studentData.full_name);
-    teacherFormData.append("email", studentData.email);
-    teacherFormData.append("password", studentData.password);
-    teacherFormData.append("username", studentData.username);
-    teacherFormData.append("profile_img", studentData.profile_img);
-    teacherFormData.append("interested_categories", studentData.interested_categories);
-    teacherFormData.append("otp_digit", otp_digit as any);
-  
-
+  const otp_digit: number = Math.floor(100000 + Math.random() * 900000);
+  const teacherFormData = new FormData();
+  teacherFormData.append("full_name", values.full_name);
+  teacherFormData.append("email", values.email);
+  teacherFormData.append("password", values.password);
+  teacherFormData.append("username", values.username);
+  teacherFormData.append("profile_img", studentData.profile_img);
+  teacherFormData.append("interested_categories", values.interested_categories);
+  teacherFormData.append("otp_digit", otp_digit as any);
     try {
-      axios
-        .post(`${process.env.BASE_URL}student/`, teacherFormData)
-        .then((response) => {
+     const response = await axios.post(`${process.env.BASE_URL}student/`, teacherFormData)
+      if(response.status === 200 || response.status === 201) {
           console.log(response.data);
-          window.location.href=`/verify-student/${response.data.id}/`
-        });
-      console.log(studentData.status);
-    } catch (error) {
-      setstudentData({ ...studentData, status: "error" });
-      console.log(studentData.status);
-      console.log(error);
+         
+            // No errors, redirect or perform other actions
+            window.location.href=`/verify-student/${response.data.id}/`;
+        }
+      }catch(error:any) {
+        if (error.response && error.response.status === 400) {
+            console.log("Error:", error.response.data);
+            const errorData = error.response.data;
+            const errorMessages = [];
+
+            if (errorData.email) {
+                errorMessages.push(errorData.email[0]);
+            }
+            if (errorData.full_name) {
+                errorMessages.push(errorData.full_name[0]);
+            }
+            if (errorData.mobile_no) {
+                errorMessages.push(errorData.mobile_no[0]);
+            }
+            if (errorData.profile_img) {
+              errorMessages.push(errorData.profile_img[0]);
+            }
+            if (errorMessages.length > 0) {
+                handleApiError(errorMessages);
+            }
+        } else {
+            // Handle other types of errors
+            console.error("Error:", error);
+        }
     }
   };
-
- console.log("this is student handlechange",studentData)
- console.log("this is teacher handlechange",teacherData)
+//  console.log("this is student handlechange",studentData)
+ console.log("this is teacher formik",Formik)
+ console.log("this is student formik",formik)
+ console.log("this is teacher file",teacherData)
+ console.log("this is student file",studentData)
   return (
     <div>
       <div className="container mt-10">
         <div className="row">
           <div className="col-6 offset-3">
-            {/* {teacherData.status == "success" && (
-              <p className="text-success">Thanks for Your Registeration</p>
-            )}
-            {teacherData.status == "error" && (
-              <p className="text-danger">Something Wrong Happen</p>
-            )} */}
-           {errorMsg && <p className="text-danger">{errorMsg}</p>}
-           {errorEmail && <p className="text-danger">{errorEmail}</p>}
+          
             <div className="card shadow">
               <h3 className="card-header"> Regsiteration Form</h3>
               <div className="card-body">
@@ -240,7 +268,7 @@ console.log("this is error from email ",errorMsg)
                   </label>
                 </div>
                 {check == "Teacher" && (
-                  <form onSubmit={submitFormTeacher}>
+                  <form onSubmit={Formik.handleSubmit}>
                     <div className="mb-3">
                       <label
                         htmlFor="exampleInputEmail1"
@@ -249,13 +277,16 @@ console.log("this is error from email ",errorMsg)
                         Full Name
                       </label>
                       <input
-                        onChange={handleChangeTeacher}
-                        value={teacherData.full_name}
+                        value={Formik.values.full_name}
+                        onChange={Formik.handleChange}
+                        onBlur={Formik.handleBlur}
+      
                         name="full_name"
                         type="text"
                         className="form-control"
                         placeholder="Enter Your Full Name"
                       />
+                      {Formik.errors.full_name && Formik.touched.full_name ? (<p className="text-sm text-red-600">{Formik.errors.full_name as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -265,13 +296,16 @@ console.log("this is error from email ",errorMsg)
                         Email
                       </label>
                       <input
-                        onChange={handleChangeTeacher}
-                        value={teacherData.email}
+                        value={Formik.values.email}
+                        onChange={Formik.handleChange}
+                        onBlur={Formik.handleBlur}
+      
                         placeholder="Enter Your Email"
                         name="email"
                         type="email"
                         className="form-control"
                       />
+                      {Formik.errors.email && Formik.touched.email ? (<p className="text-sm text-red-600">{Formik.errors.email as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -281,12 +315,13 @@ console.log("this is error from email ",errorMsg)
                         Profile Image
                       </label>
                       <input
-                        onChange={handleTeacherFileChange}
+                        onChange={handleFileChangeTeacher}
                         name="profile_img"
                         type="file"
                         className="form-control"
                         id="img"
                       />
+                       {Formik.errors.profile_img && Formik.touched.profile_img ? (<p className="text-sm text-red-600">{Formik.errors.profile_img as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -296,14 +331,17 @@ console.log("this is error from email ",errorMsg)
                         Password
                       </label>
                       <input
-                        onChange={handleChangeTeacher}
+                        value={Formik.values.password}
+                        onChange={Formik.handleChange}
+                        onBlur={Formik.handleBlur}
+      
                         name="password"
-                        value={teacherData.password}
                         placeholder="Enter Your Password"
                         type="password"
                         className="form-control"
                         id="exampleInputPassword1"
                       />
+                       {Formik.errors.password && Formik.touched.password ? (<p className="text-sm text-red-600">{Formik.errors.password as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -313,14 +351,17 @@ console.log("this is error from email ",errorMsg)
                         Confirm Password
                       </label>
                       <input
-                        onChange={handleChangeTeacher}
+                       value={Formik.values.confirm_password}
+                       onChange={Formik.handleChange}
+                       onBlur={Formik.handleBlur}
+     
                         name="confirm_password"
-                        value={teacherData.confirm_password}
                         placeholder="Enter Your Password"
                         type="password"
                         className="form-control"
-                        id="exampleInputPassword1"
+                        id="exampleInputPassword2"
                       />
+                       {Formik.errors.confirm_password && Formik.touched.confirm_password ? (<p className="text-sm text-red-600">{Formik.errors.confirm_password as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -330,13 +371,16 @@ console.log("this is error from email ",errorMsg)
                         Qualification
                       </label>
                       <input
-                        onChange={handleChangeTeacher}
+                        value={Formik.values.qualification}
+                        onChange={Formik.handleChange}
+                        onBlur={Formik.handleBlur}
+      
                         name="qualification"
-                        value={teacherData.qualification}
                         placeholder="Enter Your Qulification"
                         type="text"
                         className="form-control"
                       />
+                       {Formik.errors.qualification && Formik.touched.qualification ? (<p className="text-sm text-red-600">{Formik.errors.email as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -346,13 +390,16 @@ console.log("this is error from email ",errorMsg)
                         Mobile Number
                       </label>
                       <input
-                        onChange={handleChangeTeacher}
-                        value={teacherData.mobile_no}
+                        value={Formik.values.mobile_no}
+                        onChange={Formik.handleChange}
+                        onBlur={Formik.handleBlur}
+      
                         name="mobile_no"
                         placeholder="Enter Your Mobile No."
                         type="integer"
                         className="form-control"
                       />
+                       {Formik.errors.mobile_no && Formik.touched.mobile_no ? (<p className="text-sm text-red-600">{Formik.errors.mobile_no as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -362,15 +409,18 @@ console.log("this is error from email ",errorMsg)
                         Skills
                       </label>
                       <textarea
-                        value={teacherData.skills}
+                        value={Formik.values.skills}
+                        onChange={Formik.handleChange}
+                        onBlur={Formik.handleBlur}
+      
                         placeholder="Enter Your Skills ...."
-                        onChange={handleChangeTeacher}
                         name="skills"
                         className="form-control"
                       ></textarea>
                       <div id="emailHelp" className="form-text">
                         Php,Python,JavaScript,etc
                       </div>
+                      {Formik.errors.skills && Formik.touched.skills ? (<p className="text-sm text-red-600">{Formik.errors.skills as any}</p>):null}
                     </div>
                     <button type="submit" className="btn btn-primary ccard">
                       Register
@@ -379,7 +429,7 @@ console.log("this is error from email ",errorMsg)
                 )}
 
                 {check == "Student" && (
-                  <form onSubmit={submitForm}>
+                  <form onSubmit={formik.handleSubmit}>
                     <div className="mb-3">
                       <label
                         htmlFor="exampleInputEmail1"
@@ -388,13 +438,16 @@ console.log("this is error from email ",errorMsg)
                         Full Name
                       </label>
                       <input
-                        onChange={handleChange}
+                         value={formik.values.full_name}
+                         onChange={formik.handleChange}
+                         onBlur={formik.handleBlur}
+
                         placeholder="Enter Your Name"
-                        value={studentData.full_name}
                         name="full_name"
                         type="text"
                         className="form-control"
                       />
+                       {formik.errors.full_name && formik.touched.full_name ? (<p className="text-sm text-red-600">{formik.errors.full_name as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -404,13 +457,16 @@ console.log("this is error from email ",errorMsg)
                         Email
                       </label>
                       <input
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+
                         placeholder="Enter Your Email"
-                        value={studentData.email}
                         name="email"
                         type="email"
                         className="form-control"
                       />
+                      {formik.errors.email && formik.touched.email ? (<p className="text-sm text-red-600">{formik.errors.email as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -435,13 +491,16 @@ console.log("this is error from email ",errorMsg)
                         Username
                       </label>
                       <input
-                        onChange={handleChange}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+
                         placeholder="Enter Your Username"
-                        value={studentData.username}
                         name="username"
                         type="text"
                         className="form-control"
                       />
+                      {formik.errors.username && formik.touched.username ? (<p className="text-sm text-red-600">{formik.errors.username as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -451,14 +510,17 @@ console.log("this is error from email ",errorMsg)
                         Password
                       </label>
                       <input
-                        onChange={handleChange}
-                        value={studentData.password}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+
                         placeholder="Enter Your Password"
                         name="password"
                         type="password"
                         className="form-control"
                         id="exampleInputPassword1"
                       />
+                      {formik.errors.password && formik.touched.password ? (<p className="text-sm text-red-600">{formik.errors.password as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -468,14 +530,17 @@ console.log("this is error from email ",errorMsg)
                         Confirm Password
                       </label>
                       <input
-                        onChange={handleChange}
-                        value={studentData.confirm_password}
+                        value={formik.values.confirm_password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+
                         placeholder="Enter Your Password"
                         name="confirm_password"
                         type="password"
                         className="form-control"
-                        id="exampleInputPassword1"
+                        id="exampleInputPassword2"
                       />
+                      {formik.errors.confirm_password && formik.touched.confirm_password ? (<p className="text-sm text-red-600">{formik.errors.confirm_password as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -485,15 +550,18 @@ console.log("this is error from email ",errorMsg)
                         Intrests
                       </label>
                       <textarea
-                        onChange={handleChange}
+                        value={formik.values.interested_categories}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+
                         placeholder="Enter Your Intrests"
                         className="form-control"
-                        value={studentData.interested_categories}
                         name="interested_categories"
                       ></textarea>
                       <div id="emailHelp" className="form-text">
                         Php,Python,JavaScript,etc
                       </div>
+                      {formik.errors.interested_categories && formik.touched.interested_categories ? (<p className="text-sm text-red-600">{formik.errors.interested_categories as any}</p>):null}
                     </div>
 
                     <button type="submit" className="btn btn-primary ccard">
