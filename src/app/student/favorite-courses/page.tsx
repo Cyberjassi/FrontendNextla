@@ -43,9 +43,9 @@ console.log("this is teacher data",courseData)
                 <tbody>
                 {courseData.map((row:any,index:any)=>
                   <tr key={index}>
-                    <td><Link href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
+                    <td><Link className ="custom-link-style" href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
                     <td>
-                      <Link href={`/teacher-detail/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link>
+                      <Link className ="custom-link-style" href={`/teacher-detail/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link>
                     </td>
                   </tr>
                 )}
@@ -60,28 +60,3 @@ console.log("this is teacher data",courseData)
 }
 
 export default FavoriteCourses;
-{
-  /* <div className="card">
-            <h5 className="card-header">My Courses</h5>
-            <div className="card-body">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link to="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div> */
-}

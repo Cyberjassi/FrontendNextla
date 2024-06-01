@@ -4,6 +4,8 @@ import axios from "axios";
 // import navigateTo from "@/app/utils/navigation";
 // import { useRouter } from 'next/navigation'
 import Link from "next/link";
+import Swal from "sweetalert2";
+import {handleApiError} from '../../errorHandling'
 
 function TeacherLogin() {
   // const router = useRouter()
@@ -28,6 +30,7 @@ function TeacherLogin() {
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    setErrorMsg('')
     // const { name, value } = event.target;
     setTeacherData({
       // we pass referance teacherData and then change our name and value acording to event
@@ -37,7 +40,8 @@ function TeacherLogin() {
   };
   console.log(teacherData);
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     // console.log(teacherData.status)
     e.preventDefault();
     // const teacherFormData = new FormData();
@@ -45,9 +49,8 @@ function TeacherLogin() {
     // teacherFormData.append('password', teacherData.password);
     try {
       // console.log(teacherFormData)
-      axios
-        .post(`${process.env.BASE_URL}teacher-login/`, teacherData)
-        .then((response) => {
+    const response =  await axios.post(`${process.env.BASE_URL}teacher-login/`, teacherData)
+        
           console.log(response.data);
           // if backend server response bool is true then we set in local storage
           //  then we redirect to teacher dashboard and set it true
@@ -67,7 +70,7 @@ function TeacherLogin() {
           } else {
             setErrorMsg(response.data.msg);
           }
-        });
+        
     } catch (error) {
       // setTeacherData({...teacherData,status:'error'})
       // console.log(teacherData.status)
@@ -95,6 +98,7 @@ function TeacherLogin() {
   const handleChangeStudent = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    setErrorMsg('')
     // const { name, value } = event.target;
     setStudentData({
       // we pass referance StudentData and then change our name and value acording to event
@@ -105,21 +109,37 @@ function TeacherLogin() {
   console.log(StudentData);
   console.log(check);
 
-  const submitFormStudent = (e: React.FormEvent<HTMLFormElement>) => {
-    // console.log(StudentData.status)
+  const submitFormStudent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // console.log(StudentData.status)
+    
     // const teacherFormData = new FormData();
     // teacherFormData.append('email', StudentData.email);
     // teacherFormData.append('password', StudentData.password);
     try {
+      
+      
       // console.log(teacherFormData)
-      axios
-        .post(`${process.env.BASE_URL}student-login/`, StudentData)
-        .then((response) => {
+     const response = await axios.post(`${process.env.BASE_URL}student-login/`, StudentData)
+        
           console.log(response.data);
           // if backend server response bool is true then we set in local storage
           //  then we redirect to teacher dashboard and set it true
           if (response.data.bool == true) {
+            Swal.fire({
+              title: 'Wait a moment....',
+              html: '<div class="full-screen-toast"><div class="loader"></div></div>',
+              icon: 'warning',
+              toast: true,
+              timer: 3000,
+              position: 'top-right',
+              timerProgressBar: true,
+              showConfirmButton: false,
+              customClass: {
+                popup: 'full-screen-popup' // Add a CSS class for full-screen popup
+              }
+            });
             localStorage.setItem("studentLoginStatus", "true");
             document.cookie =
               "studentLoginStatus=true; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
@@ -136,8 +156,7 @@ function TeacherLogin() {
           } else {
             setErrorMsg(response.data.msg);
           }
-        });
-    } catch (error) {
+    }catch (error:any) {
       // setStudentData({...StudentData,status:'error'})
       // console.log(StudentData.status)
       console.log(error);
@@ -232,7 +251,7 @@ function TeacherLogin() {
                     <p className="mt-3">
                       <Link
                         href="/teacher-forgot-password"
-                        className="text-danger"
+                        className="text-danger link-none"
                       >
                         Forget Password?
                       </Link>
@@ -282,7 +301,7 @@ function TeacherLogin() {
                     <p className="mt-3">
                       <Link
                         href="/student-forgot-password"
-                        className="text-danger"
+                        className="text-danger link-none"
                       >
                         Forget Password?
                       </Link>

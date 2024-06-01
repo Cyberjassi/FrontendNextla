@@ -25,7 +25,7 @@ function AddCourse() {
  
 
 
-  const [CourseData, setCourseData] = useState<any>("");
+  const [CourseData, setCourseData] = useState<any>('');
 
   let initialValues = {
     title: "",
@@ -68,7 +68,10 @@ const Formik = useFormik({
     courseFormData.append('teacher',teacherId as any);
     courseFormData.append('title',values.title);
     courseFormData.append('description',values.description);
+    {CourseData.featured_img &&
     courseFormData.append('featured_img',CourseData.featured_img);
+    }
+    
     courseFormData.append('techs',values.techs);
     courseFormData.append('price',values.price);
   
@@ -83,6 +86,7 @@ const Formik = useFormik({
       
         console.log(response.data);
         if(response.status==200 || response.status==201){
+        setCourseData('');
           Swal.fire({
             title:'Data has been added',
             icon:'success',
@@ -198,6 +202,7 @@ const Formik = useFormik({
                   Featured Image
                 </label>
                 <input
+                  // value={CourseData.featured_img}
                   onChange={handleFileChange}
                   name="featured_img"
                   type="file"

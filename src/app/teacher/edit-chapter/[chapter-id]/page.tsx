@@ -3,73 +3,110 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import Swal from "sweetalert2";
+import editchapterMaterialSchmea from './editchapterYup';
+import {useFormik} from "formik"
 
 function page(props: any) {
   const currentChapter = props.params["chapter-id"];
   // console.log("this is current course",currentCourse)
-
-  interface ChapterData {
-    course: string | number|any;
-    title: string;
-    description: string;
-    prev_video:any;
-    video: null | File | any | Blob;
-    remarks: string;
-  }
-
-  const [chapterData, setChapterData] = useState<ChapterData>({
-    course: "",
-    title: "",
-    description: "",
+  const [response, setResponse] = useState<any>(null);
+  const [chapterData, setChapterData] = useState<any>({
+    course:"",
     prev_video:"",
     video: "",
-    remarks: "",
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.BASE_URL}chapter/${currentChapter}`);
+        setResponse(response.data);
+        Formik.setValues({
+          title: response.data.title || '',
+          description: response.data.description || '',
+          remarks: response.data.remarks || '',
+        });
+        setChapterData({
+          course:response.data.course,
+          prev_video: response.data.video, // This line should assign the video URL
+          video: '' // This is unnecessary since you're using prev_video for displaying the video
+        });
+      } catch (error) {
+        console.error('Error fetching chapter data:', error);
+      }
+    };
+  
+    fetchData();
+  }, [currentChapter]);
+
+  const Formik = useFormik({
+    initialValues:{
+      title:  '',
+      description: '',
+      remarks: '',
+    },
+    validationSchema:editchapterMaterialSchmea,
+    onSubmit: async (values:any, { setSubmitting }) => {
+      try {
+        await submitForm(values);
+        // Formik.resetForm();
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  })
+
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0]; // Get the first file from the input
-      setChapterData((prevChapterData) => ({
+      setChapterData((prevChapterData:any) => ({
         ...prevChapterData,
         video: file,
       }));
     }
   };
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    // const { name, value } = event.target;
-    setChapterData({
-      // we pass referance CourseData and then change our name and value acording to event
-      ...chapterData,
-      [event.target.name]: event.target.value,
-    });
-  };
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+
+  const submitForm = async (values:any) => {
+    Swal.fire({
+      title: 'Wait a moment....',
+      html: '<div class="full-screen-toast"><div class="loader"></div></div>',
+      icon: 'warning',
+      toast: true,
+      timer: 60000,
+      position: 'top-right',
+      timerProgressBar: true,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'full-screen-popup' // Add a CSS class for full-screen popup
+      }
+    });
     
     const chapterFormData = new FormData();
     
     chapterFormData.append('course',chapterData.course); 
-    chapterFormData.append('title', chapterData.title);
-    chapterFormData.append('description', chapterData.description);
+    chapterFormData.append('title', values.title);
+    chapterFormData.append('description', values.description);
     if(chapterData.video!==''){
         chapterFormData.append('video', chapterData.video);
     }
-    chapterFormData.append('remarks', chapterData.remarks);
+    chapterFormData.append('remarks', values.remarks);
   
     try {
       // console.log("here course form data", [...chapterFormData.entries()]);
       
-      axios.put(`${process.env.BASE_URL}chapter/${currentChapter}`, chapterFormData, {
+     const response = await axios.put(`${process.env.BASE_URL}chapter/${currentChapter}`, chapterFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       })
-      .then((response) => {
+      
         console.log(response.data);
         if(response.status==200){
         
@@ -85,58 +122,44 @@ function page(props: any) {
         });
     
         }
-      })   
+      
     } catch(error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    axios.get(`http://localhost:8000/api/chapter/${currentChapter}`)
-      .then((response) => {
-        setChapterData(response.data);
-        setChapterData({
-            course: response.data.course,
-            title: response.data.title,
-            description: response.data.description,
-            prev_video:response.data.video,
-            remarks: response.data.remarks,
-            video:''
-        })
-      })
-      .catch((error) => {
-        // Handle error
-        console.error('Error fetching chapter data:', error);
-      });
-  }, []);
+
   console.log("this is chapter data ",chapterData)
+  console.log("this is response data ",response)
+  console.log("this is formik data ",Formik)
 //   console.log(chapterData.id)
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
+          <div className="card shadow">
             <h5 className="card-header">Edit Chapter</h5>
-            <form onSubmit={submitForm} className="container">
+            <form onSubmit={Formik.handleSubmit} className="container">
               <div className="mb-3">
                 <label
-                  //  for="exampleInputEmail1"
                   className="form-label "
                 >
                   Title
                 </label>
                 <input
-                  onChange={handleChange}
-                  value={chapterData.title}
+                  value={Formik.values.title}
+                  onChange={Formik.handleChange}
+                  onBlur={Formik.handleBlur}
                   name="title"
                   type="text"
                   className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
+                {Formik.errors.title && Formik.touched.title ? (<p className="text-sm text-red-600">{Formik.errors.title as any}</p>):null}
               </div>
               <div className="mb-3">
                 <label
@@ -147,13 +170,15 @@ function page(props: any) {
                 </label>
                 <div className="form-floating">
                   <textarea
-                    onChange={handleChange}
-                    value={chapterData.description}
+                    value={Formik.values.description}
+                    onChange={Formik.handleChange}
+                    onBlur={Formik.handleBlur}
                     name="description"
                     className="form-control"
                     placeholder="Leave a comment here"
                     id="floatingTextarea2"
                   ></textarea>
+                  {Formik.errors.description && Formik.touched.description ? (<p className="text-sm text-red-600">{Formik.errors.description as any}</p>):null}
                 </div>
               </div>
               <div className="mb-3">
@@ -192,13 +217,15 @@ function page(props: any) {
                 </label>
                 <div className="form-floating">
                   <textarea
-                    onChange={handleChange}
-                    value={chapterData.remarks}
+                    value={Formik.values.remarks}
+                    onChange={Formik.handleChange}
+                    onBlur={Formik.handleBlur}
                     name="remarks"
                     className="form-control"
                     placeholder="This Video is Focused on basic Introduction"
                     id="floatingTextarea2"
                   ></textarea>
+                  {Formik.errors.remarks && Formik.touched.remarks ? (<p className="text-sm text-red-600">{Formik.errors.remarks as any}</p>):null}
                 </div>
               </div>
               <button type="submit" className="btn btn-primary">

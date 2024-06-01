@@ -238,10 +238,8 @@ const formik = useFormik({
                 </label>
                 <br />
                 <div className="form-check form-check-inline mb-3">
-                  {/* radio button */}
-
                   <input
-                    onChange={(e) => setCheck(e.target.value)}
+                    onChange={(e) => setCheck(e.target.value) }
                     className="form-check-input"
                     type="radio"
                     name="inlineRadioOptions"
@@ -378,7 +376,7 @@ const formik = useFormik({
                         type="text"
                         className="form-control"
                       />
-                       {Formik.errors.qualification && Formik.touched.qualification ? (<p className="text-sm text-red-600">{Formik.errors.email as any}</p>):null}
+                       {Formik.errors.qualification && Formik.touched.qualification ? (<p className="text-sm text-red-600">{Formik.errors.qualification as any}</p>):null}
                     </div>
                     <div className="mb-3">
                       <label
@@ -394,7 +392,7 @@ const formik = useFormik({
       
                         name="mobile_no"
                         placeholder="Enter Your Mobile No."
-                        type="integer"
+                        type="number"
                         className="form-control"
                       />
                        {Formik.errors.mobile_no && Formik.touched.mobile_no ? (<p className="text-sm text-red-600">{Formik.errors.mobile_no as any}</p>):null}
@@ -545,7 +543,7 @@ const formik = useFormik({
                         htmlFor="exampleInputEmail1"
                         className="form-label"
                       >
-                        Intrests
+                        Interested Categories
                       </label>
                       <textarea
                         value={formik.values.interested_categories}

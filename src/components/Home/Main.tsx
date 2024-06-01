@@ -34,9 +34,9 @@ function Main() {
         // headers: {
         //     'Authorization': `Bearer ${token}`
         // },
-        params: {
-          role: role,
-        },
+        // params: {
+        //   role: role,
+        // },
       })
       .then((response) => {
         console.log("Data:", response.data);
@@ -105,7 +105,7 @@ function Main() {
                   <Link href={`/course-detail/${course.id}`}>
                     <Image
                       className="card-img-top"
-                      src={`${course.featured_img}`}
+                      src={course.featured_img ? course.featured_img : "/img/default.png"}
                       alt={course.title}
                       height={250}
                       width={150}
@@ -148,7 +148,7 @@ function Main() {
                   <Link href={`/course-detail/${row.course.id}`}>
                     <Image
                       className="card-img-top"
-                      src={`${row.course.featured_img}`}
+                      src={row.course.featured_img? row.course.featured_img : "/img/default.png"}
                       alt={row.course.title}
                       height={250}
                       width={150}
@@ -199,7 +199,7 @@ function Main() {
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image
                       className="card-img-top"
-                      src={`${teacher.profile_img}`}
+                      src={teacher.profile_img ? teacher.profile_img : "/img/default.png"}
                       alt={teacher.full_name}
                       height={250}
                       width={150}

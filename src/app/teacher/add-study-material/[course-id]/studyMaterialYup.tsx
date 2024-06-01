@@ -1,9 +1,21 @@
 import * as Yup from 'yup';
 
  export  const studyMaterialSchmea = Yup.object().shape({
-  title: Yup.string()
-    .min(5, 'Title must be at least 5 characters')
-    .required('Title is required'),
-  description: Yup.string().required('Description is required'),
-  remarks: Yup.string().required('Remarks is required')
+    title: Yup.string()
+    .required('Title is required')
+    .min(3, 'Title must be more than 3 letters')
+    .matches(/^\S/, 'Title must not start with a space'),
+      description: Yup.string()
+      .required('Description is required')
+      .test(
+        'word-count',
+        'Description must be at least 5 words',
+        value => value.trim().split(/\s+/).length >= 5
+      )
+      .test(
+        'no-leading-space',
+        'Description must not start with a space',
+        value => !/^\s/.test(value) // Check if description starts with a space
+      ),
+    remarks: Yup.string().required('Remarks is required').matches(/^\S/, 'Title must not start with a space'),
 });

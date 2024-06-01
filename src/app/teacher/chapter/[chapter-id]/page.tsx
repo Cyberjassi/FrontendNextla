@@ -72,14 +72,14 @@ function Page(props: any) {
     });
   };
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
         <section className="col-md-9">
-          <div className="card">
-            <h5 className="card-header">All Chapters ({totalResult}) <Link href={`/teacher/add-chapter/${currentChapter}`} className="btn btn-sm btn-success float">Add chapter</Link></h5>
+          <div className="card shadow">
+            <h5 className="card-header">All Chapters ({totalResult}) <Link href={`/teacher/add-chapter/${currentChapter}`} className="btn btn-sm btn-success float ccard">Add chapter</Link></h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
@@ -97,7 +97,7 @@ function Page(props: any) {
                     chapterData.map((chapter: any, index: any) => (
                       <tr key={index}>
                         <td>
-                          <Link href="#">{chapter.title}</Link>
+                          <p className="custom-link-style">{chapter.title}</p>
                         </td>
                         <td>
                           <video width="320" height="240" controls>
@@ -131,7 +131,7 @@ function Page(props: any) {
                           </video>
                         </td>
                         <td>
-                          <Link href="#">{chapter.remarks}</Link>
+                          <p className="custom-link-style">{chapter.remarks}</p>
                         </td>
                         <td>
                           <Link

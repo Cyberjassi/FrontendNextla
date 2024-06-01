@@ -3,8 +3,8 @@ import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
-// import { CldUploadWidget } from 'next-cloudinary';
+import ChaptervalidationSchema from './YupChapter'
+import {useFormik} from "formik"
  
 
 function AddChapter(props:any) {
@@ -13,40 +13,39 @@ function AddChapter(props:any) {
 const currentCourse = props.params['course-id']
 // console.log("this is current course",currentCourse)
 
-interface ChapterData {
-  'course':string|number;
-  'title': string;
-  'description': string;
-  'video': null|File |any|Blob;
-  'video_duration': any;
-  'remarks': string;
 
+let initialValues = {
+  title: "",
+  description: "",
+  remarks: "",
 }
 
+const Formik = useFormik({
+  initialValues:initialValues,
+  validationSchema:ChaptervalidationSchema,
+  onSubmit: async (values:any, { setSubmitting }) => {
+    try {
+      await submitForm(values);
+      Formik.resetForm();
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  },
+})
 
-const [chapterData, setChapterData] = useState<ChapterData>({
-  course:'',
-  title: '',
-  description: '',
+const [chapterData, setChapterData] = useState<any>({
   video: '',
   video_duration:'',
-  remarks: ''
 });
 
-const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  // const { name, value } = event.target;
-  setChapterData({
-    // we pass referance CourseData and then change our name and value acording to event 
-    ...chapterData,
-    [event.target.name]: event.target.value
-  });
-};
 
 const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const files = event.target.files;
   if (files && files.length > 0) {
     const file = files[0]; // Get the first file from the input
-    setChapterData(prevChapterData => ({
+    setChapterData((prevChapterData:any) => ({
       ...prevChapterData,
       video: file
     }));
@@ -57,27 +56,38 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 console.log("this is chapter above submit",chapterData)
 console.log("this is chapter title ",chapterData.course)
 
-const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  console.log("jalksdfjlkasdjf")
+const submitForm = async (values:any) => {
+  Swal.fire({
+    title: 'Wait a moment....',
+    html: '<div class="full-screen-toast"><div class="loader"></div></div>',
+    icon: 'warning',
+    toast: true,
+    timer: 60000,
+    position: 'top-right',
+    timerProgressBar: true,
+    showConfirmButton: false,
+    customClass: {
+      popup: 'full-screen-popup' // Add a CSS class for full-screen popup
+    }
+  });
   const chapterFormData = new FormData();
   
   chapterFormData.append('course',currentCourse); 
-  chapterFormData.append('title', chapterData.title);
-  chapterFormData.append('description', chapterData.description);
+  chapterFormData.append('title', values.title);
+  chapterFormData.append('description', values.description);
   chapterFormData.append('video', chapterData.video);
   chapterFormData.append('video_duration', chapterData.video_duration);
-  chapterFormData.append('remarks', chapterData.remarks);
+  chapterFormData.append('remarks', values.remarks);
 
   
     // console.log("here course form data", [...chapterFormData.entries()]);
-    
-    axios.post(`${process.env.BASE_URL}course-chapters/${currentCourse}`, chapterFormData, {
+    try{
+    const response = await axios.post(`${process.env.BASE_URL}course-chapters/${currentCourse}`, chapterFormData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
     })
-    .then((response) => {
+    chapterData.video=''
       console.log(response.data);
       if(response.status==200 || response.status==201){
         Swal.fire({
@@ -89,9 +99,10 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           timerProgressBar:true,
           showConfirmButton: false,
         });
-        window.location.reload();
+        
+        // window.location.reload();
       }
-    }).catch((error) => {
+    }catch(error){
       console.error('Error:', error);
       // Handle the error here, such as displaying an error message to the user
       Swal.fire({
@@ -99,7 +110,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
           text: 'An error occurred while adding data',
           icon: 'error',
       });
-  });
+  }
   
     
 };
@@ -113,7 +124,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         <section className="col-md-9">
           <div className="card shadow">
             <h5 className="card-header">Add Chapter</h5>
-            <form className="container" onSubmit={submitForm}>
+            <form className="container" onSubmit={Formik.handleSubmit}>
               <div className="mb-3">
                 <label
                 //  for="exampleInputEmail1"
@@ -121,13 +132,16 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                   Title
                 </label>
                 <input
-                  onChange={handleChange}
+                  value={Formik.values.title}
+                  onChange={Formik.handleChange}
+                  onBlur={Formik.handleBlur}
                   name="title"
                   type="text"
                   className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
+                 {Formik.errors.title && Formik.touched.title ? (<p className="text-sm text-red-600">{Formik.errors.title as any}</p>):null}
               </div>
               <div className="mb-3">
                 <label
@@ -137,12 +151,15 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                 </label>
                 <div className="form-floating">
                   <textarea
-                    onChange={handleChange}
+                    value={Formik.values.description}
+                    onChange={Formik.handleChange}
+                    onBlur={Formik.handleBlur}
                     name="description"
                     className="form-control"
                     placeholder="Leave a comment here"
                     id="floatingTextarea2"
                   ></textarea>
+                   {Formik.errors.description && Formik.touched.description ? (<p className="text-sm text-red-600">{Formik.errors.description as any}</p>):null}
                 </div>
               </div>
               <div className="mb-3">
@@ -152,6 +169,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                  Video
                 </label>
                 <input
+                  
                   onChange={handleFileChange}
                   name="video"
                   type="file"
@@ -168,12 +186,15 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                 </label>
                 <div className="form-floating">
                   <textarea
-                    onChange={handleChange}
+                    value={Formik.values.remarks}
+                    onChange={Formik.handleChange}
+                    onBlur={Formik.handleBlur}
                     name="remarks"
                     className="form-control"
                     placeholder="This Video is Focused on basic Introduction"
                     id="floatingTextarea2"
                   ></textarea>
+                   {Formik.errors.remarks && Formik.touched.remarks ? (<p className="text-sm text-red-600">{Formik.errors.remarks as any}</p>):null}
                 </div>
               </div>
               <button type="submit" className="btn btn-primary">
