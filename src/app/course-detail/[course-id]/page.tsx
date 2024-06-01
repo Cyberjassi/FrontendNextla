@@ -262,13 +262,13 @@ function page(props: any) {
               title: "This course has been added in your favorite list ",
               icon: "success",
               toast: true,
-              timer: 10000,
+              timer: 5000,
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,
             });
             setfavoriteStatus("success");
-            window.location.reload();
+            // window.location.reload();
           }
           // window.location.href='/teacher/add-courses';
         });
