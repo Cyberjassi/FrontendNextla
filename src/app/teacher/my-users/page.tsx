@@ -104,7 +104,7 @@ function Myusers(props: any) {
     });
   };
 
-  const groupFormSubmit = () => {
+  const groupFormSubmit = async () => {
     // e.preventDefault();
     const msgFormData = new FormData();
 
@@ -112,13 +112,11 @@ function Myusers(props: any) {
     msgFormData.append("msg_from", "teacher");
 
     // console.log("here course form data", [...msgFormData.entries()]);
-
-    axios
-      .post(
+try{
+   const response:any = await axios.post(
         `${process.env.BASE_URL}send-group-message/${teacher_id}`,
         msgFormData
       )
-      .then((response) => {
         if (response.data.bool == true) {
           setgroupMsgData({
             msg_text: "",
@@ -127,15 +125,14 @@ function Myusers(props: any) {
           setgrouperrorMsg("");
         } else {
           setgroupsuccessMsg("");
-          setgrouperrorMsg(response.data.msg);
+          // setgrouperrorMsg(response.data.msg);
         }
-      })
-      .catch((error) => {
+      }catch(error){
         console.error("Error:", error);
-      });
+      }
   };
 
- 
+ console.log("this is group message",groupMsgData)
   return (
     <div className="container mt-10">
       <div className="row">
@@ -353,47 +350,3 @@ function Myusers(props: any) {
 }
 
 export default Myusers;
-{
-  /* <div className="card">
-            <h5 className="card-header">My Courses</h5>
-            <div className="card-body">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link href="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div> */
-}
-
-// <div className="row">
-// {/* from another users */}
-// <div className="col-5">
-//   <div className="alert alert-primary mb-1">
-//    A simple primary alert
-//   </div>
-//    <small className="text-muted">time</small>
-// </div>
-// </div>
-// <div className="row">
-// {/* My messages */}
-// <div className="col-4 offset-7">
-//   <div className="alert alert-success mb-1">
-//   <MessageList teacher_id={teacher_id} student_id={row.student.id}/>
-//   </div>
-//     <small className="text-muted">time</small>
-// </div>
-// </div>

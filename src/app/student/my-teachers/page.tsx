@@ -78,6 +78,8 @@ function MyTeachers() {
     height: "500px",
     overflow: "atuo",
   };
+
+  console.log("this is my teachers ddd",teacherData)
   
   return (
     <div className="container mt-10">

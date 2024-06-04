@@ -43,7 +43,7 @@ export default function CategoryCourses(props: any) {
               <Link href={`/course-detail/${course.id}`}>
                 <Image
                   className="card-img-top"
-                  src={`${course.featured_img}`}
+                  src={course.featured_img ?  course.featured_img : "/img/default.png"}
                   alt={course.title}
                   height={250}
                   width={150}

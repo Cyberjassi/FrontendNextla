@@ -66,7 +66,7 @@ function TeacherMyCourses() {
                      <span className="description">Rating: 0/5</span>
                       }
                     </td>
-                    <td><img src={course.featured_img} width="80" className="rounded" alt={course.title} /></td>
+                    <td><img src={course.featured_img ? course.featured_img : "/img/default.png"} width="80" className="rounded" alt={course.title} /></td>
                     <td>
                       <Link className="link-none" href={`enrolled-students/${course.id}`}>{course.total_enrolled_students}</Link>
                     </td>

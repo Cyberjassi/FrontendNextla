@@ -1,20 +1,20 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FaPlayCircle } from 'react-icons/fa'
+import { FaPlayCircle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Image from "next/image";
 import useRazorpay from "react-razorpay";
+import Button from "@mui/material/Button";
 
 import Rating from "@/components/Home/Rating";
-
 
 function page(props: any) {
   const currentCourse = props.params["course-id"];
   const studentId = localStorage.getItem("studentId");
-  
+
   const imageUrl = "https://res.cloudinary.com/dr9wiqs2y/image/upload/v1/";
 
   // const siteUrl = "http://127.0.0.1:8000/";
@@ -56,7 +56,7 @@ function page(props: any) {
       });
   };
 
-  const razorpayPayment = (price:any) => {
+  const razorpayPayment = (price: any) => {
     axios
       .post(`${process.env.BASE_URL}order/create/`, {
         amount: price,
@@ -73,7 +73,7 @@ function page(props: any) {
           image: "https://example.com/your_logo",
           order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
           handler: function (response: any) {
-            console.log("haksjdfkljaskdlfjklasjdfkljasdf")
+            console.log("haksjdfkljaskdlfjklasjdfkljasdf");
             enrollCourse();
             //complete order
             complete_order(
@@ -205,15 +205,11 @@ function page(props: any) {
     try {
       // console.log("here course form data",[...courseFormData.entries()])
       axios
-        .post(
-          `${process.env.BASE_URL}student-enroll-course/`,
-          courseFormData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .post(`${process.env.BASE_URL}student-enroll-course/`, courseFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log(response.data);
           if (response.status == 200 || response.status == 201) {
@@ -391,7 +387,9 @@ function page(props: any) {
           <div className="col-4">
             <img
               className="img-thumbnail card"
-              src={course.featured_img}
+              src={
+                course.featured_img ? course.featured_img : "/img/default.png"
+              }
               alt="image "
             />
           </div>
@@ -400,7 +398,10 @@ function page(props: any) {
             <p>{course.description}</p>
             <p className="fw-bold">
               Course By:{" "}
-              <Link className="custom-link-style" href={`/teacher-detail/${teacher.id}`}>
+              <Link
+                className="custom-link-style"
+                href={`/teacher-detail/${teacher.id}`}
+              >
                 {teacher.full_name}
               </Link>
             </p>
@@ -411,7 +412,7 @@ function page(props: any) {
                   <Link
                     key={index}
                     href={`/category/${tech.trim()}`}
-                    className="badge badge-pill text-dark bg-warning custom-link-style ml-1 card"
+                    className="badge badge-pill text-dark bg-warning custom-link-style ml-1 card ccard"
                   >
                     {tech}
                   </Link>
@@ -422,14 +423,18 @@ function page(props: any) {
               Total Enrolled: {course.total_enrolled_students} Students
             </p>
             <p className="fw-bold">
-            {/* <span>Rating: {course.course_rating}/5</span> */}
-            {course.course_rating == null &&
-            <span>Rating: <Rating rating={0} /></span>
-            }
-            {course.course_rating &&
-            <span>Rating: <Rating rating={course.course_rating} /></span>
-            }
-            {/* <span>Rating: <Rating rating={course.course_rating} /></span> */}
+              {/* <span>Rating: {course.course_rating}/5</span> */}
+              {course.course_rating == null && (
+                <span>
+                  Rating: <Rating rating={0} />
+                </span>
+              )}
+              {course.course_rating && (
+                <span>
+                  Rating: <Rating rating={course.course_rating} />
+                </span>
+              )}
+              {/* <span>Rating: <Rating rating={course.course_rating} /></span> */}
               {enrollStatus === "success" && userLoginStatus === "success" && (
                 <>
                   {ratingStatus != "success" && (
@@ -509,11 +514,11 @@ function page(props: any) {
             </p>
             {/* <p className="fw-bold">Views: {courseView}</p> */}
 
-            {userLoginStatus == "success" && enrollStatus !=="success" && (
+            {userLoginStatus == "success" && enrollStatus !== "success" && (
               <div>
                 <p className="fw-bold mb-0">Price: ₹{course.price}</p>
                 <button
-                  onClick={()=>razorpayPayment(course.price)}
+                  onClick={() => razorpayPayment(course.price)}
                   className="btn btn-primary mt-2"
                 >
                   Buy Now <i className="bi bi-cart"></i>
@@ -590,7 +595,7 @@ function page(props: any) {
                           data-bs-toggle="modal"
                           data-bs-target={`#videoModal${index}`} // Unique modal ID
                         >
-                          <FaPlayCircle  size={20} />
+                          <FaPlayCircle size={20} />
                         </button>
                       </span>
                       {/* Video Model Start */}
@@ -639,13 +644,19 @@ function page(props: any) {
         {/* EndCourse Videos */}
 
         {/* Ratlated Course */}
-        {realtedCourseData.length!=0 &&
-        <h4 className="pb-1 my-4 text-start mt-5">
-          Releted Courses
-          <a href="#" className="float-end">
-            See All
-          </a>
-        </h4>}
+        {realtedCourseData.length != 0 && (
+          <h4 className="pb-1 my-4 text-start mt-5">
+            Releted Courses
+            <Button
+              variant="contained"
+              color="primary"
+              href="/popular-courses"
+              className="float-end ccard"
+            >
+              See All
+            </Button>
+          </h4>
+        )}
         <div className="row mb-4">
           {realtedCourseData &&
             realtedCourseData.map((rcorse: any, index: any) => (
@@ -657,21 +668,35 @@ function page(props: any) {
                       className="card-img-top"
                       width={150}
                       height={300}
-                      // src={`'${imageUrl}${rcorse.fields.featured_img}`}
-                      src={`${imageUrl}${rcorse.fields.featured_img}`}
+                      src={
+                        rcorse.fields.featured_img
+                          ? `${imageUrl}${rcorse.fields.featured_img}`
+                          : `${imageUrl}/media/course_imgs/default_ctk8am`
+                      }
                       alt={rcorse.fields.title}
                     />
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style" href={`/course-detail/${rcorse.pk}`}>
+                      <Link
+                        className="custom-link-style"
+                        href={`/course-detail/${rcorse.pk}`}
+                      >
                         {rcorse.fields.title}
                       </Link>
+                      <p className="description">
+                     {course.description}
+                      </p>
                     </h5>
                   </div>
                   <div className="card-footer">
-                  {/* <span>Rating: {rcorse.field.course_rating}/5</span> */}
-                    <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                    <div className="title">
+                    <span>Rating: <Rating rating={course.rating} /></span>
+                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                      {/* <span className="float-end">
+                        Views:{row.course.course_views}
+                      </span> */}
+                    </div>
                   </div>
                 </div>
               </div>

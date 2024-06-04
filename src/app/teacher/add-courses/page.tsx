@@ -11,6 +11,7 @@ import { handleApiError } from "@/app/errorHandling";
 import {useFormik} from "formik"
 import CoursevalidationSchema from './YupCourse'
 
+
 function AddCourse() {
 
   // for category Retriew ---
@@ -71,7 +72,7 @@ const Formik = useFormik({
     {CourseData.featured_img &&
     courseFormData.append('featured_img',CourseData.featured_img);
     }
-    
+   
     courseFormData.append('techs',values.techs);
     courseFormData.append('price',values.price);
   

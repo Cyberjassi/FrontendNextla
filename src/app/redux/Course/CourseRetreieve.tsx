@@ -1,6 +1,8 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
+// import { cookies } from "next/headers";
+import cookies from 'js-cookie';
 
 
 interface Course {
@@ -16,9 +18,16 @@ interface CourseState {
     isError: boolean;
 }
 
-export const getCourseInfo = createAsyncThunk<Course[]>('getCourseInfo', async () => {
+export const getCourseInfo = createAsyncThunk<Course[]|any>('getCourseInfo', async () => {
+    const token = cookies.get('token')
     const teacherId = localStorage.getItem("teacherId")
-    const response = await axios.get(`${process.env.BASE_URL}teacher-courses/${teacherId}`);
+    console.log('teacher id from course retruive ',teacherId)
+    const response = await axios.get(`http://localhost:8000/api/teacher-courses/${teacherId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+      
+      })
     return response.data;
 });
 

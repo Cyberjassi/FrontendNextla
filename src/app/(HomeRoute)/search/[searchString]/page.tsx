@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import Rating from '@/components/Home/Rating';
+import Button from "@mui/material/Button";
+
 
 function Search(props:any) {
   const searchString = props.params['searchString']
@@ -25,9 +27,14 @@ function Search(props:any) {
         <div className="container mt-4">
           <h3 className="pb-1 my-4 text-start">
             Search For <span className='text-primary'>{searchString}</span>
-            <Link href="/all-courses" className="float-end">
+            <Button
+              variant="contained"
+              color="primary"
+              href="/all-courses"
+              className="float-end ccard"
+            >
               See All
-            </Link>
+            </Button>
           </h3>
           <div className="row mb-4">
             {allCourses.length == 0 && <p>No Course there for for {searchString}</p>}
@@ -37,7 +44,7 @@ function Search(props:any) {
                   <Link href={`/course-detail/${course.id}`}>
                     <img
                       className="card-img-top"
-                      src={`${course.featured_img}`}
+                      src={course.featured_img ?  course.featured_img : "/img/default.png"}
                       alt={course.title}
                     />
                   </Link>

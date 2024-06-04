@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularCourses from "@/app/(HomeRoute)/popular-courses/page";
+import cookies from 'js-cookie';
 
 import Rating from './Rating'
 function Main() {
@@ -26,14 +27,17 @@ function Main() {
     : localStorage.getItem("studentLoginStatus")
     ? "student"
     : "";
-  useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    axios
-      .get(`${process.env.BASE_URL}course/?result=4`, {
+ 
+  useEffect(() => {
+    // const token = localStorage.getItem("token");
+    const token = cookies.get('token')
+
+    console.log("this is my token",token)
+   const response = axios.get(`${process.env.BASE_URL}course/?result=4`, {
         // headers: {
         //     'Authorization': `Bearer ${token}`
-        // },
+        // }
         // params: {
         //   role: role,
         // },
@@ -116,12 +120,19 @@ function Main() {
                       <Link className="custom-link-style" href={`/course-detail/${course.id}`}>
                         {course.title}
                       </Link>
+                      <p className="description">
+                     {course.description}
+                      </p>
                     </h5>
                   </div>
                   <div className="card-footer">
-                  {/* <span>Rating: {course.course_rating}/5</span> */}
-                  <span>Rating: <Rating rating={course.course_rating} /></span>
-                    <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                    <div className="title">
+                    <span>Rating: <Rating rating={course.rating} /></span>
+                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                      {/* <span className="float-end">
+                        Views:{row.course.course_views}
+                      </span> */}
+                    </div>
                   </div>
                 </div>
               </div>

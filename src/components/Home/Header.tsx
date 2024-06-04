@@ -65,11 +65,11 @@ function Header() {
             Courses
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" href="/categories">
             Categories
           </Link>
-        </li>
+        </li> */}
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"

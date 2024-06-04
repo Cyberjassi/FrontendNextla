@@ -2,6 +2,10 @@
 import React, { useState,useEffect } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
+
 function TeacherDetail(props:any) {
 
   const currentTeacher = props.params['teacher-id']
@@ -43,7 +47,7 @@ console.log("course data",courseData)
               Skills: &nbsp; 
             {skillList &&
                     skillList.map((skill: any, index: any) => (
-            <Link key={index} href={`/teacher-skills-courses/${skill.trim()}/${teacherData.id}`} className='badge badge-pill text-dark bg-warning ml-1 link-none'>{skill}</Link>
+            <Link key={index} href={`/teacher-skills-courses/${skill.trim()}/${teacherData.id}`} className='badge badge-pill text-dark bg-warning ml-1 link-none ccard'>{skill}</Link>
             ))}
          
             </p>
@@ -54,17 +58,19 @@ console.log("course data",courseData)
         </div>
         {/* Course Videos */}
        
-          <div className="card mt-4 shadow">
-            <h3 className="card-header">Course List</h3>
-            <div className="list-group list-group-flush">
-              {courseData.map((course:any,title:any)=>
-               <Link key={course.id} href={`/course-detail/${course.id}`} className='list-group-item text-start kust-group-item-action'>{course.title}</Link>
-              
-              )}
-              
-              
-            </div>
-          </div>
+        <div className="card mt-4 shadow">
+  <h3 className="card-header">Course List</h3>
+  <div className="list-group list-group-flush">
+    {courseData.map((course:any) => (
+      <Link className='custom-link-style' key={course.id} href={`/course-detail/${course.id}`} passHref>
+        <ListItem button component="a" className='list-group-item text-start list-group-item-action' style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <ListItemText primary={course.title} />
+          <VisibilityIcon />
+        </ListItem>
+      </Link>
+    ))}
+  </div>
+</div>
        
         {/* EndCourse Videos */}
 
