@@ -45,7 +45,7 @@ export default function PopularTeachers() {
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image
                       className="card-img-top"
-                      src={`${teacher.profile_img}`}
+                      src={teacher.profile_img?teacher.profile_img:"/img/default.png"}
                       alt={teacher.full_name}
                       height={300}
                       width={150}

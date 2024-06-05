@@ -40,7 +40,7 @@ console.log(allCourses)
               <Link href={`/course-detail/${course.id}`}>
                 <img
                   className="card-img-top"
-                  src={`${course.featured_img}`}
+                  src={course.featured_img?course.featured_img:"/img/default.png"}
                   alt={course.title}
                 />
               </Link>

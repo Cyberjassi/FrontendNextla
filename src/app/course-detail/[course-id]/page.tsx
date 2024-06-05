@@ -366,7 +366,7 @@ function page(props: any) {
             timerProgressBar: true,
             showConfirmButton: false,
           });
-          window.location.reload();
+          // window.location.reload();
         }
       })
       .catch((error) => {

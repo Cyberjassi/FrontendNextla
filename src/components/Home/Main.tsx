@@ -127,7 +127,7 @@ function Main() {
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                    <span>Rating: <Rating rating={course.rating} /></span>
+                    <span>Rating: <Rating rating={course.course_rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}

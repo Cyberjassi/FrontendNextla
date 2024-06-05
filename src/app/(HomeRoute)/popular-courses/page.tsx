@@ -7,7 +7,7 @@ import Image from "next/image";
 import Rating from "@/components/Home/Rating";
 
 export default function PopularCourses() {
-  const baseUrl = `${process.env.BASE_URL}popular-courses/`;
+  const baseUrl = `${process.env.BASE_URL}popular-courses/?popular=1`;
   const [popularCourseData, setpopularCourseData] = useState<any[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [previousUrl, setPreviousUrl] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export default function PopularCourses() {
                   <Link href={`/course-detail/${row.course.id}`}>
                     <Image
                       className="card-img-top"
-                      src={`${row.course.featured_img}`}
+                      src={row.course.featured_img?row.course.featured_img:"/img/default.png"}
                       alt={row.course.title}
                       height={300}
                       width={150}

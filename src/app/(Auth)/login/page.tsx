@@ -248,6 +248,10 @@ function TeacherLogin() {
                     <button type="submit" className="btn btn-primary ccard">
                       Login
                     </button>
+                {/* {errorMsg && <button type="submit" className="ml-2 btn btn-warning ccard">
+                      Verify Your Account
+                    </button>} */}
+
                     <p className="mt-3">
                       <Link
                         href="/teacher-forgot-password"
@@ -298,6 +302,9 @@ function TeacherLogin() {
                     <button type="submit" className="btn btn-primary ccard">
                       Login
                     </button>
+                    {/* {errorMsg && <button type="submit" className="ml-2 btn btn-warning ccard">
+                      Verify Your Account
+                    </button>} */}
                     <p className="mt-3">
                       <Link
                         href="/student-forgot-password"
