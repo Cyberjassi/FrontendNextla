@@ -15,6 +15,8 @@ import cookies from 'js-cookie';
 
 import Rating from './Rating'
 function Main() {
+  
+  
   // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
   const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
   const [popularCourseData, setpopularCourseData] = useState<any[]>([]);
@@ -121,7 +123,7 @@ function Main() {
                         {course.title}
                       </Link>
                       <p className="description">
-                     {course.description}
+                      {course.description.length > 30 ? `${course.description.substring(0, 100)}...` : course.description}
                       </p>
                     </h5>
                   </div>
@@ -171,13 +173,13 @@ function Main() {
                         {row.course.title}
                       </Link>
                       <p className="description">
-                     {row.course.description}
+                      {row.course.description.length > 30 ? `${row.course.description.substring(0, 100)}...` : row.course.description}
                       </p>
                     </h5>
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                    <span>Rating: <Rating rating={row.rating} /></span>
+                    <span>Rating: <Rating rating={row.average_rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}
@@ -269,7 +271,7 @@ function Main() {
                         <p>{row.reviews}</p>
                       </blockquote>
                       <figcaption className="blockquote-footer text-white">
-                        {row.course.title}
+                        {row.course.title} &nbsp;
                         <cite title="Source Title">
                           {row.student.full_name}
                         </cite>

@@ -59,7 +59,7 @@ export default function PopularCourses() {
                   <div className="card-footer">
                     <div className="title">
                       {/* <span>Rating: {row.rating}/5</span> */}
-                      <span>Rating: <Rating rating={row.rating} /></span>
+                      <span>Rating: <Rating rating={row.average_rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
                       {/* <span className="float-end">
                         Views:{row.course.course_views}

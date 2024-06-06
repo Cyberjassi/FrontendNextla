@@ -581,6 +581,8 @@ function page(props: any) {
         {/* Course Videos */}
         {enrollStatus == "success" && userLoginStatus == "success" && (
           <div className="card mt-10 shadow">
+            {chapterData.length === 0 ? (
+            <p className="text-red-500 text-sm ml-14 mt-3">No Chapters There</p>) : (
             <div className="card">
               <h3 className="card-header">Course Videos</h3>
               <ul className="list-group list-group-flush">
@@ -638,7 +640,8 @@ function page(props: any) {
                     </li>
                   ))}
               </ul>
-            </div>
+            </div>)
+            }
           </div>
         )}
         {/* EndCourse Videos */}
@@ -685,7 +688,7 @@ function page(props: any) {
                         {rcorse.fields.title}
                       </Link>
                       <p className="description">
-                     {course.description}
+                     {course.description.length > 30 ? `${course.description.substring(0, 100)}...` : course.description}
                       </p>
                     </h5>
                   </div>
