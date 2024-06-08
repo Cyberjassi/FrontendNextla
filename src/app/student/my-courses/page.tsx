@@ -42,7 +42,7 @@ console.log("this is teacher data",courseData)
                   </tr>
                 </thead>
                 <tbody>
-                {courseData.map((row:any,index:any)=>
+                {courseData && courseData.map((row:any,index:any)=>
                   <tr key={index}>
                     <td><Link className="link-none" href={`/course-detail/${row.course.id}`}>{row.course.title}</Link></td>
                     <td>

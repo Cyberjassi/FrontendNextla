@@ -22,7 +22,7 @@ export const getCourseInfo = createAsyncThunk<Course[]|any>('getCourseInfo', asy
     const token = cookies.get('token')
     const teacherId = localStorage.getItem("teacherId")
     console.log('teacher id from course retruive ',teacherId)
-    const response = await axios.get(`http://localhost:8000/api/teacher-courses/${teacherId}`, {
+    const response = await axios.get(`${process.env.BASE_URL}teacher-courses/${teacherId}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }

@@ -1,8 +1,6 @@
 'use client'
-// import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-// import { Navbar } from "@/components/ui/navigation-menu";
 import { Providers } from "./redux/providers";
 
 
@@ -10,12 +8,7 @@ import { Providers } from "./redux/providers";
 // import bootstrap file -
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
-// Import Bootstrap icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
-
-
-import { useEffect } from "react";
 import Header from "@/components/Home/Header";
 import Footer from "@/components/Home/Footer";
 
@@ -36,8 +29,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      {/* <Navbar></Navbar> */}
-        
         <Providers>
        <Header></Header>
         {children}

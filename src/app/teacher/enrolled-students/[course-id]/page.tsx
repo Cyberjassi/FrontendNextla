@@ -27,12 +27,12 @@ function enrolledStudents(props:any) {
   },[])
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <aside className="col-md-3">
           <TeacherSidebar></TeacherSidebar>
         </aside>
-        <section className="col-md-9">
+        <section className="col-md-9 shadow">
          <div className="card">
             <h5 className="card-header">Enrolled Student List</h5>
             <div className="card-body">

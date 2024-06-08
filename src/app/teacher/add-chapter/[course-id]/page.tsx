@@ -100,7 +100,6 @@ const submitForm = async (values:any) => {
           showConfirmButton: false,
         });
         
-        // window.location.reload();
       }
     }catch(error){
       console.error('Error:', error);

@@ -3,14 +3,19 @@ import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from 'next/link';
+import cookies from 'js-cookie';
 
 function TeacherDashboard() {
   const [dashboard, setDashboard] = useState<any>(null); // Initialize dashboard state to null
   const teacherId = localStorage.getItem('teacherId');
-
+  const token = cookies.get('token')
   useEffect(() => {
     if (teacherId) { // Check if teacherId exists
-      axios.get(`${process.env.BASE_URL}teacher/dashboard/${teacherId}`)
+      axios.get(`${process.env.BASE_URL}teacher/dashboard/${teacherId}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`
+      }
+      })
         .then((res: any) => {
           console.log(res);
           setDashboard(res.data);

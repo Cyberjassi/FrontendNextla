@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios';
 import "./usersidebar.module.css"
+import logout from '@/app/(Auth)/logout/logout';
 
 
 function Sidebar() {
@@ -46,9 +47,7 @@ function Sidebar() {
         <Link href="/student/change-password" className="list-group-item list-group-item-action">
           Change Password
         </Link>
-        <Link href="/student/logout" className="list-group-item list-group-item-action text-danger">
-          Logout
-        </Link>
+        <button className="list-group-item list-group-item-action text-danger" onClick={()=>logout()}>Logout</button>
       </div>
     </div>
   );

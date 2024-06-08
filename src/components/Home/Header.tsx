@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import logout from "@/app/(Auth)/logout/logout";
 import { useState,useEffect } from "react";
 
 function Header() {
@@ -126,9 +127,9 @@ function Header() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link className="dropdown-item" href="/logout">
-                    Logout
-                  </Link>
+                  
+                  <button className="ml-5" onClick={()=>logout()}>Logout</button>
+             
                 </li>
               </>
             )}

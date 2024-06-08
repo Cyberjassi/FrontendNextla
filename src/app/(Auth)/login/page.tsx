@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import navigateTo from "@/app/utils/navigation";
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from "next/link";
 import Swal from "sweetalert2";
 import {handleApiError} from '../../errorHandling'
+import logout from '../logout/logout'
 
 function TeacherLogin() {
-  // const router = useRouter()
+  const router = useRouter()
   useEffect(() => {
     document.title = "Login";
   });
@@ -66,7 +66,8 @@ function TeacherLogin() {
             const token = response.data.token["access"];
             document.cookie = `token=${token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
             
-            window.location.href = "/teacher/dashboard";
+            window.location.href="/teacher/dashboard";
+            
           } else {
             setErrorMsg(response.data.msg);
           }
@@ -78,9 +79,9 @@ function TeacherLogin() {
     }
     // get the localStorage data if it's true then redirect to teacher dashboard
     const teacherLoginStatus = localStorage.getItem("teacherLoginStatus");
-    if (teacherLoginStatus == "true") {
-      window.location.href = "/teacher/dashboard";
-    }
+    // if (teacherLoginStatus == "true") {
+    //   router.push("/teacher/dashboard");
+    // }
   };
 
   // student login--
@@ -127,19 +128,6 @@ function TeacherLogin() {
           // if backend server response bool is true then we set in local storage
           //  then we redirect to teacher dashboard and set it true
           if (response.data.bool == true) {
-            Swal.fire({
-              title: 'Wait a moment....',
-              html: '<div class="full-screen-toast"><div class="loader"></div></div>',
-              icon: 'warning',
-              toast: true,
-              timer: 3000,
-              position: 'top-right',
-              timerProgressBar: true,
-              showConfirmButton: false,
-              customClass: {
-                popup: 'full-screen-popup' // Add a CSS class for full-screen popup
-              }
-            });
             localStorage.setItem("studentLoginStatus", "true");
             document.cookie =
               "studentLoginStatus=true; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
@@ -151,8 +139,8 @@ function TeacherLogin() {
             localStorage.setItem("token", response.data.token["access"]);
             const token = response.data.token["access"];
             document.cookie = `token=${token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-
-            window.location.href = "/student/dashboard";
+            
+            window.location.href="/student/dashboard";
           } else {
             setErrorMsg(response.data.msg);
           }
@@ -162,10 +150,10 @@ function TeacherLogin() {
       console.log(error);
     }
     // get the localStorage data if it's true then redirect to teacher dashboard
-    const studentLoginStatus = localStorage.getItem("studentLoginStatus");
-    if (studentLoginStatus == "true") {
-      window.location.href = "/student/dashboard";
-    }
+    // const studentLoginStatus = localStorage.getItem("studentLoginStatus");
+    // if (studentLoginStatus == "true") {
+    //   router.push("/student/dashboard");
+    // }
   };
 
   return (
@@ -302,6 +290,7 @@ function TeacherLogin() {
                     <button type="submit" className="btn btn-primary ccard">
                       Login
                     </button>
+                   
                     {/* {errorMsg && <button type="submit" className="ml-2 btn btn-warning ccard">
                       Verify Your Account
                     </button>} */}
@@ -315,6 +304,7 @@ function TeacherLogin() {
                     </p>
                   </form>
                 )}
+
               </div>
             </div>
           </div>

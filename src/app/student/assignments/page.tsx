@@ -4,10 +4,12 @@ import { useEffect ,useState} from 'react';
 import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
+import {useRouter} from "next/navigation";
 
 
 
 function studentAssignments() {
+  const router = useRouter()
   const [assignmentData,setassignmentData] = useState<any>([])
   const [assignmentStatus,setassignmentStatus]=useState<any>()
 
@@ -56,7 +58,7 @@ function studentAssignments() {
         //     showConfirmButton: false,
         //   });
         //   setassignmentStatus('success');
-          window.location.reload();
+        router.reload();
         }
         // window.location.href='/teacher/add-courses';
       })   
@@ -87,7 +89,7 @@ console.log("this is assignment data ",assignmentData)
                   </tr>
                 </thead>
                 <tbody>
-                {assignmentData.map((row:any,index:any)=>
+                {assignmentData && assignmentData.map((row:any,index:any)=>
                   <tr key={index}>
                     <td>{row.title}</td>
                     <td>{row.detail}</td>

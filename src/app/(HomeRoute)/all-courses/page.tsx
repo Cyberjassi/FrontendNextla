@@ -28,7 +28,7 @@ export default function AllCourses() {
 
   const paginationHandler = (url: string) => {
     fetchData(url);
-  };
+  };+
 console.log(allCourses)
   return (
     <div className="container mt-4">
@@ -50,7 +50,7 @@ console.log(allCourses)
                     {course.title}
                   </Link>
                   <p className="description">
-                     {course.description}
+                  {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description}
                   </p>
                 </h5>
               </div>

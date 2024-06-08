@@ -97,10 +97,8 @@ const Formik = useFormik({
             timerProgressBar:true,
             showConfirmButton: false,
           });
-          // window.location.reload();
+ 
         }
-        // for reload-
-        // window.location.href='/teacher/add-courses';
       }catch(error: any){
         if (error.response && error.response.status === 400) {
             console.log("Error:", error.response.data);
@@ -256,34 +254,3 @@ const Formik = useFormik({
 }
 
 export default AddCourse;
-
-
-// try {
-//   const response = await axios.post(`${process.env.BASE_URL}teacher/`, teacherFormData)
-//    if(response.status === 200 || response.status === 201) {
-     
-//        console.log(response.data);
-      
-//          // No errors, redirect or perform other actions
-//          window.location.href=`/verify-teacher/${response.data.id}/`;
-//      }
-//    }catch(error:any) {
-//      if (error.response && error.response.status === 400) {
-//          console.log("Error:", error.response.data);
-//          const errorData = error.response.data;
-//          const errorMessages = [];
-
-//          if (errorData.email) {
-//              errorMessages.push(errorData.email[0]);
-//          }
-//          if (errorData.profile_img) {
-//            errorMessages.push(errorData.profile_img[0]);
-//          }
-//          if (errorMessages.length > 0) {
-//              handleApiError(errorMessages);
-//          }
-//      } else {
-//          // Handle other types of errors
-//          console.error("Error:", error);
-//      }
-//  }

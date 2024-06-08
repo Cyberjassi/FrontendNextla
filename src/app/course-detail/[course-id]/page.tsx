@@ -8,10 +8,11 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import useRazorpay from "react-razorpay";
 import Button from "@mui/material/Button";
-
+import { useRouter } from "next/navigation";
 import Rating from "@/components/Home/Rating";
 
 function page(props: any) {
+  const route = useRouter()
   const currentCourse = props.params["course-id"];
   const studentId = localStorage.getItem("studentId");
 
@@ -223,7 +224,7 @@ function page(props: any) {
               showConfirmButton: false,
             });
             setEnrollStatus("success");
-            window.location.reload();
+            // window.location.reload();
           }
           // window.location.href='/teacher/add-courses';
         });
@@ -258,7 +259,7 @@ function page(props: any) {
               title: "This course has been added in your favorite list ",
               icon: "success",
               toast: true,
-              timer: 5000,
+              timer: 2000,
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,
@@ -297,13 +298,14 @@ function page(props: any) {
               title: "This course has been removed from your favorite list ",
               icon: "success",
               toast: true,
-              timer: 10000,
+              timer: 2000,
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,
             });
             setfavoriteStatus("");
-            window.location.reload();
+            
+            
           }
           // window.location.href='/teacher/add-courses';
         });
@@ -356,17 +358,19 @@ function page(props: any) {
       .post(`${process.env.BASE_URL}course-rating/`, chapterFormData)
       .then((response) => {
         console.log(response.data);
+        setratingData({ rating: "", reviews: "" });
         if (response.status == 200 || response.status == 201) {
           Swal.fire({
             title: "Rating has been added",
             icon: "success",
             toast: true,
-            timer: 5000,
+            timer: 3000,
             position: "top-right",
             timerProgressBar: true,
             showConfirmButton: false,
           });
-          // window.location.reload();
+          window.location.reload();
+          
         }
       })
       .catch((error) => {
@@ -482,6 +486,7 @@ function page(props: any) {
                                 onChange={handleChange as any}
                                 className="form-control"
                                 name="rating"
+                                value={ratingData.rating}
                               >
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -495,6 +500,7 @@ function page(props: any) {
                                 Review
                               </label>
                               <textarea
+                                value={ratingData.reviews}
                                 onChange={handleChange as any}
                                 rows={10}
                                 name="reviews"

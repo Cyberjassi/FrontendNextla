@@ -50,13 +50,13 @@ console.log("this is formik data output",Formik)
 const handleFileChange = (event: React.ChangeEvent<HTMLInputElement | any>) => {
   const file = event.target.files[0];
   if (file) {
-    const uploadPreviewUrl = window.URL.createObjectURL(file);
     setstudyData({
       ...studyData,
       [event.target.name]: file,
     });
   }
 };
+
 
 const submitForm = async (values:any) => {
 
@@ -77,6 +77,7 @@ const submitForm = async (values:any) => {
     });
 
     console.log(response.data);
+    setstudyData({ upload: ''})
     if(response.status === 200 || response.status === 201) {
       Swal.fire({
         title: 'Data has been added',
@@ -87,7 +88,7 @@ const submitForm = async (values:any) => {
         timerProgressBar: true,
         showConfirmButton: false,
       });
-      // window.location.reload();
+
     }
   } catch (error) {
     console.error('Error:', error);
@@ -162,6 +163,7 @@ const submitForm = async (values:any) => {
                  Upload
                 </label>
                 <input
+                
                   onChange={handleFileChange}
                   name="upload"
                   type="file"

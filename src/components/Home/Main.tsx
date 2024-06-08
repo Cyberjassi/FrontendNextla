@@ -8,9 +8,6 @@ import Image from "next/image";
 import './Home.module.css';
 
 import Button from "@mui/material/Button";
-import { makeStyles } from "@mui/styles";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import PopularCourses from "@/app/(HomeRoute)/popular-courses/page";
 import cookies from 'js-cookie';
 
 import Rating from './Rating'
@@ -33,13 +30,15 @@ function Main() {
  
   useEffect(() => {
     // const token = localStorage.getItem("token");
+    
     const token = cookies.get('token')
 
     console.log("this is my token",token)
+    
    const response = axios.get(`${process.env.BASE_URL}course/?result=4`, {
-        // headers: {
-        //     'Authorization': `Bearer ${token}`
-        // }
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
         // params: {
         //   role: role,
         // },
@@ -72,7 +71,7 @@ function Main() {
       })
       .catch((error) => {
         console.error("Error:", error);
-      });
+      })
 
     // fatch studet testimonial
     axios
@@ -84,8 +83,9 @@ function Main() {
       .catch((error) => {
         console.error("Error:", error);
       });
+    
 
-  }, []);
+  }, [""]);
   console.log("this is your course ", allCourses);
   console.log("popular course",popularCourseData)
   return (

@@ -9,7 +9,7 @@ interface RatingProps {
 }
 
 const Rating: React.FC<RatingProps> = ({ rating }) => {
-  const roundedRating = Math.round(rating * 10) / 10; // Round the rating to one decimal point
+  const roundedRating = Math.round(rating * 10) / 10; 
   const stars: JSX.Element[] = [];
   const filledStars: number = Math.floor(roundedRating);
   const hasHalfStar: boolean = roundedRating - filledStars >= 0.5;

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import  Link from 'next/link';
+import logout from '@/app/(Auth)/logout/logout';
 
 function TeacherSidebar() {
   return (
@@ -31,9 +32,8 @@ function TeacherSidebar() {
           Change Password
         </Link>
 
-        <Link href="/teacher/logout" className="list-group-item list-group-item-action text-danger">
-          Logout
-        </Link>
+        <button className="list-group-item list-group-item-action text-danger" onClick={()=>logout()}>Logout</button>
+
       </div>
     </div>
   );
