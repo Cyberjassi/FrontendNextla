@@ -56,14 +56,11 @@ function TeacherLogin() {
           //  then we redirect to teacher dashboard and set it true
           if (response.data.bool == true) {
             localStorage.setItem("teacherLoginStatus", "true");
-            document.cookie =
-            "teacherLoginStatus=true; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-            document.cookie =
-            "userType=teacher; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
             // set teacher id in local storage for future use---
             localStorage.setItem("teacherId", response.data.teacher_id);
-            localStorage.setItem("token", response.data.token["access"]);
+            // localStorage.setItem("token", response.data.token["access"]);
             const token = response.data.token["access"];
+            document.cookie ="userType=teacher; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
             document.cookie = `token=${token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
             
             window.location.href="/teacher/dashboard";
@@ -129,16 +126,12 @@ function TeacherLogin() {
           //  then we redirect to teacher dashboard and set it true
           if (response.data.bool == true) {
             localStorage.setItem("studentLoginStatus", "true");
-            document.cookie =
-              "studentLoginStatus=true; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-            document.cookie =
-              "userType=student; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-
             // set teacher id in local storage for future use---
             localStorage.setItem("studentId", response.data.student_id);
-            localStorage.setItem("token", response.data.token["access"]);
+            // localStorage.setItem("token", response.data.token["access"]);
             const token = response.data.token["access"];
             document.cookie = `token=${token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+            document.cookie = "userType=student; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
             
             window.location.href="/student/dashboard";
           } else {

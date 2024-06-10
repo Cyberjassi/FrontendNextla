@@ -51,7 +51,7 @@ function Search(props:any) {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className='custom-link-style' href={`/course-detail/${course.id}`}>{course.title}</Link>
+                      <Link className='custom-link-style course-title' href={`/course-detail/${course.id}`}>{course.title}</Link>
                     </h5>
                     <p className="description">
                       {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description}

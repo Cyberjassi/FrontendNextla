@@ -48,19 +48,16 @@ function studentAssignments() {
       .then((response) => {
         console.log(response.data);
         if(response.status==200 || response.status==201){
-        //   Swal.fire({
-        //     title:'You have succesfully completed this assignment',
-        //     icon:'success',
-        //     toast:true,
-        //     timer: 5000,
-        //     position:'top-right',
-        //     timerProgressBar:true,
-        //     showConfirmButton: false,
-        //   });
-        //   setassignmentStatus('success');
-        router.reload();
+          try{
+            axios.get(`${process.env.BASE_URL}my-assignments/${studentId}`)
+            .then((res)=>{
+              setassignmentData(res.data)
+            })
+        }catch(error){
+          console.log(error)
         }
-        // window.location.href='/teacher/add-courses';
+       
+        }
       })   
     }catch(error){
       console.log(error);

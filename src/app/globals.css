@@ -140,6 +140,12 @@
     height: 120px;
     animation: spin 2s linear infinite;
   }
+  .course-title {
+    font-weight: bold;
+    font-size: 1.0rem; /* Adjust the font size as needed */
+    color: #333; /* Adjust the color to match your design */
+    /* Add other styles like text-transform, letter-spacing, etc. for more customization */
+  }
   
   @keyframes spin {
     0% { transform: rotate(0deg); }

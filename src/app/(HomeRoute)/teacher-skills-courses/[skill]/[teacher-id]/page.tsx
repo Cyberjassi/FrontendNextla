@@ -38,7 +38,12 @@ export default function teacherSkillsCourses(props:any) {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className='custom-link-style' href={`/course-detail/${course.id}`}>{course.title}</Link>
+                      <Link className="custom-link-style course-title" href={`/course-detail/${course.id}`}>
+                        {course.title}
+                      </Link>
+                      <p className="description">
+                      {course.description.length > 30 ? `${course.description.substring(0, 100)}...` : course.description}
+                      </p>
                     </h5>
                   </div>
                   <div className="card-footer">

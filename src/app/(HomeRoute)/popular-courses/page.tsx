@@ -51,9 +51,12 @@ export default function PopularCourses() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style" href={`/course-detail/${row.course.id}`}>
+                      <Link className="custom-link-style course-title" href={`/course-detail/${row.course.id}`}>
                         {row.course.title}
                       </Link>
+                      <p className="description">
+                      {row.course.description.length > 30 ? `${row.course.description.substring(0, 100)}...` : row.course.description}
+                      </p>
                     </h5>
                   </div>
                   <div className="card-footer">

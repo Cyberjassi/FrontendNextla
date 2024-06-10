@@ -119,7 +119,7 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style" href={`/course-detail/${course.id}`}>
+                      <Link className="custom-link-style course-title" href={`/course-detail/${course.id}`}>
                         {course.title}
                       </Link>
                       <p className="description">
@@ -169,7 +169,7 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style" href={`/course-detail/${row.course.id}`}>
+                      <Link className="custom-link-style course-title" href={`/course-detail/${row.course.id}`}>
                         {row.course.title}
                       </Link>
                       <p className="description">
@@ -220,7 +220,7 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style" href={`/teacher-detail/${teacher.id}`}>
+                      <Link className="custom-link-style course-title" href={`/teacher-detail/${teacher.id}`}>
                         {teacher.full_name}
                       </Link>
                     </h5>

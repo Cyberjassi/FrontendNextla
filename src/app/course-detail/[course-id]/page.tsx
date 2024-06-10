@@ -688,7 +688,7 @@ function page(props: any) {
                   <div className="card-body">
                     <h5 className="card-title">
                       <Link
-                        className="custom-link-style"
+                        className="custom-link-style course-title"
                         href={`/course-detail/${rcorse.pk}`}
                       >
                         {rcorse.fields.title}
