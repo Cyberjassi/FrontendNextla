@@ -7,13 +7,16 @@ import Swal from "sweetalert2";
 import {handleApiError} from '../../errorHandling'
 import logout from '../logout/logout'
 
+
 function TeacherLogin() {
   const router = useRouter()
   useEffect(() => {
     document.title = "Login";
   });
 
-  const [check, setCheck] = useState<String>("");
+
+  const [check, setCheck] = useState<String>("Student");
+  const [forgotStatus,setforgotStatus] = useState<boolean>(false)
 
   interface TeacherData {
     email: string;
@@ -25,13 +28,12 @@ function TeacherLogin() {
     password: "",
   });
 
-  const [errorMsg, setErrorMsg] = useState("");
+
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setErrorMsg('')
-    // const { name, value } = event.target;
+    setforgotStatus(false)
     setTeacherData({
       // we pass referance teacherData and then change our name and value acording to event
       ...teacherData,
@@ -66,7 +68,8 @@ function TeacherLogin() {
             window.location.href="/teacher/dashboard";
             
           } else {
-            setErrorMsg(response.data.msg);
+            handleApiError(response.data.msg)
+            setforgotStatus(true)
           }
         
     } catch (error) {
@@ -91,13 +94,13 @@ function TeacherLogin() {
     email: "",
     password: "",
   });
-  // const [errorMsg,setErrorMsg] = useState("");
+  
 
   const handleChangeStudent = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setErrorMsg('')
-    // const { name, value } = event.target;
+
+    setforgotStatus(false)
     setStudentData({
       // we pass referance StudentData and then change our name and value acording to event
       ...StudentData,
@@ -135,18 +138,12 @@ function TeacherLogin() {
             
             window.location.href="/student/dashboard";
           } else {
-            setErrorMsg(response.data.msg);
+            handleApiError(response.data.msg);
+            setforgotStatus(true)
           }
     }catch (error:any) {
-      // setStudentData({...StudentData,status:'error'})
-      // console.log(StudentData.status)
       console.log(error);
     }
-    // get the localStorage data if it's true then redirect to teacher dashboard
-    // const studentLoginStatus = localStorage.getItem("studentLoginStatus");
-    // if (studentLoginStatus == "true") {
-    //   router.push("/student/dashboard");
-    // }
   };
 
   return (
@@ -157,7 +154,6 @@ function TeacherLogin() {
             <div className="card shadow">
               <h5 className="card-header">Login</h5>
               <div className="card-body">
-                {errorMsg && <p className="text-danger">{errorMsg}</p>}
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Login For
                 </label>
@@ -185,6 +181,7 @@ function TeacherLogin() {
                     name="inlineRadioOptions"
                     id="inlineRadio2"
                     value="Student"
+                    defaultChecked
                   />
                   <label className="form-check-label" htmlFor="inlineRadio2">
                     Student
@@ -229,18 +226,16 @@ function TeacherLogin() {
                     <button type="submit" className="btn btn-primary ccard">
                       Login
                     </button>
-                {/* {errorMsg && <button type="submit" className="ml-2 btn btn-warning ccard">
-                      Verify Your Account
-                    </button>} */}
-
+              
+                  {forgotStatus && 
                     <p className="mt-3">
                       <Link
                         href="/teacher-forgot-password"
-                        className="text-danger link-none"
+                        className="text-danger link-none text-sm"
                       >
                         Forget Password?
                       </Link>
-                    </p>
+                    </p>}
                   </form>
                 )}
 
@@ -265,7 +260,6 @@ function TeacherLogin() {
                     </div>
                     <div className="mb-3">
                       <label
-                        // for="exampleInputPassword1"
                         className="form-label"
                       >
                         Password
@@ -284,17 +278,15 @@ function TeacherLogin() {
                       Login
                     </button>
                    
-                    {/* {errorMsg && <button type="submit" className="ml-2 btn btn-warning ccard">
-                      Verify Your Account
-                    </button>} */}
+                  {forgotStatus && 
                     <p className="mt-3">
                       <Link
                         href="/student-forgot-password"
-                        className="text-danger link-none"
+                        className="text-danger link-none text-sm"
                       >
                         Forget Password?
                       </Link>
-                    </p>
+                    </p>}
                   </form>
                 )}
 

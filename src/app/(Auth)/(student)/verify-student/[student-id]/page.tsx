@@ -7,6 +7,7 @@ import { Session } from "inspector";
 
 function Verify(props:any) {
  const student_id = props.params['student-id']
+ console.log(student_id)
  useEffect(()=>{
   document.title='Student Verify'
  })
@@ -21,9 +22,10 @@ const [StudentData, setStudentData] = useState<StudentData>({
   'otp_digit': ""
 });
 
-const [errorMsg,setErrorMsg] = useState("");
+const [errorMsg,setErrorMsg] = useState<any>("");
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  setErrorMsg('')
   // const { name, value } = event.target;
   setStudentData({
     // we pass referance StudentData and then change our name and value acording to event 
@@ -34,29 +36,28 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaEl
 console.log(StudentData)
 
 const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-  // console.log(StudentData.status)
   e.preventDefault();
   const studentFormData:any = new FormData();
   studentFormData.append('otp_digit', StudentData.otp_digit);
-  // studentFormData.append('password', StudentData.password);
 try{
-  // console.log(studentFormData)
   axios.post(`${process.env.BASE_URL}verify-student/${student_id}/`, studentFormData)
     .then((response) => {
       console.log(response.data);
-      // if backend server response bool is true then we set in local storage
-      //  then we redirect to teacher dashboard and set it true
       if(response.data.bool==true){
-        window.location.href='/login'
-        
-
+             localStorage.setItem("studentLoginStatus", "true");
+            // set teacher id in local storage for future use---
+            localStorage.setItem("studentId", response.data.student_id);
+            // localStorage.setItem("token", response.data.token["access"]);
+            const token = response.data.token["access"];
+            document.cookie = `token=${token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+            document.cookie = "userType=student; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            
+            window.location.href="/student/dashboard";
       }else{
-        setErrorMsg(response.data.msg)
+        setErrorMsg("Wrong OTP !")
       }
     })
   }catch(error){
-    // setStudentData({...StudentData,status:'error'})
-    // console.log(StudentData.status)
     console.log(error);
   }
   
@@ -77,7 +78,6 @@ try{
                
                   <div className="mb-3">
                     <label
-                    //   for="exampleInputEmail1"
                       className="form-label text-start"
                     >
                       OTP
@@ -86,7 +86,7 @@ try{
                     <input  name="otp_digit" type="number"   
                     onChange={handleChange} 
                     value={StudentData.otp_digit as any}
-                    placeholder="Enter Your Email" className="form-control" />
+                    placeholder="Enter Your Otp" className="form-control" />
                   </div>
                   <button type="submit"
                    className="btn btn-primary">

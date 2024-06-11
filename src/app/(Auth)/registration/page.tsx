@@ -104,6 +104,9 @@ const Formik = useFormik({
             if (errorData.email) {
                 errorMessages.push(errorData.email[0]);
             }
+            if (errorData.mobile_no) {
+              errorMessages.push(errorData.mobile_no[0]);
+           }
             if (errorData.profile_img) {
               errorMessages.push(errorData.profile_img[0]);
             }
@@ -199,12 +202,6 @@ const formik = useFormik({
             if (errorData.email) {
                 errorMessages.push(errorData.email[0]);
             }
-            if (errorData.full_name) {
-                errorMessages.push(errorData.full_name[0]);
-            }
-            if (errorData.mobile_no) {
-                errorMessages.push(errorData.mobile_no[0]);
-            }
             if (errorData.profile_img) {
               errorMessages.push(errorData.profile_img[0]);
             }
@@ -258,6 +255,7 @@ const formik = useFormik({
                     name="inlineRadioOptions"
                     id="inlineRadio2"
                     value="Student"
+                    defaultChecked
                   />
                   <label className="form-check-label" htmlFor="inlineRadio2">
                     Student

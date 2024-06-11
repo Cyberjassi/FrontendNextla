@@ -422,7 +422,6 @@ function page(props: any) {
                   </Link>
                 ))}
             </p>
-            <p className="fw-bold">Duration: 3 Hours 30 Minutes</p>
             <p className="fw-bold">
               Total Enrolled: {course.total_enrolled_students} Students
             </p>

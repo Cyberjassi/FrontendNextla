@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Introduction to Educonnect Hotspot
 
-## Getting Started
+**Objective:** Showcase a comprehensive Learning Management System designed to facilitate seamless interaction between teachers and students, featuring intuitive navigation and robust functionality.
 
-First, run the development server:
+### Technologies
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+| **Backend**                          | **Frontend**                            | **Cloud Integration**   |
+|-------------------------------------|-----------------------------------------|-------------------------|
+| Python                              | Next.js   with TypeScript                              | Cloudinary              |
+| Django                              | Tailwind                               |                         |
+| REST API (Django Rest Framework)    | Bootstrap                                |                         |
+| PostgreSQL                          | Material UI                             |                         |
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Website
+- Explore Courses according to category
+- Search Courses with keyword (according to Tech and course Title)
+- About Us Page
+- Contact Us Page (Send query via email)
+- FAQ Page
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Teacher Panel
+- Login/Register/OTP verify via email
+- ForgetPassword/ChangePassword
+- Profile
+- Send message to Enrolled Student
+- Upload Course according to category and Upload Chapters for specific courses
+- Upload Assignment,Study Material
+- Can see the total enrolled students and their progress
 
-## Learn More
+### Student Panel
+- Login/Register/OTP verify via email
+- ForgetPassword/ChangePassword/Profile
+- Enrolled Courses
+- View the profile of content creator
+- Send message to Content Creators (Teacher)
 
-To learn more about Next.js, take a look at the following resources:
+### Admin Panel
+- Manage everything
+- Add/Update/Delete Any Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Conclusion
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This demo showcases a robust and user-friendly Learning Management System, offering a seamless experience for both teachers and students, with features tailored to enhance engagement and facilitate efficient learning.

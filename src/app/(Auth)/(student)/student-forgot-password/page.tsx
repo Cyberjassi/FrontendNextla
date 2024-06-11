@@ -1,9 +1,10 @@
 'use client'
 import { useEffect,useState } from "react";
 import axios from 'axios'
-// import navigateTo from "@/app/utils/navigation";
 // import { useRouter } from 'next/navigation'
 import Link from "next/link";
+import { handleApiError } from "@/app/errorHandling";
+import Swal from "sweetalert2";
 
 function FogotPassword() {
 
@@ -22,13 +23,12 @@ const [StudentData, setStudentData] = useState<StudentData>({
 
 });
 
-const [errorMsg,setErrorMsg] = useState("");
+
 const [successMsg,setSuccessMsg] = useState("");
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  // const { name, value } = event.target;
+  setSuccessMsg('')
   setStudentData({
-    // we pass referance StudentData and then change our name and value acording to event 
     ...StudentData,
     [event.target.name]: event.target.value
   });
@@ -36,25 +36,36 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaEl
 console.log(StudentData)
 
 const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-  // console.log(StudentData.status)
   e.preventDefault();
   const studentFormData = new FormData();
   studentFormData.append('email', StudentData.email);
   // studentFormData.append('password', StudentData.password);
 try{
-  // console.log(studentFormData)
+  Swal.fire({
+    title: 'Wait a moment....',
+    html: '<div class="full-screen-toast"><div class="loader"></div></div>',
+    icon: 'warning',
+    toast: true,
+    timer: 5000,
+    position: 'top-right',
+    timerProgressBar: true,
+    showConfirmButton: false,
+    customClass: {
+      popup: 'full-screen-popup' 
+    }
+  });
   axios.post(`${process.env.BASE_URL}student-forgot-password/`, studentFormData)
     .then((response) => {
       console.log(response.data);
       // if backend server response bool is true then we set in local storage
       //  then we redirect to teacher dashboard and set it true
+      setStudentData({email:''})
       if(response.data.bool==true){
         setSuccessMsg(response.data.msg)
-        setErrorMsg('');
-        StudentData.email=''
+
 
       }else{
-        setErrorMsg(response.data.msg)
+        handleApiError(response.data.msg)
         setSuccessMsg('')
       }
     })
@@ -77,7 +88,6 @@ try{
               <h5 className="card-header">  Enter Your Registered Email</h5>
               <div className="card-body">
                 {successMsg && <p className="text-success">{successMsg}</p>}
-                {errorMsg && <p className="text-danger">{errorMsg}</p>}
                 <form onSubmit={submitForm}>
                
                   <div className="mb-3">

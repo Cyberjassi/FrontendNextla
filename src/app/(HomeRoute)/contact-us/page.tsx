@@ -51,12 +51,12 @@ function ContactUs() {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-10">
       <div className="row">
         <div className="col-lg-8">
           <div className="card">
             <h3 className="card-header">Contact Us</h3>
-            <div className="card-body">
+            <div className="card-body shadow">
               {contactData.status === "success" && (
                 <p className="text-success">Thanks for Contacting Us</p>
               )}

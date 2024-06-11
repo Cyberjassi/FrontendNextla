@@ -47,11 +47,17 @@ try{
       // if backend server response bool is true then we set in local storage
       //  then we redirect to teacher dashboard and set it true
       if(response.data.bool==true){
-        window.location.href='/login'
+        localStorage.setItem("teacherLoginStatus", "true");
+        // set teacher id in local storage for future use---
+        localStorage.setItem("teacherId", response.data.teacher_id);
+        // localStorage.setItem("token", response.data.token["access"]);
+        const token = response.data.token["access"];
+        document.cookie ="userType=teacher; expires=expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        document.cookie = `token=${token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
         
-
+        window.location.href="/teacher/dashboard";
       }else{
-        setErrorMsg(response.data.msg)
+        setErrorMsg("Wrong OTP !")
       }
     })
   }catch(error){
