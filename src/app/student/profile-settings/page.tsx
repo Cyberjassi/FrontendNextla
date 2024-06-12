@@ -1,11 +1,10 @@
 'use client'
 import React from "react";
-import Link from "next/link";
-
 import UserSidebar from "@/components/student/UserSidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import cookies from 'js-cookie';
 
 function ProfileSettings() {
   interface StudentData {
@@ -26,11 +25,9 @@ function ProfileSettings() {
   });
   const studentId = localStorage.getItem('studentId');
   useEffect(() => {
-    // fetch current teacher data
     axios
       .get(`${process.env.BASE_URL}student/${studentId}`)
-      .then((response) => {
-       
+      .then((response) => { 
         console.log("this is the student data",response.data)
         setstudentData({
           full_name: response.data.full_name,
@@ -43,7 +40,6 @@ function ProfileSettings() {
         console.log("this is change",studentData)
       })
       .catch((error) => {
-        // Handle error
         console.error("Error fetching course data:", error);
       });
   }, []);
@@ -53,9 +49,7 @@ function ProfileSettings() {
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // const { name, value } = event.target;
     setstudentData({
-      // we pass referance studentData and then change our name and value acording to event 
       ...studentData,
       [event.target.name]: event.target.value
     });
@@ -63,11 +57,11 @@ function ProfileSettings() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Get the first file from the input
+      const file = files[0]; 
       setstudentData({
         ...studentData,
-        profile_img: file, // Set the file directly to the featured_img field
-        p_img: URL.createObjectURL(file), // Set the preview image URL
+        profile_img: file, 
+        p_img: URL.createObjectURL(file),
       });
     }
   };
@@ -90,13 +84,14 @@ function ProfileSettings() {
 
     try {
       // console.log("here course form data", [...studentFormData.entries()]);
-
+      const token = cookies.get('token')
       axios
         .put(
           `${process.env.BASE_URL}student/${studentId}/`,
           studentFormData,
           {
             headers: {
+              'Authorization': `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
           }

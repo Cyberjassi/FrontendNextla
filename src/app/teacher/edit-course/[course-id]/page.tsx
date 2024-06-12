@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
 import Swal from "sweetalert2";
+import cookies from 'js-cookie';
 
 function EditCourse(props: any) {
   interface CourseData {
@@ -101,7 +102,7 @@ function EditCourse(props: any) {
 
     try {
       // console.log("here course form data", [...courseFormData.entries()]);
-
+      const token = cookies.get('token')
       axios
         .put(
           `${process.env.BASE_URL}teacher-courses-detail/${currentCourse}`,
@@ -109,6 +110,7 @@ function EditCourse(props: any) {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              'Authorization': `Bearer ${token}`
             },
           }
         )

@@ -5,6 +5,7 @@ import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
 import {useRouter} from "next/navigation";
+import cookies from 'js-cookie';
 
 
 
@@ -16,8 +17,13 @@ function studentAssignments() {
   const studentId:any = localStorage.getItem('studentId')
 
   useEffect (()=>{
+    const token = cookies.get('token')
     try{
-        axios.get(`${process.env.BASE_URL}my-assignments/${studentId}`)
+        axios.get(`${process.env.BASE_URL}my-assignments/${studentId}`, {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+        })
         .then((res)=>{
           setassignmentData(res.data)
         })
@@ -29,7 +35,6 @@ function studentAssignments() {
 
   const markAsDone = (assignment_id:string,title:string,detail:string,student:string,teacher:string) =>{
     const studentID = localStorage.getItem('studentId');
-    // e.preventDefault();
     const formData = new FormData();
     formData.append('student_status',true as any);
     formData.append('title',title);
@@ -39,17 +44,22 @@ function studentAssignments() {
   
   try{
     // console.log("here course form data",[...courseFormData.entries()])
-    
+    const token = cookies.get('token')
     axios.put(`${process.env.BASE_URL}update-assignments/${assignment_id}/`, formData,{
       headers: {
         'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then((response) => {
         console.log(response.data);
         if(response.status==200 || response.status==201){
           try{
-            axios.get(`${process.env.BASE_URL}my-assignments/${studentId}`)
+            axios.get(`${process.env.BASE_URL}my-assignments/${studentId}` ,{
+              headers: {
+                  'Authorization': `Bearer ${token}`
+              }
+            })
             .then((res)=>{
               setassignmentData(res.data)
             })
@@ -65,7 +75,6 @@ function studentAssignments() {
   }
 console.log("this is assignment data ",assignmentData)
 
-// console.log("this is teacher data",courseData)
   return (
     <div className="container mt-10">
       <div className="row">
@@ -114,28 +123,3 @@ console.log("this is assignment data ",assignmentData)
 }
 
 export default studentAssignments;
-{
-  /* <div className="card">
-            <h5 className="card-header">My Courses</h5>
-            <div className="card-body">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link to="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div> */
-}

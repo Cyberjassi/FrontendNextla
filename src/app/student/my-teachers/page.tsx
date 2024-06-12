@@ -5,6 +5,7 @@ import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
 import MessageList from "./MessageList";
+import cookies from 'js-cookie';
 
 function MyTeachers() {
   const [teacherData,setteacherData] = useState<any>([])
@@ -12,8 +13,13 @@ function MyTeachers() {
   const studentId = localStorage.getItem('studentId')
 
   useEffect (()=>{
+    const token = cookies.get('token')
     try{
-        axios.get(`${process.env.BASE_URL}fatch-my-teachers/${studentId}`)
+        axios.get(`${process.env.BASE_URL}fatch-my-teachers/${studentId}`, {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+        })
         .then((res)=>{
           setteacherData(res.data)
         })

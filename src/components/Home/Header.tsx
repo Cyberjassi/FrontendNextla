@@ -2,13 +2,15 @@ import React from "react";
 import Link from "next/link";
 import logout from "@/app/(Auth)/logout/logout";
 import { useState,useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {useFormik} from "formik"
 
 function Header() {
   interface Search {
     'search': string;
   }
   
-  
+  const route = useRouter();
   const [searchString, setsearchString] = useState<Search>({
     "search":''
   });
@@ -16,20 +18,27 @@ function Header() {
   const studentLoginStatus = localStorage.getItem("studentLoginStatus");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // const { name, value } = event.target;
     setsearchString({
-      // we pass referance CourseData and then change our name and value acording to event 
       ...searchString,
       [event.target.name]: event.target.value
     });
   };
   
 
-  const searchCourse = () =>{
-    if (searchString.search != ''){
-    window.location.href = "/search/"+searchString.search;
+  const searchCourse = () => {
+    const searchRegex = /^[a-zA-Z\s]*$/; // Regex pattern to allow only alphabets and spaces
+  
+    // Check if search string is valid
+    if (
+      searchString.search.trim() !== '' && // Not empty after trimming whitespace
+      searchRegex.test(searchString.search) && // Matches the regex pattern
+      !/^\d/.test(searchString.search) // Does not start with a number
+    ) {
+      route.push("/search/" + searchString.search);
+    } else {
+      alert("Please enter a valid search query.");
     }
-  }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
@@ -53,9 +62,7 @@ function Header() {
           </button>
         </form>
       </div>
-
-      {/* Right side */}
-      <ul className="navbar-nav ms-auto me-5"> {/* Increased margin to me-5 */}
+      <ul className="navbar-nav ms-auto me-5"> 
         <li className="nav-item active">
           <Link className="nav-link" href="/">
             Home
@@ -66,11 +73,6 @@ function Header() {
             Courses
           </Link>
         </li>
-        {/* <li className="nav-item">
-          <Link className="nav-link" href="/categories">
-            Categories
-          </Link>
-        </li> */}
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"
@@ -139,50 +141,6 @@ function Header() {
     </div>
   </nav>  );
 }
-{
-  /* my logic */
-}
-{
-  /* {teacherLoginStatus!=='true' &&
-<li className="nav-item dropdown">
-  <a
-    className="nav-link dropdown-toggle"
-    href="#"
-    id="userDropdown"
-    role="button"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-  >
-    User
-  </a>
-  <ul className="dropdown-menu" aria-labelledby="userDropdown">
-   
-        <li>
-          <Link className="dropdown-item" href="/user/registration">
-            Register
-          </Link>
-        </li>
-        <li>
-          <Link className="dropdown-item" href="/user/login">
-            Login
-          </Link>
-        </li>
-   
-    <li>
-      <Link className="dropdown-item" href="/user/dashboard">
-        Dashboard
-      </Link>
-    </li>
-    <li>
-      <hr className="dropdown-divider" />
-    </li>
-    <li>
-      <a className="dropdown-item" href="/teacher/logout">
-        Logout
-      </a>
-    </li>
-  </ul>
-</li>} */
-}
+
 
 export default Header;

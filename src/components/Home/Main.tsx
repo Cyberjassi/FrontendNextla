@@ -1,47 +1,29 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import Header from './Header';
-// import Footer from './Footer';
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import './Home.module.css';
-
 import Button from "@mui/material/Button";
 import cookies from 'js-cookie';
-
 import Rating from './Rating'
+
 function Main() {
-  
-  
-  // const siteUrl = 'https://res.cloudinary.com/daajyumzx/'
-  const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
+  const [allCourses, setAllCourses] = useState<any[]>([]); 
   const [popularCourseData, setpopularCourseData] = useState<any[]>([]);
   const [popularTeacherData, setpopularTeacherData] = useState<any[]>([]);
   const [studetTestimonnialData, setstudetTestimonnialData] = useState<any[]>(
     []
   );
-  const role = localStorage.getItem("teacherLoginStatus")
-    ? "teacher"
-    : localStorage.getItem("studentLoginStatus")
-    ? "student"
-    : "";
 
- 
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-    
-    const token = cookies.get('token')
 
+    const token = cookies.get('token')
     console.log("this is my token",token)
-    
-   const response = axios.get(`${process.env.BASE_URL}course/?result=4`, {
+    const response = axios.get(`${process.env.BASE_URL}course/?result=4`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
-        // params: {
-        //   role: role,
-        // },
       })
       .then((response) => {
         console.log("Data:", response.data);
@@ -102,7 +84,6 @@ function Main() {
             >
               See All
             </Button>
-            {/* <Button variant="contained">Hello world</Button> */}
           </h3>
           <div className="row mb-4">
             {allCourses.map((course: any, index: number) => (
@@ -131,9 +112,6 @@ function Main() {
                     <div className="title">
                     <span>Rating: <Rating rating={course.course_rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
-                      {/* <span className="float-end">
-                        Views:{row.course.course_views}
-                      </span> */}
                     </div>
                   </div>
                 </div>
@@ -181,9 +159,6 @@ function Main() {
                     <div className="title">
                     <span>Rating: <Rating rating={row.average_rating} /></span>
                       <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
-                      {/* <span className="float-end">
-                        Views:{row.course.course_views}
-                      </span> */}
                     </div>
                   </div>
                 </div>
@@ -250,8 +225,6 @@ function Main() {
                     data-bs-target="#carouselExampleIndicators"
                     data-bs-slide-to={index}
                     className={index == 0 ? "active" : ""}
-                    // aria-current="true"
-                    // aria-label="Slide 1"
                   ></button>
                 ))}
             </div>

@@ -6,6 +6,7 @@ import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
 import Swal from "sweetalert2";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
+import cookies from 'js-cookie';
 
 
 function TeacherChangePassword() {
@@ -34,11 +35,15 @@ function TeacherChangePassword() {
     teacherFormData.append("password", teacherData.password);
     
     try {
+      const token = cookies.get('token')
       axios
         .post(
           `${process.env.BASE_URL}teacher/change-password/${teacherId}/`,
-          teacherFormData,
-        )
+          teacherFormData,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+     } )
         .then((response) => {
           console.log(response.data);
           if (response.status == 200) {

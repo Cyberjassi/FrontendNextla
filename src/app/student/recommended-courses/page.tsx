@@ -3,14 +3,21 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
+import cookies from 'js-cookie';
+
 
 function RecommendedCourses() {
   const [courseData, setCourseData] = useState<any>([]);
-  
+
   const fetchData = async () => {
     try {
+      const token = cookies.get('token')
       const response = await axios.get(
-        `${process.env.BASE_URL}fatch-recommended-courses/?studentId=${studentId}`
+        `${process.env.BASE_URL}fatch-recommended-courses/?studentId=${studentId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+      }
       );
       setCourseData(response.data.results);
     } catch (error) {

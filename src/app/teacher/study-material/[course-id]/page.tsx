@@ -89,10 +89,8 @@ function StudyMaterials(props: any) {
                   </tr>
                 </thead>
                 <tbody>
-                  {!studyData ? (
-                    <p>Loading....</p>
-                  ) : (
-                    studyData &&
+            
+                    {studyData &&
                     studyData.map((row: any, index: any) => (
                       <tr key={index}>
                         <td>
@@ -114,7 +112,7 @@ function StudyMaterials(props: any) {
                         </td>
                       </tr>
                     ))
-                  )}
+                    }
                 </tbody>
               </table>
             </div>

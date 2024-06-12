@@ -2,17 +2,25 @@
 import UserSidebar from "@/components/student/UserSidebar";
 import { useState,useEffect } from "react";
 import axios from "axios";
-import React, { ReactNode } from 'react';
 import Link from 'next/link';
+import cookies from 'js-cookie';
 
 function TeacherDashboard() {
   const [dashboard,setDashboard] = useState<any>([])
   const studentId = localStorage.getItem('studentId')
 
   useEffect(() => {
+    const token = cookies.get('token')
     async function fetchData() {
       try {
-        const response = await axios.get(`${process.env.BASE_URL}student/dashboard/${studentId}`);
+        const response = await axios.get(`${process.env.BASE_URL}student/dashboard/${studentId}`, {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+          // params: {
+          //   role: role,
+          // },
+        });
         console.log(response);
         setDashboard(response.data);
       } catch (error) {

@@ -4,6 +4,7 @@ import { useEffect ,useState} from 'react';
 import Link from "next/link"
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
+import cookies from 'js-cookie';
 
 
 function FavoriteCourses() {
@@ -12,8 +13,13 @@ function FavoriteCourses() {
   const studentId = localStorage.getItem('studentId')
 
   useEffect (()=>{
+    const token = cookies.get('token')
     try{
-        axios.get(`${process.env.BASE_URL}fatch-favorite-courses/${studentId}`)
+        axios.get(`${process.env.BASE_URL}fatch-favorite-courses/${studentId}`, {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+        })
         .then((res)=>{
           setCourseData(res.data)
         })

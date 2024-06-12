@@ -10,6 +10,7 @@ import useRazorpay from "react-razorpay";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import Rating from "@/components/Home/Rating";
+import cookies from 'js-cookie';
 
 function page(props: any) {
   const route = useRouter()
@@ -39,6 +40,7 @@ function page(props: any) {
   const Razorpay = useRazorpay();
 
   const complete_order = (paymentID: any, orderID: any, signature: any) => {
+    const token = cookies.get('token')
     axios({
       method: "post",
       url: `${process.env.BASE_URL}order/complete/`,
@@ -58,6 +60,7 @@ function page(props: any) {
   };
 
   const razorpayPayment = (price: any) => {
+    const token = cookies.get('token')
     axios
       .post(`${process.env.BASE_URL}order/create/`, {
         amount: price,
@@ -242,13 +245,15 @@ function page(props: any) {
     favCourseFormData.append("status", true as any);
 
     try {
-      axios
-        .post(
+      const token = cookies.get('token')
+
+      axios.post(
           `${process.env.BASE_URL}student-add-favorite-course/`,
           favCourseFormData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              'Authorization': `Bearer ${token}`
             },
           }
         )

@@ -1,7 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-// import Header from './Header';
-// import Footer from './Footer';
 import axios from 'axios';
 import Link from 'next/link';
 import Rating from '@/components/Home/Rating';
@@ -10,7 +8,7 @@ import Button from "@mui/material/Button";
 
 function Search(props:any) {
   const searchString = props.params['searchString']
-  const [allCourses, setAllCourses] = useState<any[]>([]); // Specify the type as an array of any
+  const [allCourses, setAllCourses] = useState<any[]>([]); 
   useEffect(() => {
     axios.get(`${process.env.BASE_URL}course/?searchString=${searchString}`)
     .then(response => {
@@ -37,7 +35,7 @@ function Search(props:any) {
             </Button>
           </h3>
           <div className="row mb-4">
-            {allCourses.length == 0 && <p>No Course there for for {searchString}</p>}
+            {allCourses.length == 0 && <p>No Course there for {searchString}</p>}
             {allCourses && allCourses.map((course:any,index:number)=>
               <div className="col-md-3" key={course.id}>
                 <div className="card ccard shadow">
@@ -47,7 +45,6 @@ function Search(props:any) {
                       src={course.featured_img ?  course.featured_img : "/img/default.png"}
                       alt={course.title}
                     />
-                    
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
@@ -69,11 +66,7 @@ function Search(props:any) {
                       Rating: <Rating rating={course.course_rating} />
                     </span>
                   )}
-                    
                       <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
-                      {/* <span className="float-end">
-                        Views:{row.course.course_views}
-                      </span> */}
                     </div>
                   </div>
                 </div>

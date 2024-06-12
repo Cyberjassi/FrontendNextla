@@ -4,25 +4,24 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import MessageList from "./MessageList";
+import cookies from 'js-cookie';
 
-// import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
-// import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 function Myusers(props: any) {
-  // const currentCourse = props.params['course-id']
 
   const [studentData, setStudentData] = useState<any>([]);
-
-  // to get teacher id from local storage---
   const teacher_id = localStorage.getItem("teacherId");
 
   useEffect(() => {
+    const token = cookies.get('token')
     try {
       axios
         .get(
-          `${process.env.BASE_URL}fatch-all-enrolled-students/${teacher_id}`
-        )
+          `${process.env.BASE_URL}fatch-all-enrolled-students/${teacher_id}`,{headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then((res) => {
           setStudentData(res.data);
         });
@@ -49,11 +48,7 @@ function Myusers(props: any) {
   };
 
   const submitForm = (student_id: any) => {
-    // e.preventDefault();
     const msgFormData = new FormData();
-
-    // msgFormData.append("teacher", teacher_id as any);
-    // msgFormData.append("student", student_id);
     msgFormData.append("msg_text", msgData.msg_text);
     msgFormData.append("msg_from", "teacher");
 
