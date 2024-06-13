@@ -34,13 +34,14 @@ function MyTeachers() {
     msg_text: "",
   });
 
-  const [successMsg, setSuccessMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState<any>("");
   const [errorMsg, setErrorMsg] = useState("");
   
   
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    setSuccessMsg("")
     setmsgData({
       ...msgData,
       [event.target.name]: event.target.value,

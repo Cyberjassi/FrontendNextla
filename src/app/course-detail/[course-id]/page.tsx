@@ -582,7 +582,7 @@ function page(props: any) {
             {userLoginStatus !== "success" && (
               <p>
                 <Link className="btn btn-success" href="/login">
-                  Please login to enroll in this course
+                Login as student to enroll
                 </Link>
               </p>
             )}

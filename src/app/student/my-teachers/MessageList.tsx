@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
 
 function MessageList(props: any) {
   const [msgData, setmsgData] = useState([]);
@@ -72,27 +71,3 @@ function MessageList(props: any) {
 }
 
 export default MessageList;
-
-{/* <div className="col-5">
-<div className="alert alert-primary mb-1">
- A simple primary alert
-</div>
- <small className="text-muted">time</small> */}
-// </div>
-{/* My messages */}
-{/* <div className="col-4 offset-7">
-<div className="alert alert-success mb-1">
- heeef
-</div>
-  <small className="text-muted">time</small>
-</div> */}
-
-// {row.msg_from != "teacher" &&
-//   <div className="row mb-4">
-//     {/* from another users */}
-//     <div className="col-5">
-//       <div className="alert alert-primary mb-1">{row.msg_text}</div>
-//       <small className="text-muted">{row.msg_time}</small>
-//     </div>
-//   </div>
-// }

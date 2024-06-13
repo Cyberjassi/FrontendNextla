@@ -34,13 +34,14 @@ function Myusers(props: any) {
     msg_text: "",
   });
 
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState<any>("");
+  const [errorMsg, setErrorMsg] = useState<any>("");
   
   
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    setSuccessMsg("")
     setmsgData({
       ...msgData,
       [event.target.name]: event.target.value,
@@ -93,6 +94,7 @@ function Myusers(props: any) {
   const grouphandleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    successMsg("")
     setgroupMsgData({
       ...groupMsgData,
       [event.target.name]: event.target.value,

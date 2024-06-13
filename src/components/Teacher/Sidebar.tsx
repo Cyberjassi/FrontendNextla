@@ -21,7 +21,7 @@ function TeacherSidebar() {
         </Link>
 
         <Link href="/teacher/my-users" className="list-group-item list-group-item-action">
-          My Users
+          My Students
         </Link>
 
         <Link href="/teacher/profile-settings" className="list-group-item list-group-item-action">

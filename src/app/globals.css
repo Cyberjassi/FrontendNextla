@@ -152,3 +152,15 @@
     100% { transform: rotate(360deg); }
   }
   
+  .navbar-brand {
+    font-family: 'Arial', sans-serif;
+    font-size: 36px;
+    font-weight: bold;
+    color: #ff5722; /* Orange color for emphasis */
+    text-decoration: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  }
+  
+  .navbar-brand:hover {
+    transform: scale(1.05); /* Add a slight scale effect on hover for interaction */
+  }
