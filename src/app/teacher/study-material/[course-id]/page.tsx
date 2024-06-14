@@ -77,7 +77,7 @@ function StudyMaterials(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">All Study Materials ({totalResult}) <Link href={`/teacher/add-study-material/${currentCourse}`} className="btn btn-sm btn-success float ccard">Add Study Material</Link></h5>
+            <h5 className="card-header text-center bg-primary text-white">All Study Materials ({totalResult}) <Link href={`/teacher/add-study-material/${currentCourse}`} className="btn btn-sm btn-success float ccard">Add Study Material</Link></h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>

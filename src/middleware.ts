@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest, response: NextResponse) {
   const authtoken = request.cookies.get('token');
   const userType: any = request.cookies.get('userType');
-  // console.log("middleware", userType.value);
 
   const loggedInUserNotAccessPaths = ['/login', '/registration'];
 

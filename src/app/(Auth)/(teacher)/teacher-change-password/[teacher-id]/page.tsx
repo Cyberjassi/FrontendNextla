@@ -6,8 +6,6 @@ import { handleApiError } from "@/app/errorHandling";
 import {useFormik} from "formik"
 import * as Yup from 'yup';
 
-
-
 function TeacherChangPassword(props:any) {
 
   const route = useRouter()
@@ -65,11 +63,7 @@ const submitForm = async (values:any) => {
         setSuccessMsg('');
       }
     });
-
-  
 };
-
-
 
   return (
     <div>
@@ -77,19 +71,16 @@ const submitForm = async (values:any) => {
         <div className="row">
           <div className="col-6 offset-3">
             <div className="card">
-              <h5 className="card-header">  Enter Your Password</h5>
+              <h5 className="card-header text-center bg-primary text-white">  Enter Your Password</h5>
               <div className="card-body">
                 {successMsg && <p className="text-success">{successMsg}</p>}
-                
                 <form onSubmit={formik.handleSubmit}>
-               
                   <div className="mb-3">
                     <label
                       className="form-label text-start"
                     >
                      Enter Your Password
                     </label>
-
                     <input  name="password" type="password"   
                     value={formik.values.password}
                     onChange={formik.handleChange}

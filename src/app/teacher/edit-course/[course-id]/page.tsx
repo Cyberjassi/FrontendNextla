@@ -29,13 +29,10 @@ function EditCourse(props: any) {
   const currentCourse = props.params["course-id"];
   const teacherId = localStorage.getItem('teacherId')
 
-  // for category Retriew ---
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCategoryInfo() as any);
-
-    // fetch current course data
     axios
       .get(`${process.env.BASE_URL}teacher-courses-detail/${currentCourse}`)
       .then((response) => {
@@ -56,15 +53,12 @@ function EditCourse(props: any) {
       });
   }, []);
   const state = useSelector((state: any) => state);
-  // console.log("this is my State", state);
   let dataCategory = state.category.data;
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    // const { name, value } = event.target;
     setCourseData({
-      // we pass referance CourseData and then change our name and value acording to event
       ...CourseData,
       [event.target.name]: event.target.value,
     });
@@ -72,11 +66,11 @@ function EditCourse(props: any) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Get the first file from the input
+      const file = files[0]; 
       setCourseData({
         ...CourseData,
-        featured_img: file, // Set the file directly to the featured_img field
-        prev_img: URL.createObjectURL(file), // Set the preview image URL
+        featured_img: file, 
+        prev_img: URL.createObjectURL(file), 
       });
     }
   };
@@ -86,9 +80,6 @@ function EditCourse(props: any) {
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const courseFormData = new FormData();
-    // Object.entries(CourseData).forEach(([key, value]) => {
-    //   courseFormData.append(key, value as string | Blob);
-    // });
     const categoryId = parseInt(CourseData.category, 10);
  
     courseFormData.append("category", CourseData.category);
@@ -101,7 +92,6 @@ function EditCourse(props: any) {
     courseFormData.append("techs", CourseData.techs);
 
     try {
-      // console.log("here course form data", [...courseFormData.entries()]);
       const token = cookies.get('token')
       axios
         .put(
@@ -141,8 +131,8 @@ function EditCourse(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">Edit Course</h5>
-            <form onSubmit={submitForm} className="container">
+            <h5 className="card-header text-center bg-primary text-white">Edit Course</h5>
+            <form onSubmit={submitForm} className="container mt-3">
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Category
@@ -153,7 +143,6 @@ function EditCourse(props: any) {
                   className="form-control"
                   value={CourseData.category}
                 >
-                  {/* if apit take time to load then show loading otherwise show data */}
                   {state.category.isLoading ? (
                     <p>Loading...</p>
                   ) : (
@@ -215,7 +204,6 @@ function EditCourse(props: any) {
                       alt=""
                       className="img-fluid"
                     />
-                   <p>remain</p>
                   </div>
                 }
               </div>
@@ -234,7 +222,7 @@ function EditCourse(props: any) {
                   ></textarea>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary ccard">
+              <button type="submit" className="btn btn-primary w-100">
                 Submit
               </button>
             </form>

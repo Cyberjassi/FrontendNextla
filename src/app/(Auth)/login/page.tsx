@@ -3,13 +3,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
-import Swal from "sweetalert2";
 import {handleApiError} from '../../errorHandling'
-import logout from '../logout/logout'
 
 
 function TeacherLogin() {
-  const router = useRouter()
   useEffect(() => {
     document.title = "Login";
   });
@@ -27,15 +24,11 @@ function TeacherLogin() {
     email: "",
     password: "",
   });
-
-
-
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setforgotStatus(false)
     setTeacherData({
-      // we pass referance teacherData and then change our name and value acording to event
       ...teacherData,
       [event.target.name]: event.target.value,
     });
@@ -44,18 +37,10 @@ function TeacherLogin() {
 
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    // console.log(teacherData.status)
     e.preventDefault();
-    // const teacherFormData = new FormData();
-    // teacherFormData.append('email', teacherData.email);
-    // teacherFormData.append('password', teacherData.password);
     try {
-      // console.log(teacherFormData)
-    const response =  await axios.post(`${process.env.BASE_URL}teacher-login/`, teacherData)
-        
+    const response =  await axios.post(`${process.env.BASE_URL}teacher-login/`, teacherData)   
           console.log(response.data);
-          // if backend server response bool is true then we set in local storage
-          //  then we redirect to teacher dashboard and set it true
           if (response.data.bool == true) {
             localStorage.setItem("teacherLoginStatus", "true");
             // set teacher id in local storage for future use---

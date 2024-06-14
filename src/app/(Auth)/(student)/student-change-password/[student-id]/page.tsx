@@ -6,17 +6,13 @@ import { handleApiError } from "@/app/errorHandling";
 import {useFormik} from "formik"
 import * as Yup from 'yup';
 
-
-
 function StudentChangPassword(props:any) {
 
-  const route = useRouter()
-
+ const route = useRouter()
  const student_id = props.params['student-id']
  useEffect(()=>{
   document.title='Student Change Password'
  })
-
 
 const [successMsg,setSuccessMsg] = useState("");
 
@@ -51,7 +47,6 @@ const submitForm = async (values:any) => {
       if(response.data.bool==true){
         setSuccessMsg(response.data.msg)
         route.push('/login')
-
       }
       else{
         handleApiError(response.data.msg)
@@ -65,8 +60,6 @@ const submitForm = async (values:any) => {
         setSuccessMsg('');
       }
     });
-
-  
 };
 
 
@@ -77,7 +70,7 @@ const submitForm = async (values:any) => {
         <div className="row">
           <div className="col-6 offset-3">
             <div className="card">
-              <h5 className="card-header">  Enter Your Password</h5>
+              <h5 className="card-header text-center bg-primary text-white">  Enter Your Password</h5>
               <div className="card-body">
                 {successMsg && <p className="text-success">{successMsg}</p>}
                 
@@ -85,12 +78,11 @@ const submitForm = async (values:any) => {
                
                   <div className="mb-3">
                     <label
-                    //   for="exampleInputEmail1"
+                      htmlFor="exampleInputEmail1"
                       className="form-label text-start"
                     >
                      Enter Your Password
                     </label>
-
                     <input  name="password" type="password"   
                     value={formik.values.password}
                     onChange={formik.handleChange}

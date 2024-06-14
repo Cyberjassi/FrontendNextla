@@ -227,7 +227,7 @@ const formik = useFormik({
   <h5 className="card-header text-center bg-primary text-white">Registration Form</h5>
   <div className="card-body"  style={{ backgroundColor: '#ffffff', border: '1px solid #ced4da', borderRadius: '5px' }}>
     {/* Radio buttons for selecting user type */}
-    <label htmlFor="registrationType" className="form-label">Register For&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <label htmlFor="registrationType" className="form-label">Register As-&nbsp;&nbsp;&nbsp;&nbsp;</label>
     <div className="form-check form-check-inline mb-3">
       <input
         onChange={(e) => setCheck(e.target.value)}

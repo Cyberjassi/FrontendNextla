@@ -30,11 +30,12 @@ function Header() {
   
     // Check if search string is valid
     if (
-      searchString.search.trim() !== '' && // Not empty after trimming whitespace
-      searchRegex.test(searchString.search) && // Matches the regex pattern
-      !/^\d/.test(searchString.search) // Does not start with a number
+      searchString.search.trim() !== '' && 
+      searchRegex.test(searchString.search) &&
+      !/^\d/.test(searchString.search)
     ) {
       route.push("/search/" + searchString.search);
+      setsearchString({search:''})
     } else {
       alert("Please enter a valid search query.");
     }

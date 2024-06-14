@@ -387,6 +387,10 @@ function page(props: any) {
           icon: "error",
         });
       });
+
+
+      //video model-
+      
   };
   console.log("this is chapter data ", chapterData);
   return (
@@ -594,14 +598,13 @@ function page(props: any) {
             {chapterData.length === 0 ? (
             <p className="text-red-500 text-sm ml-14 mt-3">No Chapters There</p>) : (
             <div className="card">
-              <h3 className="card-header">Course Videos</h3>
+              <h3 className="card-header text-center bg-primary text-white">Course Videos</h3>
               <ul className="list-group list-group-flush">
                 {chapterData &&
                   chapterData.map((chapter: any, index: any) => (
                     <li key={index} className="list-group-item">
                       {chapter.title}
                       <span className="float-end">
-                        <span className="me-5">static</span>
                         <button
                           className="btn  btn-danger "
                           data-bs-toggle="modal"

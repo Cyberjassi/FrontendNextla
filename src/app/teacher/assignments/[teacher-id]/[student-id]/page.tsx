@@ -79,7 +79,7 @@ function ShowAssignment(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header">All Assignment ({totalResult}) <Link href={`/teacher/add-assignment/${teacher_id}/${student_id}`} className="btn btn-sm btn-success float">Add Assignment</Link></h5>
+            <h5 className="card-header text-center bg-primary text-white">All Assignment ({totalResult}) <Link href={`/teacher/add-assignment/${teacher_id}/${student_id}`} className="btn btn-sm btn-success float">Add Assignment</Link></h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>

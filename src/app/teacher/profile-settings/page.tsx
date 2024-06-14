@@ -130,7 +130,7 @@ console.log(teacherData)
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">Profile Settings</h5>
+            <h5 className="card-header text-center bg-primary text-white">Profile Settings</h5>
             <div className="card-body">
               <div className="mb-3 row">
                 <label
@@ -229,7 +229,7 @@ console.log(teacherData)
                 </div>
               </div>
               <hr />
-              <button onClick={submitForm as any} className="btn btn-primary ccard">Update</button>
+              <button onClick={submitForm as any} className="btn btn-primary  w-100">Update</button>
             </div>
           </div>
         </section>

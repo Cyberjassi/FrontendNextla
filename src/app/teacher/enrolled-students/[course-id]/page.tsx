@@ -2,17 +2,11 @@
 import React from "react";
 import { useEffect ,useState} from 'react';
 import TeacherSidebar from "@/components/Teacher/Sidebar";
-
-// import { getCourseInfo } from "@/app/redux/Course/CourseRetreieve";
-// import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-
 
 function enrolledStudents(props:any) {
   const currentCourse = props.params['course-id']
   const [studentData,setStudentData] = useState<any>([])
-
-  // to get teacher id from local storage---
   const teacherId = localStorage.getItem('teacherId')
 
   useEffect (()=>{
@@ -34,13 +28,14 @@ function enrolledStudents(props:any) {
         </aside>
         <section className="col-md-9 shadow">
          <div className="card">
-            <h5 className="card-header">Enrolled Student List</h5>
+            <h5 className="card-header text-center bg-primary text-white">Enrolled Student List</h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
                   <tr>
                   <th>Name</th>
-                  <th>Image</th>
+                  <th>Profile</th>
+                  <th>Email</th>
                     <th>Total Enrolled</th>
                     <th>Intrested Categories</th>
                   </tr>
@@ -49,10 +44,10 @@ function enrolledStudents(props:any) {
                     {studentData.map((row:any,index:any)=>
                     <tr>
                         <td>{row.student.full_name}</td>
+                        <td><img src={row.student.profile_img ? row.student.profile_img : "/img/default.png"} width="80" className="rounded" alt={row.student.full_name} /></td>
                         <td>{row.student.email}</td>
                         <td>{row.student.username}</td>
                         <td>
-                            {/* <Link className="btn btn-info btn-sm" href={`/view-student/${row.student.id}`}>View</Link> */}
                             {row.student.interested_categories}
                         </td>
                     </tr>
@@ -68,28 +63,3 @@ function enrolledStudents(props:any) {
 }
 
 export default enrolledStudents;
-{
-  /* <div className="card">
-            <h5 className="card-header">My Courses</h5>
-            <div className="card-body">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link href="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div> */
-}

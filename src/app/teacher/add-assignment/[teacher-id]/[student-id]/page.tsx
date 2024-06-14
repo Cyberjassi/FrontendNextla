@@ -108,7 +108,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header">Add Assignment</h5>
+            <h5 className="card-heade text-center bg-primary text-white">Add Assignment</h5>
             <form className="container" onSubmit={submitForm}>
               <div className="mb-3">
                 <label
@@ -143,7 +143,7 @@ const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
                   ></textarea>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary w-100">
                 Submit
               </button>
             </form>

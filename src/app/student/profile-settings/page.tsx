@@ -124,7 +124,7 @@ function ProfileSettings() {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">Profile Settings</h5>
+            <h5 className="card-header text-center bg-primary text-white">Profile Settings</h5>
             <div className="card-body">
             <div className="mb-3 row">
                 <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
@@ -222,7 +222,7 @@ function ProfileSettings() {
                 </div>
               </div>
                 <hr />
-                <button className="btn btn-primary ccard" onClick={submitForm as any}>Update</button>
+                <button className="btn btn-primary  w-100" onClick={submitForm as any}>Update</button>
           
             </div>
           </div>

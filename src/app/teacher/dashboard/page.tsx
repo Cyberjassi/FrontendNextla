@@ -50,7 +50,7 @@ function TeacherDashboard() {
               </div>
               <div className="col-md-4">
                 <div className="card border-primary ccard">
-                  <h5 className="card-header bg-success text-white">Total Students</h5>
+                  <h5 className="card-header bg-success text-white">Enrolled Courses</h5>
                   <div className="card-body">
                     <h3>
                       <Link className="custom-link-style color-primary" href='/teacher/my-users'>

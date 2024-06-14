@@ -96,7 +96,7 @@ function MyTeachers() {
         </aside>
         <section className="col-md-9">
          <div className="card">
-            <h5 className="card-header">My Teachers</h5>
+            <h5 className="card-header text-center bg-primary text-white">My Teachers</h5>
             <div className="card-body shadow">
               <table className="table table-bordered">
                 <thead>

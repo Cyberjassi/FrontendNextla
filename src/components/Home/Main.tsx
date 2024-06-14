@@ -73,18 +73,19 @@ function Main() {
   return (
     <div>
       <>
-        <div className="container mt-4">
-          <h3 className="pb-1 my-4 text-start">
-            Latest Courses
-            <Button
-              variant="contained"
-              color="primary"
-              href="/all-courses"
-              className="float-end custom-button ccard"
-            >
-              See All
-            </Button>
-          </h3>
+        <div className="container mt-10">
+        
+  <h3 className="pb-1 my-4 text-start  course-heading">Latest Courses
+  <Button
+    variant="contained"
+    color="primary"
+    href="/all-courses"
+    className="float-end custom-button ccard"
+  >
+    See All
+  </Button>
+  </h3>
+
           <div className="row mb-4">
             {allCourses.map((course: any, index: number) => (
               <div className="col-md-3" key={index}>
@@ -121,7 +122,7 @@ function Main() {
         </div>
 
         <div className="container mt-4">
-          <h3 className="pb-1 my-4 text-start">
+          <h3 className="pb-1 my-4 text-start course-heading">
             Popular Courses
             <Button
               variant="contained"
@@ -168,7 +169,7 @@ function Main() {
         </div>
 
         <div className="container mt-4">
-          <h3 className="pb-1 my-4 text-start">
+          <h3 className="pb-1 my-4 text-start course-heading">
             Popular Teachers
             <Button
               variant="contained"
@@ -210,7 +211,7 @@ function Main() {
             ))}
           </div>
 
-          <h3 className="pb-1 my-4 mt-4">Student Testimonial</h3>
+          <h3 className="pb-1 my-4 mt-4 course-heading">Student Testimonial</h3>
           <div
             id="carouselExampleIndicators"
             className="carousel slide bg-primary text-white py-5"

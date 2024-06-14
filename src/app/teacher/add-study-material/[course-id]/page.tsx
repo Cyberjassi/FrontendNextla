@@ -110,7 +110,7 @@ const submitForm = async (values:any) => {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">Add Study Materials</h5>
+            <h5 className="card-header text-center bg-primary text-white">Add Study Materials</h5>
             <form className="container"
             // onSubmit={submitForm}
             onSubmit={Formik.handleSubmit}
@@ -192,7 +192,7 @@ const submitForm = async (values:any) => {
                    {Formik.errors.remarks && Formik.touched.remarks ? (<p className="text-sm text-red-600">{Formik.errors.remarks as any}</p>):null}
                 </div>
               </div>
-              <button  type="submit" className="btn btn-primary">
+              <button  type="submit" className="btn btn-primary w-100">
                 Submit
               </button>
             </form>

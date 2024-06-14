@@ -73,7 +73,7 @@ function TeacherChangePassword() {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header">Profile Settings</h5>
+            <h5 className="card-header text-center bg-primary text-white">Change Password</h5>
             <div className="card-body shadow">
              {/* {errorMsg && <p className="text-danger">{errorMsg}</p>} */}
             
@@ -95,7 +95,7 @@ function TeacherChangePassword() {
                 </div>
               </div>
                 <hr />
-                <button className="btn btn-primary ccard" onClick={submitForm as any}>Update</button>
+                <button className="btn btn-primary ccard"onClick={submitForm as any}>Update</button>
           
             </div>
           </div>

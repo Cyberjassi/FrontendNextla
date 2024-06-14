@@ -138,15 +138,15 @@ try{
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">
+            <h5 className="card-header text-center bg-primary text-white">
               All Student List
               <button
                 type="button"
-                className="btn btn-primary float-end btn-sm ccard"
+                className="btn btn-warning float-end btn-sm ccard"
                 data-bs-toggle="modal"
                 data-bs-target="#groupMsgModal"
               >
-                Send Message
+                Send To All
               </button>
             </h5>
 

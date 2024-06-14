@@ -76,7 +76,7 @@ function TeacherChangePassword() {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">Change Password</h5>
+            <h5 className="card-header text-center bg-primary text-white">Change Password</h5>
             <div className="card-body">
              {/* {errorMsg && <p className="text-danger">{errorMsg}</p>} */}
             

@@ -1,6 +1,4 @@
 "use client";
-import React from "react";
-import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +12,6 @@ import CoursevalidationSchema from './YupCourse'
 
 function AddCourse() {
 
-  // for category Retriew ---
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,10 +48,10 @@ const Formik = useFormik({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Get the first file from the input
+      const file = files[0];
       setCourseData({
         ...CourseData,
-        featured_img: file // Set the file directly to the featured_img field
+        featured_img: file 
       });
     }
   };
@@ -77,7 +74,6 @@ const Formik = useFormik({
     courseFormData.append('price',values.price);
   
  
-    // console.log("here course form data",[...courseFormData.entries()])
     try{
     const response = await axios.post(`${process.env.BASE_URL}course/`, courseFormData,{
       headers: {
@@ -120,7 +116,6 @@ const Formik = useFormik({
                 handleApiError(errorMessages);
             }
         } else {
-            // Handle other types of errors
             console.error("Error:", error);
         }
     }
@@ -137,8 +132,8 @@ const Formik = useFormik({
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header">Add Courses</h5>
-            <form onSubmit={Formik.handleSubmit} className="container" >
+            <h5 className="card-header text-center bg-primary text-white">Add Courses</h5>
+            <form onSubmit={Formik.handleSubmit} className="container mt-2" >
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Category
@@ -169,6 +164,7 @@ const Formik = useFormik({
                 </label>
                 <input
                   value={Formik.values.title}
+                  placeholder="Enter course title"
                   onChange={Formik.handleChange}
                   onBlur={Formik.handleBlur}
                   name="title"
@@ -187,10 +183,10 @@ const Formik = useFormik({
                   <textarea
                     value={Formik.values.description}
                     onChange={Formik.handleChange}
+                    placeholder="Leave a comment here"
                     onBlur={Formik.handleBlur}
                     name="description"
                     className="form-control"
-                    placeholder="Leave a comment here"
                     id="floatingTextarea2"
                   ></textarea>
                    {Formik.errors.description && Formik.touched.description ? (<p className="text-sm text-red-600">{Formik.errors.description as any}</p>):null}
@@ -216,6 +212,7 @@ const Formik = useFormik({
                 <input
                   value={Formik.values.price}
                   onChange={Formik.handleChange}
+                  placeholder="Price"
                   onBlur={Formik.handleBlur}
                   name="price"
                   type="number"
@@ -242,7 +239,7 @@ const Formik = useFormik({
                   {Formik.errors.techs && Formik.touched.techs ? (<p className="text-sm text-red-600">{Formik.errors.techs as any}</p>):null}
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary ccard">
+              <button type="submit" className="btn btn-primary  w-100">
                 Submit
               </button>
             </form>
