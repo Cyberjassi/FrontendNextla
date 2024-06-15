@@ -1,29 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import './Home.module.css';
+import "./Home.module.css";
 import Button from "@mui/material/Button";
-import cookies from 'js-cookie';
-import Rating from './Rating'
+import cookies from "js-cookie";
+import Rating from "./Rating";
 
 function Main() {
-  const [allCourses, setAllCourses] = useState<any[]>([]); 
+  const [allCourses, setAllCourses] = useState<any[]>([]);
   const [popularCourseData, setpopularCourseData] = useState<any[]>([]);
   const [popularTeacherData, setpopularTeacherData] = useState<any[]>([]);
   const [studetTestimonnialData, setstudetTestimonnialData] = useState<any[]>(
     []
   );
-
   useEffect(() => {
-
-    const token = cookies.get('token')
-    console.log("this is my token",token)
-    const response = axios.get(`${process.env.BASE_URL}course/?result=4`, {
+    const token = cookies.get("token");
+    console.log("this is my token", token);
+    const response = axios
+      .get(`${process.env.BASE_URL}course/?result=4`, {
         headers: {
-            'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
         console.log("Data:", response.data);
@@ -33,7 +32,7 @@ function Main() {
         console.error("Error:", error);
       });
 
-    //  fatch popular courses according to rating-
+    //  fatch popular courses according to sum of all rating-
     axios
       .get(`${process.env.BASE_URL}popular-courses/?popular=1`)
       .then((response) => {
@@ -53,7 +52,7 @@ function Main() {
       })
       .catch((error) => {
         console.error("Error:", error);
-      })
+      });
 
     // fatch studet testimonial
     axios
@@ -65,27 +64,24 @@ function Main() {
       .catch((error) => {
         console.error("Error:", error);
       });
-    
-
   }, [""]);
-  console.log("this is your course ", allCourses);
-  console.log("popular course",popularCourseData)
+
   return (
     <div>
       <>
+        {/* fatch all course */}
         <div className="container mt-10">
-        
-  <h3 className="pb-1 my-4 text-start  course-heading">Latest Courses
-  <Button
-    variant="contained"
-    color="primary"
-    href="/all-courses"
-    className="float-end custom-button ccard"
-  >
-    See All
-  </Button>
-  </h3>
-
+          <h3 className="pb-1 my-4 text-start  course-heading">
+            Latest Courses
+            <Button
+              variant="contained"
+              color="primary"
+              href="/all-courses"
+              className="float-end custom-button ccard"
+            >
+              See All
+            </Button>
+          </h3>
           <div className="row mb-4">
             {allCourses.map((course: any, index: number) => (
               <div className="col-md-3" key={index}>
@@ -93,7 +89,11 @@ function Main() {
                   <Link href={`/course-detail/${course.id}`}>
                     <Image
                       className="card-img-top"
-                      src={course.featured_img ? course.featured_img : "/img/default.png"}
+                      src={
+                        course.featured_img
+                          ? course.featured_img
+                          : "/img/default.png"
+                      }
                       alt={course.title}
                       height={250}
                       width={150}
@@ -101,18 +101,28 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style course-title" href={`/course-detail/${course.id}`}>
+                      <Link
+                        className="custom-link-style course-title"
+                        href={`/course-detail/${course.id}`}
+                      >
                         {course.title}
                       </Link>
                       <p className="description">
-                      {course.description.length > 30 ? `${course.description.substring(0, 100)}...` : course.description}
+                        {course.description.length > 30
+                          ? `${course.description.substring(0, 100)}...`
+                          : course.description}
                       </p>
                     </h5>
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                    <span>Rating: <Rating rating={course.course_rating} /></span>
-                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
+                      <span>
+                        Rating: <Rating rating={course.course_rating} />
+                      </span>
+                      <p>
+                        Price: <span className="text-black text-base">₹</span>
+                        {course.price}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -121,6 +131,7 @@ function Main() {
           </div>
         </div>
 
+        {/* Popular course */}
         <div className="container mt-4">
           <h3 className="pb-1 my-4 text-start course-heading">
             Popular Courses
@@ -140,7 +151,11 @@ function Main() {
                   <Link href={`/course-detail/${row.course.id}`}>
                     <Image
                       className="card-img-top"
-                      src={row.course.featured_img? row.course.featured_img : "/img/default.png"}
+                      src={
+                        row.course.featured_img
+                          ? row.course.featured_img
+                          : "/img/default.png"
+                      }
                       alt={row.course.title}
                       height={250}
                       width={150}
@@ -148,18 +163,28 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style course-title" href={`/course-detail/${row.course.id}`}>
+                      <Link
+                        className="custom-link-style course-title"
+                        href={`/course-detail/${row.course.id}`}
+                      >
                         {row.course.title}
                       </Link>
                       <p className="description">
-                      {row.course.description.length > 30 ? `${row.course.description.substring(0, 100)}...` : row.course.description}
+                        {row.course.description.length > 30
+                          ? `${row.course.description.substring(0, 100)}...`
+                          : row.course.description}
                       </p>
                     </h5>
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                    <span>Rating: <Rating rating={row.average_rating} /></span>
-                      <p>Price: <span className="text-black text-base">₹</span>{row.course.price}</p>
+                      <span>
+                        Rating: <Rating rating={row.average_rating} />
+                      </span>
+                      <p>
+                        Price: <span className="text-black text-base">₹</span>
+                        {row.course.price}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -168,6 +193,7 @@ function Main() {
           </div>
         </div>
 
+        {/* popular teachers */}
         <div className="container mt-4">
           <h3 className="pb-1 my-4 text-start course-heading">
             Popular Teachers
@@ -184,11 +210,14 @@ function Main() {
             {popularTeacherData.map((teacher: any, index: number) => (
               <div className="col-md-3" key={index}>
                 <div className="ccard card shadow-lg">
-                  {/* Add shadow-sm class for a small shadow */}
                   <Link href={`/teacher-detail/${teacher.id}`}>
                     <Image
                       className="card-img-top"
-                      src={teacher.profile_img ? teacher.profile_img : "/img/default.png"}
+                      src={
+                        teacher.profile_img
+                          ? teacher.profile_img
+                          : "/img/default.png"
+                      }
                       alt={teacher.full_name}
                       height={250}
                       width={150}
@@ -196,7 +225,10 @@ function Main() {
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title">
-                      <Link className="custom-link-style course-title" href={`/teacher-detail/${teacher.id}`}>
+                      <Link
+                        className="custom-link-style course-title"
+                        href={`/teacher-detail/${teacher.id}`}
+                      >
                         {teacher.full_name}
                       </Link>
                     </h5>
@@ -211,6 +243,7 @@ function Main() {
             ))}
           </div>
 
+          {/* student testimonial */}
           <h3 className="pb-1 my-4 mt-4 course-heading">Student Testimonial</h3>
           <div
             id="carouselExampleIndicators"
@@ -221,7 +254,7 @@ function Main() {
               {studetTestimonnialData &&
                 studetTestimonnialData.map((row, index) => (
                   <button
-                   key={index}
+                    key={index}
                     type="button"
                     data-bs-target="#carouselExampleIndicators"
                     data-bs-slide-to={index}
@@ -233,7 +266,7 @@ function Main() {
               {studetTestimonnialData &&
                 studetTestimonnialData.map((row, i) => (
                   <div
-                  key={i}
+                    key={i}
                     className={
                       i == 0
                         ? "carousel-item text-center active"

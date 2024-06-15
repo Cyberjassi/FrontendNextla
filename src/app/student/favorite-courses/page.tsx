@@ -6,12 +6,9 @@ import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
 import cookies from 'js-cookie';
 
-
 function FavoriteCourses() {
   const [courseData,setCourseData] = useState<any>([])
-
   const studentId = localStorage.getItem('studentId')
-
   useEffect (()=>{
     const token = cookies.get('token')
     try{

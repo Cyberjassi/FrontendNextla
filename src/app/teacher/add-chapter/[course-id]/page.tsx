@@ -6,14 +6,8 @@ import Swal from "sweetalert2";
 import ChaptervalidationSchema from './YupChapter'
 import {useFormik} from "formik"
  
-
 function AddChapter(props:any) {
-
-  // fetch current course from url---
 const currentCourse = props.params['course-id']
-// console.log("this is current course",currentCourse)
-
-
 let initialValues = {
   title: "",
   description: "",
@@ -40,22 +34,17 @@ const [chapterData, setChapterData] = useState<any>({
   video_duration:'',
 });
 
-
 const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
   const files = event.target.files;
   if (files && files.length > 0) {
-    const file = files[0]; // Get the first file from the input
+    const file = files[0]; 
     setChapterData((prevChapterData:any) => ({
       ...prevChapterData,
       video: file
     }));
   }
 };
-
-
-console.log("this is chapter above submit",chapterData)
-console.log("this is chapter title ",chapterData.course)
-
 const submitForm = async (values:any) => {
   Swal.fire({
     title: 'Wait a moment....',
@@ -67,20 +56,17 @@ const submitForm = async (values:any) => {
     timerProgressBar: true,
     showConfirmButton: false,
     customClass: {
-      popup: 'full-screen-popup' // Add a CSS class for full-screen popup
+      popup: 'full-screen-popup'
     }
   });
+
   const chapterFormData = new FormData();
-  
   chapterFormData.append('course',currentCourse); 
   chapterFormData.append('title', values.title);
   chapterFormData.append('description', values.description);
   chapterFormData.append('video', chapterData.video);
   chapterFormData.append('video_duration', chapterData.video_duration);
   chapterFormData.append('remarks', values.remarks);
-
-  
-    // console.log("here course form data", [...chapterFormData.entries()]);
     try{
     const response = await axios.post(`${process.env.BASE_URL}course-chapters/${currentCourse}`, chapterFormData, {
       headers: {
@@ -90,6 +76,10 @@ const submitForm = async (values:any) => {
     chapterData.video=''
       console.log(response.data);
       if(response.status==200 || response.status==201){
+        setChapterData({
+          ...chapterData,
+          video: null, 
+        });
         Swal.fire({
           title:'Data has been added',
           icon:'success',
@@ -99,19 +89,15 @@ const submitForm = async (values:any) => {
           timerProgressBar:true,
           showConfirmButton: false,
         });
-        
       }
     }catch(error){
       console.error('Error:', error);
-      // Handle the error here, such as displaying an error message to the user
       Swal.fire({
           title: 'Error',
           text: 'An error occurred while adding data',
           icon: 'error',
       });
-  }
-  
-    
+  }  
 };
 
   return (
@@ -126,7 +112,7 @@ const submitForm = async (values:any) => {
             <form className="container" onSubmit={Formik.handleSubmit}>
               <div className="mb-3">
                 <label
-                //  for="exampleInputEmail1"
+                 htmlFor="exampleInputEmail1"
                   className="form-label ">
                   Title
                 </label>
@@ -144,7 +130,7 @@ const submitForm = async (values:any) => {
               </div>
               <div className="mb-3">
                 <label
-                //  for="exampleInputPassword1" 
+                 htmlFor="exampleInputPassword1" 
                  className="form-label">
                   Description
                 </label>
@@ -163,11 +149,11 @@ const submitForm = async (values:any) => {
               </div>
               <div className="mb-3">
                 <label 
-                // for="exampleInputEmail1"
+                htmlFor="exampleInputEmail1"
                  className="form-label">
                  Video
                 </label>
-                <input
+                <input 
                   
                   onChange={handleFileChange}
                   name="video"
@@ -179,7 +165,7 @@ const submitForm = async (values:any) => {
               </div>
               <div className="mb-3">
                 <label 
-                // for="exampleInputPassword1"
+                htmlFor="exampleInputPassword1"
                  className="form-label" >
                   remarks
                 </label>

@@ -1,5 +1,4 @@
 'use client'
-import React from "react";
 import UserSidebar from "@/components/student/UserSidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -46,8 +45,6 @@ function ProfileSettings() {
   useEffect(()=>{
     document.title="Student Profile"
   })
-
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setstudentData({
       ...studentData,
@@ -65,12 +62,9 @@ function ProfileSettings() {
       });
     }
   };
-  
-
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const studentFormData = new FormData();
-  
     studentFormData.append("full_name", studentData.full_name);
     studentFormData.append("email", studentData.email);
     studentFormData.append("username", studentData.username);
@@ -83,7 +77,6 @@ function ProfileSettings() {
     }
 
     try {
-      // console.log("here course form data", [...studentFormData.entries()]);
       const token = cookies.get('token')
       axios
         .put(
@@ -175,8 +168,7 @@ function ProfileSettings() {
                   />
                    {studentData.profile_img && 
                   <div>
-                    <img
-                       
+                    <img   
                       src={studentData.profile_img}
                       width="300"
                       alt={studentData.full_name}
@@ -204,7 +196,6 @@ function ProfileSettings() {
                 </div>
                 </div>
               </div>
-             
               <div className="mb-3 row">
                 <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
                   Intrest
@@ -223,7 +214,6 @@ function ProfileSettings() {
               </div>
                 <hr />
                 <button className="btn btn-primary  w-100" onClick={submitForm as any}>Update</button>
-          
             </div>
           </div>
         </section>

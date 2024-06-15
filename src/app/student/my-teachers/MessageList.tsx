@@ -18,8 +18,7 @@ function MessageList(props: any) {
     }
   }, []);
 
-
-  const fetchMsgs = () =>{
+  const fetchMsgs = () => {
     try {
       axios
         .get(
@@ -27,44 +26,47 @@ function MessageList(props: any) {
         )
         .then((Response) => {
           setmsgData(Response.data);
-          const objDiv:any = document.getElementById("msgList");
-          objDiv.scrollTop = objDiv?.scrollHeight
+          const objDiv: any = document.getElementById("msgList");
+          objDiv.scrollTop = objDiv?.scrollHeight;
         });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const msgList = {
     height: "500px",
     overflow: "auto",
   };
-  console.log("this is your message list dd",msgData)
+  
   return (
     <>
-    <p> <span className="ms-1 btn btn-sm btn-secondary ccard" onClick={fetchMsgs} title="Refresh"><i className="bi bi-bootstrap-reboot"></i></span></p>
-    <div style={msgList} id="msgList">
-      {msgData.map((row: any, index: any) => (
-        
+      <p>
+        {" "}
+        <span
+          className="ms-1 btn btn-sm btn-secondary ccard"
+          onClick={fetchMsgs}
+          title="Refresh"
+        >
+          <i className="bi bi-bootstrap-reboot"></i>
+        </span>
+      </p>
+      <div style={msgList} id="msgList">
+        {msgData.map((row: any, index: any) => (
           <div key={index} className="row mb-4">
-            {row.msg_from == "student" &&
-            <div className="col-4 offset-7 ccard">
-              <div className="alert alert-primary mb-1">
-                {row.msg_text}
+            {row.msg_from == "student" && (
+              <div className="col-4 offset-7 ccard">
+                <div className="alert alert-primary mb-1">{row.msg_text}</div>
+                <small className="text-muted">{row.msg_time}</small>
               </div>
-              <small className="text-muted">{row.msg_time}</small>
-            </div>
-            }
-            {row.msg_from != "student" &&
-            <div className="col-5">
-              <div className="alert alert-success mb-1">
-                {/* {row.msg_text} */}
-                {row.msg_text}
+            )}
+            {row.msg_from != "student" && (
+              <div className="col-5">
+                <div className="alert alert-success mb-1">{row.msg_text}</div>
+                <small className="text-muted">{row.msg_time}</small>
               </div>
-              <small className="text-muted">{row.msg_time}</small>
-            </div>
-            }
+            )}
           </div>
-      ))}
+        ))}
       </div>
     </>
   );

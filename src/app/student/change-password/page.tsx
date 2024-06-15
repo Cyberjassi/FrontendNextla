@@ -1,49 +1,39 @@
-'use client'
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
+"use client";
+import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import UserSidebar from "@/components/student/UserSidebar";
 
-
-
 function TeacherChangePassword() {
   interface studentData {
-    'password': string;
-    
+    password: string;
   }
   const [studentData, setstudentData] = useState<studentData>({
-    'password': "",
+    password: "",
   });
-  const studentId = localStorage.getItem('studentId');
-  const handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // const { name, value } = event.target;
+  const studentId = localStorage.getItem("studentId");
+  const handleChangeTeacher = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setstudentData({
-      // we pass referance studentData and then change our name and value acording to event 
       ...studentData,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
-
-
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const studentFormData = new FormData();
-  
     studentFormData.append("password", studentData.password);
-    
     try {
       axios
         .post(
           `${process.env.BASE_URL}student/change-password/${studentId}/`,
-          studentFormData,
+          studentFormData
         )
         .then((response) => {
           console.log(response.data);
           if (response.status == 200) {
-            window.location.href='/logout'
+            window.location.href = "/logout";
             Swal.fire({
               title: "Password has been Updated",
               icon: "success",
@@ -53,18 +43,15 @@ function TeacherChangePassword() {
               timerProgressBar: true,
               showConfirmButton: false,
             });
-          }else{
-            alert("Oops Some Error Occure!")
+          } else {
+            alert("Oops Some Error Occure!");
           }
-          
-
         });
     } catch (error) {
       console.log(error);
-      // setstudentData({'status':'error'})
     }
-   
   };
+
   return (
     <div className="container mt-10">
       <div className="row">
@@ -73,30 +60,35 @@ function TeacherChangePassword() {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header text-center bg-primary text-white">Change Password</h5>
+            <h5 className="card-header text-center bg-primary text-white">
+              Change Password
+            </h5>
             <div className="card-body shadow">
-             {/* {errorMsg && <p className="text-danger">{errorMsg}</p>} */}
-            
               <div className="mb-3 row">
-                <label 
-                // for="inputPassword" 
-                className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   New Password
                 </label>
                 <div className="col-sm-10">
                   <input
-                  name="password"
-                  value={studentData.password}
-                  onChange={handleChangeTeacher}
+                    name="password"
+                    value={studentData.password}
+                    onChange={handleChangeTeacher}
                     type="text"
                     className="form-control"
                     id="inputPassword"
                   />
                 </div>
               </div>
-                <hr />
-                <button className="btn btn-primary ccard"onClick={submitForm as any}>Update</button>
-          
+              <hr />
+              <button
+                className="btn btn-primary ccard"
+                onClick={submitForm as any}
+              >
+                Update
+              </button>
             </div>
           </div>
         </section>

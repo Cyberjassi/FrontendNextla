@@ -7,10 +7,8 @@ import axios from "axios";
 import {useRouter} from "next/navigation";
 import cookies from 'js-cookie';
 
-
-
 function studentAssignments() {
-  const router = useRouter()
+
   const [assignmentData,setassignmentData] = useState<any>([])
   const [assignmentStatus,setassignmentStatus]=useState<any>()
 
@@ -43,7 +41,6 @@ function studentAssignments() {
     formData.append('teacher',teacher);
   
   try{
-    // console.log("here course form data",[...courseFormData.entries()])
     const token = cookies.get('token')
     axios.put(`${process.env.BASE_URL}update-assignments/${assignment_id}/`, formData,{
       headers: {

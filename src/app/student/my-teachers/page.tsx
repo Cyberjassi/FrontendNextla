@@ -1,47 +1,43 @@
-"use client"
-import React from "react";
-import { useEffect ,useState} from 'react';
-import Link from "next/link"
+"use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import UserSidebar from "@/components/student/UserSidebar";
 import axios from "axios";
 import MessageList from "./MessageList";
-import cookies from 'js-cookie';
+import cookies from "js-cookie";
 
 function MyTeachers() {
-  const [teacherData,setteacherData] = useState<any>([])
-
-  const studentId = localStorage.getItem('studentId')
-
-  useEffect (()=>{
-    const token = cookies.get('token')
-    try{
-        axios.get(`${process.env.BASE_URL}fatch-my-teachers/${studentId}`, {
+  const [teacherData, setteacherData] = useState<any>([]);
+  const studentId = localStorage.getItem("studentId");
+  useEffect(() => {
+    const token = cookies.get("token");
+    try {
+      axios
+        .get(`${process.env.BASE_URL}fatch-my-teachers/${studentId}`, {
           headers: {
-              'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         })
-        .then((res)=>{
-          setteacherData(res.data)
-        })
-    }catch(error){
-      console.log(error)
+        .then((res) => {
+          setteacherData(res.data);
+        });
+    } catch (error) {
+      console.log(error);
     }
-  },[])
+  }, []);
 
-
-//   msg ---
+  //   msg ---
   const [msgData, setmsgData] = useState<any>({
     msg_text: "",
   });
 
   const [successMsg, setSuccessMsg] = useState<any>("");
   const [errorMsg, setErrorMsg] = useState("");
-  
-  
+
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setSuccessMsg("")
+    setSuccessMsg("");
     setmsgData({
       ...msgData,
       [event.target.name]: event.target.value,
@@ -49,16 +45,8 @@ function MyTeachers() {
   };
 
   const submitForm = (teacher_id: any) => {
-    // e.preventDefault();
     const msgFormData = new FormData();
-
-    // msgFormData.append("teacher", teacher_id as any);
-    // msgFormData.append("student", student_id);
-    msgFormData.append("msg_text", msgData.msg_text);
     msgFormData.append("msg_from", "student");
-
-    // console.log("here course form data", [...msgFormData.entries()]);
-
     axios
       .post(
         `${process.env.BASE_URL}send-message/${teacher_id}/${studentId}`,
@@ -86,8 +74,6 @@ function MyTeachers() {
     overflow: "atuo",
   };
 
-  console.log("this is my teachers ddd",teacherData)
-  
   return (
     <div className="container mt-10">
       <div className="row">
@@ -95,28 +81,47 @@ function MyTeachers() {
           <UserSidebar></UserSidebar>
         </aside>
         <section className="col-md-9">
-         <div className="card">
-            <h5 className="card-header text-center bg-primary text-white">My Teachers</h5>
+          <div className="card">
+            <h5 className="card-header text-center bg-primary text-white">
+              My Teachers
+            </h5>
             <div className="card-body shadow">
               <table className="table table-bordered">
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Profile</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                {teacherData.map((row:any,index:any)=>
-                  <tr key={index}>
-                    <td><Link className="link-none" href={`/teacher-detail/${row.teacher.id}`}>{row.teacher.full_name}</Link></td>
-                   <td>
-                        
-
-
-                   <button
+                  {teacherData.map((row: any, index: any) => (
+                    <tr key={index}>
+                      <td>
+                        <Link
+                          className="link-none"
+                          href={`/teacher-detail/${row.teacher.id}`}
+                        >
+                          {row.teacher.full_name}
+                        </Link>
+                      </td>
+                      <td>
+                          <img
+                            src={
+                              row.teacher.profile_img
+                                ? row.teacher.profile_img
+                                : "/img/default.png"
+                            }
+                            width="80"
+                            className="rounded"
+                            alt={row.teacher.full_name}
+                          />
+                        </td>
+                      <td>
+                        <button
                           data-bs-toggle="modal"
                           data-bs-target={`#msgModel${index}`}
-                          className="btn btn-sm btn-dark mb-2 ccard" 
+                          className="btn btn-sm btn-dark mb-2 ccard"
                           title="Send Message"
                         >
                           <i className="bi bi-chat-fill"></i>
@@ -125,7 +130,6 @@ function MyTeachers() {
                         <div
                           className="modal fade"
                           id={`msgModel${index}`}
-                          // tabIndex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >
@@ -161,7 +165,6 @@ function MyTeachers() {
                                     style={msgList}
                                   >
                                     <div className="row">
-                                      {/* from another users */}
                                       <MessageList
                                         teacher_id={row.teacher.id}
                                         student_id={studentId}
@@ -209,14 +212,13 @@ function MyTeachers() {
                             </div>
                           </div>
                         </div>
-                   </td>
-                  
-                  </tr>
-                )}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-          </div> 
+          </div>
         </section>
       </div>
     </div>
@@ -224,28 +226,3 @@ function MyTeachers() {
 }
 
 export default MyTeachers;
-{
-  /* <div className="card">
-            <h5 className="card-header">My Courses</h5>
-            <div className="card-body">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <td>Php Development</td>
-                  <td>
-                    <Link to="/">Suraj Kumar</Link>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger active">Delete</button>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-          </div> */
-}

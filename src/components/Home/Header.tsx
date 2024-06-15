@@ -1,15 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import logout from "@/app/(Auth)/logout/logout";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {useFormik} from "formik"
 
 function Header() {
   interface Search {
     'search': string;
   }
-  
   const route = useRouter();
   const [searchString, setsearchString] = useState<Search>({
     "search":''
@@ -23,12 +21,8 @@ function Header() {
       [event.target.name]: event.target.value
     });
   };
-  
-
   const searchCourse = () => {
-    const searchRegex = /^[a-zA-Z\s]*$/; // Regex pattern to allow only alphabets and spaces
-  
-    // Check if search string is valid
+    const searchRegex = /^[a-zA-Z\s]*$/; 
     if (
       searchString.search.trim() !== '' && 
       searchRegex.test(searchString.search) &&
@@ -44,7 +38,6 @@ function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div className="container d-flex justify-content-between align-items-center">
-      {/* Left side */}
       <div className="d-flex align-items-center">
         <Link className="navbar-brand me-4 navbar-brand" href="/">
           Educonnect Hotspot
@@ -103,7 +96,6 @@ function Header() {
                 </li>
               </>
             )}
-
             {(teacherLoginStatus || studentLoginStatus) && (
               <>
                 {teacherLoginStatus && (
@@ -130,9 +122,7 @@ function Header() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  
                   <button className="ml-5" onClick={()=>logout()}>Logout</button>
-             
                 </li>
               </>
             )}

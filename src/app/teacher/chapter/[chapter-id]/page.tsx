@@ -1,18 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import Link from "next/link";
-
-// for sweetalert---
 import Swal from "sweetalert2";
 import axios from "axios";
 
 function Page(props: any) {
   const [chapterData, setChapterData] = useState([]);
-  // count all chapters-
   const [totalResult, setTotalResult] = useState([0]);
   const currentChapter = props.params["chapter-id"];
-
   useEffect(() => {
     axios
       .get(`${process.env.BASE_URL}course-chapters/${currentChapter}`)
@@ -25,13 +21,8 @@ function Page(props: any) {
         console.error("Error fetching course chapters:", error);
       });
   }, []);
-  // console.log("this is my chapters", chapterData);
 
-  // for sweetalert---
-  // const Swal = require('sweetalert2')
   const handleDeleteClick = (chapter_id: any) => {
-    console.log("..................", chapter_id);
-
     Swal.fire({
       title: "Confirm",
       text: "Are you sure you want to delete this data?",
@@ -45,11 +36,9 @@ function Page(props: any) {
             .delete(`${process.env.BASE_URL}chapter/${chapter_id}`)
             .then((res) => {
               console.log(res);
-              Swal.fire('success','Data has been deleted. ')
+              Swal.fire("success", "Data has been deleted. ");
               axios
-                .get(
-                  `${process.env.BASE_URL}course-chapters/${currentChapter}`
-                )
+                .get(`${process.env.BASE_URL}course-chapters/${currentChapter}`)
                 .then((response) => {
                   const data = response.data;
                   setTotalResult(data.length);
@@ -62,7 +51,6 @@ function Page(props: any) {
             .catch((error) => {
               Swal.fire("error", "Data has not been deleted!!", "error");
             });
-      
         } catch (error) {
           Swal.fire("error", "Data has not been deleted!!", "error");
         }
@@ -71,6 +59,7 @@ function Page(props: any) {
       }
     });
   };
+
   return (
     <div className="container mt-10">
       <div className="row">
@@ -79,7 +68,15 @@ function Page(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header text-center bg-primary text-white">All Chapters ({totalResult}) <Link href={`/teacher/add-chapter/${currentChapter}`} className="btn btn-sm btn-success float ccard">Add chapter</Link></h5>
+            <h5 className="card-header text-center bg-primary text-white">
+              All Chapters ({totalResult}){" "}
+              <Link
+                href={`/teacher/add-chapter/${currentChapter}`}
+                className="btn btn-sm btn-warning float ccard"
+              >
+                Add chapter
+              </Link>
+            </h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
@@ -100,25 +97,21 @@ function Page(props: any) {
                           <p className="custom-link-style">{chapter.title}</p>
                         </td>
                         <td>
-                          <video width="320" height="240" controls>
-                            {/* Check if video source is available */}
+                          <video width="200" height="50" controls>
                             {chapter.video && (
                               <>
-                                {/* Check if mp4 format is available */}
                                 {chapter.video.mp4 && (
                                   <source
                                     src={chapter.video.mp4.url}
                                     type="video/mp4"
                                   />
                                 )}
-                                {/* Check if ogg format is available */}
                                 {chapter.video.ogg && (
                                   <source
                                     src={chapter.video.ogg.url}
                                     type="video/ogg"
                                   />
                                 )}
-                                {/* Check if webm format is available */}
                                 {chapter.video.webm && (
                                   <source
                                     src={chapter.video.webm.url}

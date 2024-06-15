@@ -1,9 +1,9 @@
-'use client';
-import React, { useEffect, useState } from "react";
+"use client";
+import React, { useState } from "react";
+import { handleApiError } from "@/app/errorHandling";
 import axios from "axios";
 
 function ContactUs() {
-
   interface ContactData {
     full_name: string;
     email: string;
@@ -17,37 +17,46 @@ function ContactUs() {
     status: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setContactData({
       ...contactData,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  const send = (e: React.FormEvent<HTMLFormElement>) => {
+  const send = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const contactFormData = new FormData();
     Object.entries(contactData).forEach(([key, value]) => {
       contactFormData.append(key, value as string | Blob);
     });
     try {
-      axios.post(`${process.env.BASE_URL}/contact/`, contactFormData)
-        .then((response) => {
-          console.log(response.data);
-          setContactData({
-            full_name: "",
-            email: "",
-            query_txt: "",
-            status: "success",
-          });
+      const response = await axios.post(
+        `${process.env.BASE_URL}contact/`,
+        contactFormData
+      );
+      if (response.status === 200 || response.status === 201) {
+        console.log(response.data);
+        setContactData({
+          full_name: "",
+          email: "",
+          query_txt: "",
+          status: "success",
         });
-    } catch (error) {
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        const errorData = "All field Are Required!";
+        handleApiError(errorData as any);
+      }
       console.log(error);
     }
   };
 
   const listStyle = {
-    listStyle: 'none'
+    listStyle: "none",
   };
 
   return (
@@ -55,13 +64,12 @@ function ContactUs() {
       <div className="row">
         <div className="col-lg-8">
           <div className="card">
-            <h3 className="card-header">Contact Us</h3>
+            <h5 className="card-header text-center bg-primary text-white">
+              Contact Us
+            </h5>
             <div className="card-body shadow">
               {contactData.status === "success" && (
                 <p className="text-success">Thanks for Contacting Us</p>
-              )}
-              {contactData.status === "error" && (
-                <p className="text-danger">Something Went Wrong</p>
               )}
               <form onSubmit={send}>
                 <div className="mb-3">
@@ -100,7 +108,7 @@ function ContactUs() {
                     onChange={handleChange}
                     name="query_txt"
                     className="form-control"
-                    rows={10}
+                    rows={3}
                   ></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary">
@@ -110,18 +118,41 @@ function ContactUs() {
             </div>
           </div>
         </div>
-        <div className="col-lg-4 ">
-          <h3 className="card-header">Address</h3>
-          <ul className="m-0 p-0" style={listStyle}>
-            <li>
-              <label className="fw-bold" htmlFor="">Address:</label>
-              <span className="ms-2">27,Kagdipura,Mandsaur</span>
-            </li>
-            <li>
-              <label className="fw-bold" htmlFor="">Mobile No.:</label>
-              <span className="ms-2">987654333</span>
-            </li>
-          </ul>
+        <div className="col-lg-4">
+          <div className="card">
+            <h5 className="card-header text-center bg-primary text-white">
+              Address
+            </h5>
+            <div className="card-body">
+              <ul className="list-unstyled">
+                <li className="mb-3">
+                  <label className="fw-bold">Address:</label>
+                  <span className="ms-2">27, Kagdipura, Mandsaur</span>
+                </li>
+                <li className="mb-3">
+                  <label className="fw-bold">Mobile No.:</label>
+                  <span className="ms-2">987654333</span>
+                </li>
+                <li className="mb-3">
+                  <label className="fw-bold">Email:</label>
+                  <span className="ms-2">example@email.com</span>
+                </li>
+                <li className="mb-3">
+                  <label className="fw-bold">City:</label>
+                  <span className="ms-2">Surat Gujrat,</span>
+                </li>
+                <li className="mb-3">
+                  <label className="fw-bold">Country:</label>
+                  <span className="ms-2">India</span>
+                </li>
+                <li className="mb-3">
+                  <label className="fw-bold">Postal Code:</label>
+                  <span className="ms-2">123456</span>
+                </li>
+                {/* Add more fields as needed */}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

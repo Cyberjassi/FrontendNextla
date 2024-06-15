@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -10,17 +9,12 @@ import useRazorpay from "react-razorpay";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import Rating from "@/components/Home/Rating";
-import cookies from 'js-cookie';
+import cookies from "js-cookie";
 
 function page(props: any) {
-  const route = useRouter()
   const currentCourse = props.params["course-id"];
   const studentId = localStorage.getItem("studentId");
-
   const imageUrl = "https://res.cloudinary.com/dr9wiqs2y/image/upload/v1/";
-
-  // const siteUrl = "http://127.0.0.1:8000/";
-  // console.log("this is param is",currentCourse)
   const [course, setCourse] = useState<any | String[]>([]);
   const [teacher, setTeacher] = useState<any | String[]>([]);
   const [chapterData, setChapterData] = useState<any | String[]>([]);
@@ -31,7 +25,6 @@ function page(props: any) {
   const [userLoginStatus, setUserLoginStatus] = useState("");
   const [enrollStatus, setEnrollStatus] = useState("");
   const [ratingStatus, setratingStatus] = useState("");
-  // const [courseView, setcourseViews] = useState(0);
   const [Avgrating, setAvgrating] = useState(0);
   const [favoriteStatus, setfavoriteStatus] = useState<any>();
 
@@ -40,7 +33,7 @@ function page(props: any) {
   const Razorpay = useRazorpay();
 
   const complete_order = (paymentID: any, orderID: any, signature: any) => {
-    const token = cookies.get('token')
+    const token = cookies.get("token");
     axios({
       method: "post",
       url: `${process.env.BASE_URL}order/complete/`,
@@ -60,7 +53,7 @@ function page(props: any) {
   };
 
   const razorpayPayment = (price: any) => {
-    const token = cookies.get('token')
+    const token = cookies.get("token");
     axios
       .post(`${process.env.BASE_URL}order/create/`, {
         amount: price,
@@ -71,11 +64,11 @@ function page(props: any) {
         const order_id = response.data.data.id;
 
         const options = {
-          key: process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+          key: process.env.RAZORPAY_KEY_ID,
           name: "Acme Corp",
           description: "Test Transaction",
           image: "https://example.com/your_logo",
-          order_id: order_id, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
+          order_id: order_id,
           handler: function (response: any) {
             console.log("haksjdfkljaskdlfjklasjdfkljasdf");
             enrollCourse();
@@ -101,13 +94,7 @@ function page(props: any) {
 
         const rzp1 = new (window as any).Razorpay(options);
         rzp1.on("payment.failed", function (response: any) {
-          // alert(response.error.code);
           alert(response.error.description);
-          // alert(response.error.source);
-          // alert(response.error.step);
-          // alert(response.error.reason);
-          // alert(response.error.metadata.order_id);
-          // alert(response.error.metadata.payment_id);
         });
         rzp1.open();
       })
@@ -115,10 +102,10 @@ function page(props: any) {
         console.error("Error:", error);
       });
   };
-
   //end payment
 
   useEffect(() => {
+    //fatch current course-
     axios
       .get(`${process.env.BASE_URL}course/${currentCourse}`)
       .then((response) => {
@@ -140,14 +127,7 @@ function page(props: any) {
         console.error("Error:", error);
       });
 
-    // updateview
-    // axios
-    //   .get(`http://127.0.0.1:8000/api/update-view/${currentCourse}`)
-    //   .then((res) => {
-    //     setcourseViews(res.data.views);
-    //   });
-
-    // fatch enroll status
+    // fatch enroll status-
     axios
       .get(
         `${process.env.BASE_URL}fatch-enroll-status/${studentId}/${currentCourse}`
@@ -177,6 +157,7 @@ function page(props: any) {
         console.error("Error:", error);
       });
 
+    // favorite status-
     axios
       .get(
         `${process.env.BASE_URL}fatch-favorite-status/${studentId}/${currentCourse}`
@@ -192,7 +173,6 @@ function page(props: any) {
       .catch((error) => {
         console.error("Error:", error);
       });
-
     const studentLoginStatus = localStorage.getItem("studentLoginStatus");
     if (studentLoginStatus == "true") {
       setUserLoginStatus("success");
@@ -206,8 +186,9 @@ function page(props: any) {
     const courseFormData = new FormData();
     courseFormData.append("course", currentCourse);
     courseFormData.append("student", studentID as any);
+
     try {
-      // console.log("here course form data",[...courseFormData.entries()])
+      // student enroll course status-
       axios
         .post(`${process.env.BASE_URL}student-enroll-course/`, courseFormData, {
           headers: {
@@ -227,33 +208,29 @@ function page(props: any) {
               showConfirmButton: false,
             });
             setEnrollStatus("success");
-            // window.location.reload();
           }
-          // window.location.href='/teacher/add-courses';
         });
     } catch (error) {
       console.log(error);
     }
   };
 
-  //Mark as favorite Course
+  //Mark as favorite Course-
   const marksAsFavorite = () => {
     const favCourseFormData = new FormData();
-
     favCourseFormData.append("course", currentCourse);
     favCourseFormData.append("student", studentId as any);
     favCourseFormData.append("status", true as any);
-
     try {
-      const token = cookies.get('token')
-
-      axios.post(
+      const token = cookies.get("token");
+      axios
+        .post(
           `${process.env.BASE_URL}student-add-favorite-course/`,
           favCourseFormData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              'Authorization': `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
             },
           }
         )
@@ -270,9 +247,7 @@ function page(props: any) {
               showConfirmButton: false,
             });
             setfavoriteStatus("success");
-            // window.location.reload();
           }
-          // window.location.href='/teacher/add-courses';
         });
     } catch (error) {
       console.log(error);
@@ -309,10 +284,7 @@ function page(props: any) {
               showConfirmButton: false,
             });
             setfavoriteStatus("");
-            
-            
           }
-          // window.location.href='/teacher/add-courses';
         });
     } catch (error) {
       console.log(error);
@@ -323,25 +295,15 @@ function page(props: any) {
   interface ChapterData {
     rating: string;
     reviews: string;
-    // 'course':string|number;
-    // 'title': string;
-    // 'description': string;
-    // 'video': null|File |any|Blob;
-    // 'video_duration': any;
-    // 'remarks': string;
   }
-
   const [ratingData, setratingData] = useState<ChapterData>({
     rating: "",
     reviews: "",
   });
-
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    // const { name, value } = event.target;
     setratingData({
-      // we pass referance CourseData and then change our name and value acording to event
       ...ratingData,
       [event.target.name]: event.target.value,
     });
@@ -351,14 +313,10 @@ function page(props: any) {
     e.preventDefault();
     console.log("jalksdfjlkasdjf");
     const chapterFormData = new FormData();
-
     chapterFormData.append("course", currentCourse);
     chapterFormData.append("student", studentId as any);
     chapterFormData.append("rating", ratingData.rating);
     chapterFormData.append("reviews", ratingData.reviews);
-
-    // console.log("here course form data", [...chapterFormData.entries()]);
-
     axios
       .post(`${process.env.BASE_URL}course-rating/`, chapterFormData)
       .then((response) => {
@@ -375,24 +333,19 @@ function page(props: any) {
             showConfirmButton: false,
           });
           window.location.reload();
-          
         }
       })
       .catch((error) => {
         console.error("Error:", error);
-        // Handle the error here, such as displaying an error message to the user
         Swal.fire({
           title: "Error",
           text: "An error occurred while adding data",
           icon: "error",
         });
       });
-
-
-      //video model-
-      
   };
   console.log("this is chapter data ", chapterData);
+
   return (
     <div>
       <div className="container mt-10">
@@ -410,7 +363,7 @@ function page(props: any) {
             <h3>{course.title}</h3>
             <p>{course.description}</p>
             <p className="fw-bold">
-              Course By:{" "}
+              Course By:
               <Link
                 className="custom-link-style"
                 href={`/teacher-detail/${teacher.id}`}
@@ -435,7 +388,6 @@ function page(props: any) {
               Total Enrolled: {course.total_enrolled_students} Students
             </p>
             <p className="fw-bold">
-              {/* <span>Rating: {course.course_rating}/5</span> */}
               {course.course_rating == null && (
                 <span>
                   Rating: <Rating rating={0} />
@@ -446,7 +398,6 @@ function page(props: any) {
                   Rating: <Rating rating={course.course_rating} />
                 </span>
               )}
-              {/* <span>Rating: <Rating rating={course.course_rating} /></span> */}
               {enrollStatus === "success" && userLoginStatus === "success" && (
                 <>
                   {ratingStatus != "success" && (
@@ -466,7 +417,6 @@ function page(props: any) {
                   <div
                     className="modal fade"
                     id="ratingModal"
-                    // tabIndex="-1"
                     role="dialog"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
@@ -483,7 +433,6 @@ function page(props: any) {
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
-                            {/* <span aria-hidden="true">&times;</span> */}
                           </button>
                         </div>
                         <div className="modal-body">
@@ -526,8 +475,6 @@ function page(props: any) {
                 </>
               )}
             </p>
-            {/* <p className="fw-bold">Views: {courseView}</p> */}
-
             {userLoginStatus == "success" && enrollStatus !== "success" && (
               <div>
                 <p className="fw-bold mb-0">Price: ₹{course.price}</p>
@@ -545,18 +492,6 @@ function page(props: any) {
                 <span>You are already enrolled in this course</span>
               </p>
             )}
-            {/* {userLoginStatus == "success" && enrollStatus !== "success" && (
-              <p>
-                <button
-                  className="btn btn-success"
-                  onClick={enrollCourse}
-                  type="button"
-                >
-                  Enroll in this course
-                </button>
-              </p>
-            )} */}
-
             {userLoginStatus == "success" && favoriteStatus !== "success" && (
               <p>
                 <button
@@ -569,7 +504,6 @@ function page(props: any) {
                 </button>
               </p>
             )}
-
             {userLoginStatus == "success" && favoriteStatus == "success" && (
               <p>
                 <button
@@ -582,82 +516,84 @@ function page(props: any) {
                 </button>
               </p>
             )}
-
             {userLoginStatus !== "success" && (
               <p>
                 <Link className="btn btn-success" href="/login">
-                Login as student to enroll
+                  Login as student to enroll
                 </Link>
               </p>
             )}
           </div>
         </div>
+
         {/* Course Videos */}
         {enrollStatus == "success" && userLoginStatus == "success" && (
           <div className="card mt-10 shadow">
             {chapterData.length === 0 ? (
-            <p className="text-red-500 text-sm ml-14 mt-3">No Chapters There</p>) : (
-            <div className="card">
-              <h3 className="card-header text-center bg-primary text-white">Course Videos</h3>
-              <ul className="list-group list-group-flush">
-                {chapterData &&
-                  chapterData.map((chapter: any, index: any) => (
-                    <li key={index} className="list-group-item">
-                      {chapter.title}
-                      <span className="float-end">
-                        <button
-                          className="btn  btn-danger "
-                          data-bs-toggle="modal"
-                          data-bs-target={`#videoModal${index}`} // Unique modal ID
+              <p className="text-red-500 text-sm ml-14 mt-3">
+                No Chapters There
+              </p>
+            ) : (
+              <div className="card">
+                <h3 className="card-header text-center bg-primary text-white">
+                  Course Videos
+                </h3>
+                <ul className="list-group list-group-flush">
+                  {chapterData &&
+                    chapterData.map((chapter: any, index: any) => (
+                      <li key={index} className="list-group-item">
+                        {chapter.title}
+                        <span className="float-end">
+                          <button
+                            className="btn  btn-danger "
+                            data-bs-toggle="modal"
+                            data-bs-target={`#videoModal${index}`} 
+                          >
+                            <FaPlayCircle size={20} />
+                          </button>
+                        </span>
+                        <div
+                          className="modal fade"
+                          id={`videoModal${index}`} 
+                          aria-labelledby={`exampleModalLabel${index}`} 
+                          aria-hidden="true"
                         >
-                          <FaPlayCircle size={20} />
-                        </button>
-                      </span>
-                      {/* Video Model Start */}
-                      <div
-                        className="modal fade"
-                        id={`videoModal${index}`} // Unique modal ID
-                        // tabindex="-1"
-                        aria-labelledby={`exampleModalLabel${index}`} // Unique label ID
-                        aria-hidden="true"
-                      >
-                        <div className="modal-dialog modal-xl">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5
-                                className="modal-title"
-                                id={`exampleModalLabel${index}`} // Unique label ID
-                              >
-                                {chapter.title}
-                              </h5>
-                              <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                              ></button>
-                            </div>
-                            <div className="modal-body">
-                              <div className="ratio ratio-16x9">
-                                <iframe
-                                  src={chapter.video}
-                                  title={chapter.title}
-                                  allowFullScreen
-                                ></iframe>
+                          <div className="modal-dialog modal-xl">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5
+                                  className="modal-title"
+                                  id={`exampleModalLabel${index}`}
+                                >
+                                  {chapter.title}
+                                </h5>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                <div className="ratio ratio-16x9">
+                                  <iframe
+                                    src={chapter.video}
+                                    title={chapter.title}
+                                    allowFullScreen
+                                  ></iframe>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      {/* Video Model End */}
-                    </li>
-                  ))}
-              </ul>
-            </div>)
-            }
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
-        {/* EndCourse Videos */}
+
 
         {/* Ratlated Course */}
         {realtedCourseData.length != 0 && (
@@ -679,7 +615,6 @@ function page(props: any) {
               <div className="col-md-3" key={index}>
                 <div className="card ccard shadow">
                   <Link target="__blank" href={`/course-detail/${rcorse.pk}`}>
-                    {/* here if we want to access the image we use whole path ,path means where our image is stored in python local dir  */}
                     <Image
                       className="card-img-top"
                       width={150}
@@ -701,24 +636,27 @@ function page(props: any) {
                         {rcorse.fields.title}
                       </Link>
                       <p className="description">
-                     {course.description.length > 30 ? `${course.description.substring(0, 100)}...` : course.description}
+                        {course.description.length > 30
+                          ? `${course.description.substring(0, 100)}...`
+                          : course.description}
                       </p>
                     </h5>
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                    <span>Rating: <Rating rating={course.rating} /></span>
-                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
-                      {/* <span className="float-end">
-                        Views:{row.course.course_views}
-                      </span> */}
+                      <span>
+                        Rating: <Rating rating={course.rating} />
+                      </span>
+                      <p>
+                        Price: <span className="text-black text-base">₹</span>
+                        {course.price}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
         </div>
-        {/* Ratlated Course end*/}
       </div>
     </div>
   );

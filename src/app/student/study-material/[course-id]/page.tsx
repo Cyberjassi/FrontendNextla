@@ -1,15 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import UserSidebar from "@/components/student/UserSidebar";
 import Link from "next/link";
-
-// for sweetalert---
-import Swal from "sweetalert2";
 import axios from "axios";
 
 function StudyMaterials(props: any) {
   const [studyData, setstudyData] = useState([]);
-  // count all chapters-
   const [totalResult, setTotalResult] = useState([0]);
   const currentCourse = props.params["course-id"];
 
@@ -26,10 +22,6 @@ function StudyMaterials(props: any) {
       });
   }, []);
 
-//   const downloadFile=(file_url:any)=>{
-//     window.location.href = file_url
-//   }
- 
   return (
     <div className="container mt-4">
       <div className="row">
@@ -38,7 +30,9 @@ function StudyMaterials(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header text-center bg-primary text-white">All Study Materials ({totalResult})</h5>
+            <h5 className="card-header text-center bg-primary text-white">
+              All Study Materials ({totalResult})
+            </h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
@@ -56,20 +50,14 @@ function StudyMaterials(props: any) {
                     studyData &&
                     studyData.map((row: any, index: any) => (
                       <tr key={index}>
+                        <td>{row.title}</td>
+                        <td>{row.description}</td>
                         <td>
-                          {row.title}
+                          <Link className="link-none" href={row.upload}>File</Link>
                         </td>
                         <td>
-                          {row.description}
+                          <Link className="link-none" href="#">{row.remarks}</Link>
                         </td>
-                        <td>
-                          <Link href={row.upload}>File</Link>
-                          {/* <button onClick={()=>downloadFile(row.upload)}>Download File</button> */}
-                        </td>
-                        <td>
-                          <Link href="#">{row.remarks}</Link>
-                        </td>
-                       
                       </tr>
                     ))
                   )}

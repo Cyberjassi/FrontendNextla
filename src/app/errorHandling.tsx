@@ -1,4 +1,4 @@
-// errorHandling.ts
+
 import Swal from "sweetalert2";
 
 export const  handleApiError = (message:string[]) => {

@@ -2,9 +2,6 @@
 import Link from 'next/link';
 import { useEffect ,useState} from 'react';
 import Image from 'next/image';
-
-import { getTeacherInfo } from '../../redux/teacher/TeacherRetrieve'
-import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
 export default function PopularTeachers() {
@@ -34,7 +31,6 @@ export default function PopularTeachers() {
   };
   return (
     <div className="container mt-4">
-
           <h3 className="pb-1 my-4 text-start">
             Popular Teachers
           </h3>
@@ -58,16 +54,13 @@ export default function PopularTeachers() {
                   </div>
                   <div className="card-footer">
                     <div className="title">
-                      <span>Courses:{teacher.total_teacher_courses}</span>
-                    
+                      <span>Courses:{teacher.total_teacher_courses}</span> 
                     </div>
                   </div>
                 </div>
               </div>
             )}
           </div>
-       
-        {/* End Latest Courses */}
 
         {/* Pagination Start */}
         <nav aria-label="Page navigation example mt-5">
@@ -82,7 +75,6 @@ export default function PopularTeachers() {
               </button>
             </li>
           )}
-
           {nextUrl && (
             <li className="page-item">
               <button

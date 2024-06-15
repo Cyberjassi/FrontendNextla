@@ -6,123 +6,112 @@ import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { handleApiError } from "@/app/errorHandling";
-import {useFormik} from "formik"
-import CoursevalidationSchema from './YupCourse'
-
+import { useFormik } from "formik";
+import CoursevalidationSchema from "./YupCourse";
 
 function AddCourse() {
-
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getCategoryInfo() as any);
   }, [dispatch]);
   const state = useSelector((state: any) => state);
   console.log("this is my State", state);
-  let dataCategory = state.category.data
- 
+  let dataCategory = state.category.data;
 
-
-  const [CourseData, setCourseData] = useState<any>('');
-
+  const [CourseData, setCourseData] = useState<any>("");
   let initialValues = {
     title: "",
     description: "",
     price: "",
     techs: "",
-}
-const Formik = useFormik({
-  initialValues:initialValues,
-  validationSchema:CoursevalidationSchema,
-  onSubmit: async (values:any, { setSubmitting }) => {
-    try {
-      await submitForm(values);
-      Formik.resetForm();
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setSubmitting(false);
-    }
-  },
-})
+  };
+  const Formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: CoursevalidationSchema,
+    onSubmit: async (values: any, { setSubmitting }) => {
+      try {
+        await submitForm(values);
+        Formik.resetForm();
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
       setCourseData({
         ...CourseData,
-        featured_img: file 
+        featured_img: file,
       });
     }
   };
-  
- console.log(CourseData)
 
-  const submitForm = async (values:any) => {
-    const teacherId = localStorage.getItem('teacherId');
-
+  const submitForm = async (values: any) => {
+    const teacherId = localStorage.getItem("teacherId");
     const courseFormData = new FormData();
-    courseFormData.append('category',values.category);
-    courseFormData.append('teacher',teacherId as any);
-    courseFormData.append('title',values.title);
-    courseFormData.append('description',values.description);
-    {CourseData.featured_img &&
-    courseFormData.append('featured_img',CourseData.featured_img);
+    courseFormData.append("category", values.category);
+    courseFormData.append("teacher", teacherId as any);
+    courseFormData.append("title", values.title);
+    courseFormData.append("description", values.description);
+    {
+      CourseData.featured_img &&
+        courseFormData.append("featured_img", CourseData.featured_img);
     }
-   
-    courseFormData.append('techs',values.techs);
-    courseFormData.append('price',values.price);
-  
- 
-    try{
-    const response = await axios.post(`${process.env.BASE_URL}course/`, courseFormData,{
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      }
-    })
-      
-        console.log(response.data);
-        if(response.status==200 || response.status==201){
-        setCourseData('');
-          Swal.fire({
-            title:'Data has been added',
-            icon:'success',
-            toast:true,
-            timer: 5000,
-            position:'top-right',
-            timerProgressBar:true,
-            showConfirmButton: false,
-          });
- 
-        }
-      }catch(error: any){
-        if (error.response && error.response.status === 400) {
-            console.log("Error:", error.response.data);
-            const errorData = error.response.data;
-            const errorMessages = [];
+    courseFormData.append("techs", values.techs);
+    courseFormData.append("price", values.price);
 
-            if (errorData.category) {
-                errorMessages.push(errorData.category[0]);
-            }
-            if (errorData.title) {
-                errorMessages.push(errorData.title[0]);
-            }
-            if (errorData.featured_img) {
-                errorMessages.push(errorData.featured_img[0]);
-            }
-           
-          
-            if (errorMessages.length > 0) {
-                handleApiError(errorMessages);
-            }
-        } else {
-            console.error("Error:", error);
+    try {
+      const response = await axios.post(
+        `${process.env.BASE_URL}course/`,
+        courseFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
+      );
+
+      console.log(response.data);
+      if (response.status == 200 || response.status == 201) {
+        setCourseData("");
+        Swal.fire({
+          title: "Data has been added",
+          icon: "success",
+          toast: true,
+          timer: 5000,
+          position: "top-right",
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        console.log("Error:", error.response.data);
+        const errorData = error.response.data;
+        const errorMessages = [];
+
+        if (errorData.category) {
+          errorMessages.push(errorData.category[0]);
+        }
+        if (errorData.title) {
+          errorMessages.push(errorData.title[0]);
+        }
+        if (errorData.featured_img) {
+          errorMessages.push(errorData.featured_img[0]);
+        }
+
+        if (errorMessages.length > 0) {
+          handleApiError(errorMessages);
+        }
+      } else {
+        console.error("Error:", error);
+      }
     }
-   
-   
   };
-  
 
   return (
     <div className="container mt-10">
@@ -132,30 +121,37 @@ const Formik = useFormik({
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header text-center bg-primary text-white">Add Courses</h5>
-            <form onSubmit={Formik.handleSubmit} className="container mt-2" >
+            <h5 className="card-header text-center bg-primary text-white">
+              Add Courses
+            </h5>
+            <form onSubmit={Formik.handleSubmit} className="container mt-2">
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                   Category
                 </label>
-                <select name="category"
-                 className="form-control" 
-                 value={Formik.values.category}
-                 onChange={Formik.handleChange}
-                 onBlur={Formik.handleBlur}
-                 >
-                  {/* if apit take time to load then show loading otherwise show data */}
+                <select
+                  name="category"
+                  className="form-control"
+                  value={Formik.values.category}
+                  onChange={Formik.handleChange}
+                  onBlur={Formik.handleBlur}
+                >
                   {state.category.isLoading ? (
                     <p>Loading...</p>
                   ) : (
                     dataCategory &&
                     dataCategory.map((category: any, index: any) => (
-                      
-                      <option key={index} value={category.id} >{category.title}</option>
+                      <option key={index} value={category.id}>
+                        {category.title}
+                      </option>
                     ))
                   )}
                 </select>
-                {Formik.errors.category && Formik.touched.category ? (<p className="text-sm text-red-600">{Formik.errors.category as any}</p>):null}
+                {Formik.errors.category && Formik.touched.category ? (
+                  <p className="text-sm text-red-600">
+                    {Formik.errors.category as any}
+                  </p>
+                ) : null}
               </div>
 
               <div className="mb-3">
@@ -173,7 +169,11 @@ const Formik = useFormik({
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                 />
-                 {Formik.errors.title && Formik.touched.title ? (<p className="text-sm text-red-600">{Formik.errors.title as any}</p>):null}
+                {Formik.errors.title && Formik.touched.title ? (
+                  <p className="text-sm text-red-600">
+                    {Formik.errors.title as any}
+                  </p>
+                ) : null}
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">
@@ -189,7 +189,11 @@ const Formik = useFormik({
                     className="form-control"
                     id="floatingTextarea2"
                   ></textarea>
-                   {Formik.errors.description && Formik.touched.description ? (<p className="text-sm text-red-600">{Formik.errors.description as any}</p>):null}
+                  {Formik.errors.description && Formik.touched.description ? (
+                    <p className="text-sm text-red-600">
+                      {Formik.errors.description as any}
+                    </p>
+                  ) : null}
                 </div>
               </div>
               <div className="mb-3">
@@ -197,7 +201,6 @@ const Formik = useFormik({
                   Featured Image
                 </label>
                 <input
-                  // value={CourseData.featured_img}
                   onChange={handleFileChange}
                   name="featured_img"
                   type="file"
@@ -217,10 +220,12 @@ const Formik = useFormik({
                   name="price"
                   type="number"
                   className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
                 />
-                {Formik.errors.price && Formik.touched.price ? (<p className="text-sm text-red-600">{Formik.errors.price as any}</p>):null}
+                {Formik.errors.price && Formik.touched.price ? (
+                  <p className="text-sm text-red-600">
+                    {Formik.errors.price as any}
+                  </p>
+                ) : null}
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">
@@ -236,7 +241,11 @@ const Formik = useFormik({
                     placeholder="Php,Python,Javascript,HTML,CSS,Javascript"
                     id="floatingTextarea2"
                   ></textarea>
-                  {Formik.errors.techs && Formik.touched.techs ? (<p className="text-sm text-red-600">{Formik.errors.techs as any}</p>):null}
+                  {Formik.errors.techs && Formik.touched.techs ? (
+                    <p className="text-sm text-red-600">
+                      {Formik.errors.techs as any}
+                    </p>
+                  ) : null}
                 </div>
               </div>
               <button type="submit" className="btn btn-primary  w-100">

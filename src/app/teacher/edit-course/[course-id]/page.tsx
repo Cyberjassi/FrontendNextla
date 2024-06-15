@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
 import Swal from "sweetalert2";
-import cookies from 'js-cookie';
+import cookies from "js-cookie";
 
 function EditCourse(props: any) {
   interface CourseData {
@@ -17,7 +17,6 @@ function EditCourse(props: any) {
     prev_img: File | string | any;
     techs: string;
   }
-
   const [CourseData, setCourseData] = useState<CourseData>({
     category: "",
     title: "",
@@ -27,7 +26,7 @@ function EditCourse(props: any) {
     techs: "",
   });
   const currentCourse = props.params["course-id"];
-  const teacherId = localStorage.getItem('teacherId')
+  const teacherId = localStorage.getItem("teacherId");
 
   const dispatch = useDispatch();
 
@@ -36,7 +35,7 @@ function EditCourse(props: any) {
     axios
       .get(`${process.env.BASE_URL}teacher-courses-detail/${currentCourse}`)
       .then((response) => {
-        console.log("this is res",response)
+        console.log("this is res", response);
         setCourseData(response.data);
         setCourseData({
           category: response.data.category,
@@ -48,7 +47,6 @@ function EditCourse(props: any) {
         });
       })
       .catch((error) => {
-        // Handle error
         console.error("Error fetching course data:", error);
       });
   }, []);
@@ -56,7 +54,9 @@ function EditCourse(props: any) {
   let dataCategory = state.category.data;
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setCourseData({
       ...CourseData,
@@ -66,22 +66,18 @@ function EditCourse(props: any) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; 
+      const file = files[0];
       setCourseData({
         ...CourseData,
-        featured_img: file, 
-        prev_img: URL.createObjectURL(file), 
+        featured_img: file,
+        prev_img: URL.createObjectURL(file),
       });
     }
   };
 
-  console.log(CourseData);
-
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const courseFormData = new FormData();
-    const categoryId = parseInt(CourseData.category, 10);
- 
     courseFormData.append("category", CourseData.category);
     courseFormData.append("teacher", teacherId as any);
     courseFormData.append("title", CourseData.title);
@@ -90,9 +86,8 @@ function EditCourse(props: any) {
       courseFormData.append("featured_img", CourseData.featured_img);
     }
     courseFormData.append("techs", CourseData.techs);
-
     try {
-      const token = cookies.get('token')
+      const token = cookies.get("token");
       axios
         .put(
           `${process.env.BASE_URL}teacher-courses-detail/${currentCourse}`,
@@ -100,7 +95,7 @@ function EditCourse(props: any) {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              'Authorization': `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
             },
           }
         )
@@ -131,7 +126,9 @@ function EditCourse(props: any) {
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header text-center bg-primary text-white">Edit Course</h5>
+            <h5 className="card-header text-center bg-primary text-white">
+              Edit Course
+            </h5>
             <form onSubmit={submitForm} className="container mt-3">
               <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
@@ -196,7 +193,7 @@ function EditCourse(props: any) {
                   className="form-control"
                   id="video"
                 />
-                {CourseData.prev_img && 
+                {CourseData.prev_img && (
                   <div>
                     <img
                       src={CourseData.prev_img}
@@ -205,7 +202,7 @@ function EditCourse(props: any) {
                       className="img-fluid"
                     />
                   </div>
-                }
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">

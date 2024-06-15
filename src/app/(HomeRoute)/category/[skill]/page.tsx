@@ -11,7 +11,7 @@ export default function CategoryCourses(props: any) {
   const [allCourses, setAllCourses] = useState<any[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [previousUrl, setPreviousUrl] = useState<string | null>(null);
-  // Specify the type as an array of any
+
   useEffect(() => {
     fetchData(baseUrl);
   }, []);
@@ -28,11 +28,11 @@ export default function CategoryCourses(props: any) {
         console.error("Error:", error);
       });
   };
-
   const paginationHandler = (url: string) => {
     fetchData(url);
   };
   console.log(allCourses);
+  
   return (
     <div className="container mt-10">
       <h3 className="pb-1 my-4 text-start">{currentSkill} Courses </h3>
@@ -70,14 +70,10 @@ export default function CategoryCourses(props: any) {
                       Rating: <Rating rating={course.course_rating} />
                     </span>
                   )}
-
                   <p>
                     Price: <span className="text-black text-base">₹</span>
                     {course.price}
                   </p>
-                  {/* <span className="float-end">
-                        Views:{row.course.course_views}
-                      </span> */}
                 </div>
               </div>
             </div>

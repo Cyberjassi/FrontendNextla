@@ -1,8 +1,8 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Link from 'next/link';
-import Rating from '@/components/Home/Rating';
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Link from "next/link";
+import Rating from "@/components/Home/Rating";
 
 export default function AllCourses() {
   const baseUrl = `${process.env.BASE_URL}course/`;
@@ -15,21 +15,24 @@ export default function AllCourses() {
   }, []);
 
   const fetchData = (url: string) => {
-    axios.get(url)
-      .then(response => {
+    axios
+      .get(url)
+      .then((response) => {
         setNextUrl(response.data.next);
         setPreviousUrl(response.data.previous);
         setAllCourses(response.data.results);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
 
   const paginationHandler = (url: string) => {
     fetchData(url);
-  };+
-console.log(allCourses)
+  };
+
+  console.log(allCourses);
+
   return (
     <div className="container mt-4">
       <h3 className="pb-1 my-4 text-start">All Courses</h3>
@@ -40,30 +43,40 @@ console.log(allCourses)
               <Link href={`/course-detail/${course.id}`}>
                 <img
                   className="card-img-top"
-                  src={course.featured_img?course.featured_img:"/img/default.png"}
+                  src={
+                    course.featured_img
+                      ? course.featured_img
+                      : "/img/default.png"
+                  }
                   alt={course.title}
                 />
               </Link>
               <div className="card-body">
                 <h5 className="card-title">
-                  <Link className="custom-link-style course-title" href={`/course-detail/${course.id}`}>
+                  <Link
+                    className="custom-link-style course-title"
+                    href={`/course-detail/${course.id}`}
+                  >
                     {course.title}
                   </Link>
                   <p className="description">
-                  {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description}
+                    {course.description.length > 100
+                      ? `${course.description.substring(0, 100)}...`
+                      : course.description}
                   </p>
                 </h5>
               </div>
               <div className="card-footer">
-                    <div className="title">
-                      {/* <span>Rating: {course.rating}/5</span> */}
-                      <span>Rating: <Rating rating={course.course_rating} /></span>
-                      <p>Price: <span className="text-black text-base">₹</span>{course.price}</p>
-                      {/* <span className="float-end">
-                        Views:{row.course.course_views}
-                      </span> */}
-                    </div>
-                  </div>
+                <div className="title">
+                  <span>
+                    Rating: <Rating rating={course.course_rating} />
+                  </span>
+                  <p>
+                    Price: <span className="text-black text-base">₹</span>
+                    {course.price}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         ))}

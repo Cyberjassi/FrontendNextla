@@ -7,9 +7,8 @@ export default function Pages(props: any) {
   const page_id = props.params['page-id']
   const page_slug = props.params['page-slug']
   
-  
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/pages/${page_id}/${page_slug}`)
+    axios.get(`${process.env.BASE_URL}${page_id}/${page_slug}`)
       .then(response => {
         console.log('Data:', response.data);
         setPagesData(response.data);
@@ -23,10 +22,8 @@ export default function Pages(props: any) {
   console.log("this is id",page_id)
   return (
    <div className="container mt-4">
-
           <h2>{pagesData.title}</h2>
           <p>{pagesData.content}</p>
-
     </div>
   )
 }

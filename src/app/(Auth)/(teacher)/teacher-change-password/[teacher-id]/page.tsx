@@ -1,69 +1,68 @@
-'use client'
-import { useEffect,useState } from "react";
-import axios from 'axios'
+"use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { handleApiError } from "@/app/errorHandling";
-import {useFormik} from "formik"
-import * as Yup from 'yup';
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-function TeacherChangPassword(props:any) {
-
-  const route = useRouter()
-
- const teacher_id = props.params['teacher-id']
- useEffect(()=>{
-  document.title='Teacher Change Password'
- })
-
-
-const [successMsg,setSuccessMsg] = useState("");
-
-let initialvalues = {
-  password: "",
-}
-const formik = useFormik({
-initialValues:initialvalues,
-validationSchema:Yup.object({
-  password: Yup.string()
-        .required('Password is required')
-        .min(6, 'Password must be at least 6 characters long')
-        .matches(/^(?!\s)(?=.*[A-Z])/, 'Password must not begin with a space and contain at least one uppercase letter'),
-}),
-onSubmit: async (values:any, { setSubmitting }) => {
-  try {
-    await submitForm(values);
-  } catch (error) {
-    console.error('Error:', error);
-  } finally {
-    setSubmitting(false);
-  }
-},
-})
-
-const submitForm = async (values:any) => {
-  const teacherFormData = new FormData();
-  teacherFormData.append('password', values.password);
-  const response = await axios.post(`${process.env.BASE_URL}teacher-change-password/${teacher_id}/`, teacherFormData)
-    .then((response) => {
-      console.log(response.data);
-      if(response.data.bool==true){
-        setSuccessMsg(response.data.msg)
-        route.push('/login')
-
+function TeacherChangPassword(props: any) {
+  const route = useRouter();
+  const teacher_id = props.params["teacher-id"];
+  useEffect(() => {
+    document.title = "Teacher Change Password";
+  });
+  const [successMsg, setSuccessMsg] = useState("");
+  let initialvalues = {
+    password: "",
+  };
+  const formik = useFormik({
+    initialValues: initialvalues,
+    validationSchema: Yup.object({
+      password: Yup.string()
+        .required("Password is required")
+        .min(6, "Password must be at least 6 characters long")
+        .matches(
+          /^(?!\s)(?=.*[A-Z])/,
+          "Password must not begin with a space and contain at least one uppercase letter"
+        ),
+    }),
+    onSubmit: async (values: any, { setSubmitting }) => {
+      try {
+        await submitForm(values);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setSubmitting(false);
       }
-      else{
-        handleApiError(response.data.msg)
-        setSuccessMsg('')
-      }
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 400) {
-        console.log(error.response.data.msg);
-        handleApiError(error.response.data.msg);
-        setSuccessMsg('');
-      }
-    });
-};
+    },
+  });
+  const submitForm = async (values: any) => {
+    const teacherFormData = new FormData();
+    teacherFormData.append("password", values.password);
+    const response = await axios
+      .post(
+        `${process.env.BASE_URL}teacher-change-password/${teacher_id}/`,
+        teacherFormData
+      )
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.bool == true) {
+          setSuccessMsg(response.data.msg);
+          route.push("/login");
+        } else {
+          handleApiError(response.data.msg);
+          setSuccessMsg("");
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          console.log(error.response.data.msg);
+          handleApiError(error.response.data.msg);
+          setSuccessMsg("");
+        }
+      });
+  };
 
   return (
     <div>
@@ -71,25 +70,33 @@ const submitForm = async (values:any) => {
         <div className="row">
           <div className="col-6 offset-3">
             <div className="card">
-              <h5 className="card-header text-center bg-primary text-white">  Enter Your Password</h5>
+              <h5 className="card-header text-center bg-primary text-white">
+                {" "}
+                Enter Your Password
+              </h5>
               <div className="card-body">
                 {successMsg && <p className="text-success">{successMsg}</p>}
                 <form onSubmit={formik.handleSubmit}>
                   <div className="mb-3">
-                    <label
-                      className="form-label text-start"
-                    >
-                     Enter Your Password
+                    <label className="form-label text-start">
+                      Enter Your Password
                     </label>
-                    <input  name="password" type="password"   
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    placeholder="Enter Your Password" className="form-control" />
-                    {formik.errors.password && formik.touched.password ? (<p className="text-sm text-red-600">{formik.errors.password as any}</p>):null}
+                    <input
+                      name="password"
+                      type="password"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      placeholder="Enter Your Password"
+                      className="form-control"
+                    />
+                    {formik.errors.password && formik.touched.password ? (
+                      <p className="text-sm text-red-600">
+                        {formik.errors.password as any}
+                      </p>
+                    ) : null}
                   </div>
-                  <button type="submit"
-                   className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary">
                     Change
                   </button>
                 </form>

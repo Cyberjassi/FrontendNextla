@@ -1,27 +1,28 @@
 "use client";
-import React from "react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 import MessageList from "./MessageList";
-import cookies from 'js-cookie';
+import cookies from "js-cookie";
 
 import axios from "axios";
 
 function Myusers(props: any) {
-
   const [studentData, setStudentData] = useState<any>([]);
   const teacher_id = localStorage.getItem("teacherId");
-
   useEffect(() => {
-    const token = cookies.get('token')
+    const token = cookies.get("token");
     try {
+      // fatch enrolled student-
       axios
         .get(
-          `${process.env.BASE_URL}fatch-all-enrolled-students/${teacher_id}`,{headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
+          `${process.env.BASE_URL}fatch-all-enrolled-students/${teacher_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((res) => {
           setStudentData(res.data);
         });
@@ -30,31 +31,25 @@ function Myusers(props: any) {
     }
   }, []);
 
+  // message -
   const [msgData, setmsgData] = useState<any>({
     msg_text: "",
   });
-
   const [successMsg, setSuccessMsg] = useState<any>("");
   const [errorMsg, setErrorMsg] = useState<any>("");
-  
-  
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setSuccessMsg("")
+    setSuccessMsg("");
     setmsgData({
       ...msgData,
       [event.target.name]: event.target.value,
     });
   };
-
   const submitForm = (student_id: any) => {
     const msgFormData = new FormData();
     msgFormData.append("msg_text", msgData.msg_text);
     msgFormData.append("msg_from", "teacher");
-
-    // console.log("here course form data", [...msgFormData.entries()]);
-
     axios
       .post(
         `${process.env.BASE_URL}send-message/${teacher_id}/${student_id}`,
@@ -76,60 +71,49 @@ function Myusers(props: any) {
         console.error("Error:", error);
       });
   };
-
   const msgList = {
     height: "500px",
     overflow: "atuo",
   };
 
-// Group Messages--
+  // Group Messages--
   const [groupMsgData, setgroupMsgData] = useState<any>({
     msg_text: "",
   });
-
   const [groupsuccessMsg, setgroupsuccessMsg] = useState("");
   const [grouperrorMsg, setgrouperrorMsg] = useState("");
-
-
   const grouphandleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    successMsg("")
+    successMsg("");
     setgroupMsgData({
       ...groupMsgData,
       [event.target.name]: event.target.value,
     });
   };
-
   const groupFormSubmit = async () => {
-    // e.preventDefault();
     const msgFormData = new FormData();
-
     msgFormData.append("msg_text", groupMsgData.msg_text);
     msgFormData.append("msg_from", "teacher");
-
-    // console.log("here course form data", [...msgFormData.entries()]);
-try{
-   const response:any = await axios.post(
+    try {
+      const response: any = await axios.post(
         `${process.env.BASE_URL}send-group-message/${teacher_id}`,
         msgFormData
-      )
-        if (response.data.bool == true) {
-          setgroupMsgData({
-            msg_text: "",
-          });
-          setgroupsuccessMsg(response.data.msg);
-          setgrouperrorMsg("");
-        } else {
-          setgroupsuccessMsg("");
-          // setgrouperrorMsg(response.data.msg);
-        }
-      }catch(error){
-        console.error("Error:", error);
+      );
+      if (response.data.bool == true) {
+        setgroupMsgData({
+          msg_text: "",
+        });
+        setgroupsuccessMsg(response.data.msg);
+        setgrouperrorMsg("");
+      } else {
+        setgroupsuccessMsg("");
       }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
- console.log("this is group message",groupMsgData)
   return (
     <div className="container mt-10">
       <div className="row">
@@ -153,7 +137,6 @@ try{
             <div
               className="modal fade"
               id="groupMsgModal"
-              // tabIndex="-1"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
@@ -171,9 +154,12 @@ try{
                     ></button>
                   </div>
                   <div className="modal-body">
-
-                    {groupsuccessMsg && <p className="text-success">{groupsuccessMsg}</p>}
-                    {grouperrorMsg && <p className="text-danger">{grouperrorMsg}</p>}
+                    {groupsuccessMsg && (
+                      <p className="text-success">{groupsuccessMsg}</p>
+                    )}
+                    {grouperrorMsg && (
+                      <p className="text-danger">{grouperrorMsg}</p>
+                    )}
                     <form>
                       <div className="mb-3">
                         <label
@@ -199,7 +185,6 @@ try{
                       </button>
                     </form>
                   </div>
-                 
                 </div>
               </div>
             </div>
@@ -221,10 +206,7 @@ try{
                       <td>{row.student.full_name}</td>
                       <td>{row.student.email}</td>
                       <td>{row.student.username}</td>
-                      <td>
-                        {/* <Link className="btn btn-info btn-sm" href={`/view-student/${row.student.id}`}>View</Link> */}
-                        {row.student.interested_categories}
-                      </td>
+                      <td>{row.student.interested_categories}</td>
                       <td className="text-center">
                         <Link
                           href={`assignments/${teacher_id}/${row.student.id}`}
@@ -246,11 +228,9 @@ try{
                         >
                           <i className="bi bi-chat-fill ccard"></i>
                         </button>
-
                         <div
                           className="modal fade"
                           id={`msgModel${index}`}
-                          // tabindex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >
@@ -285,7 +265,6 @@ try{
                                     style={msgList}
                                   >
                                     <div className="row">
-                                      {/* from another users */}
                                       <MessageList
                                         teacher_id={teacher_id}
                                         student_id={row.student.id}

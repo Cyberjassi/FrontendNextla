@@ -6,23 +6,16 @@ import Swal from "sweetalert2";
 import {useFormik} from "formik"
 import {studyMaterialSchmea} from './studyMaterialYup'
 
-
 function AddStudyMaterial(props:any) {
   const [studyData,setstudyData] = useState<any>("");
-
-const currentCourse = props.params['course-id']
-
+  const currentCourse = props.params['course-id']
 
 interface studyData {
   'title': string;
   'description': string;
   'upload':any;
   'remarks': string;
-
 }
-
-
-
 //fromik 
 let initialValues = {
   title: '',
@@ -43,10 +36,6 @@ const Formik = useFormik({
     }
   },
 })
-
-console.log("this is formik data output",Formik)
-
-
 const handleFileChange = (event: React.ChangeEvent<HTMLInputElement | any>) => {
   const file = event.target.files[0];
   if (file) {
@@ -56,26 +45,20 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement | any>) => {
     });
   }
 };
-
-
 const submitForm = async (values:any) => {
-
   console.log("jalksdfjlkasdjf")
   const formData = new FormData();
-  
   formData.append('course',currentCourse); 
   formData.append('title', values.title);
   formData.append('description', values.description);
   formData.append('upload', studyData.upload);
   formData.append('remarks', values.remarks);
-
   try {
     const response = await axios.post(`${process.env.BASE_URL}study-materials/${currentCourse}`, formData, {
       headers: {
                 'Content-Type': 'multipart/form-data',
-            }
+               }
     });
-
     console.log(response.data);
     setstudyData({ upload: ''})
     if(response.status === 200 || response.status === 201) {
@@ -88,11 +71,9 @@ const submitForm = async (values:any) => {
         timerProgressBar: true,
         showConfirmButton: false,
       });
-
     }
   } catch (error) {
     console.error('Error:', error);
-    // Handle the error here, such as displaying an error message to the user
     Swal.fire({
       title: 'Error',
       text: 'An error occurred while adding data',
@@ -112,21 +93,18 @@ const submitForm = async (values:any) => {
           <div className="card shadow">
             <h5 className="card-header text-center bg-primary text-white">Add Study Materials</h5>
             <form className="container"
-            // onSubmit={submitForm}
             onSubmit={Formik.handleSubmit}
             >
               <div className="mb-3">
                 <label
-                //  for="exampleInputEmail1"
+                 htmlFor="exampleInputEmail1"
                   className="form-label ">
                   Title
                 </label>
                 <input
-                  // onChange={handleChange}
                   value={Formik.values.title}
                   onChange={Formik.handleChange}
                   onBlur={Formik.handleBlur}
-
                   name="title"
                   type="text"
                   className="form-control"
@@ -137,17 +115,15 @@ const submitForm = async (values:any) => {
               </div>
               <div className="mb-3">
                 <label
-                //  for="exampleInputPassword1" 
+                 htmlFor="exampleInputPassword1" 
                  className="form-label">
                   Description
                 </label>
                 <div className="form-floating">
                   <textarea
-                    // onChange={handleChange}
                     value={Formik.values.description}
                     onChange={Formik.handleChange}
                     onBlur={Formik.handleBlur}
-
                     name="description"
                     className="form-control"
                     placeholder="Leave a comment here"
@@ -163,7 +139,6 @@ const submitForm = async (values:any) => {
                  Upload
                 </label>
                 <input
-                
                   onChange={handleFileChange}
                   name="upload"
                   type="file"
@@ -180,11 +155,9 @@ const submitForm = async (values:any) => {
                 </label>
                 <div className="form-floating">
                   <textarea
-                    // onChange={handleChange}
                     value={Formik.values.remarks}
                     onChange={Formik.handleChange}
                     onBlur={Formik.handleBlur}
-
                     name="remarks"
                     className="form-control"
                     id="Remarks"

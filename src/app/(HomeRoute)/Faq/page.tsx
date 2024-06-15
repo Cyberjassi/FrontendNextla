@@ -15,6 +15,7 @@ export default function Faq(props: any) {
         console.error("Error:", error);
       });
   }, []);
+
   return (
     <div className="container mt-3">
       <h3 className="pb-1 my-4 text-start">FAQs</h3>

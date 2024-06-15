@@ -1,42 +1,35 @@
-'use client'
-import React from "react";
-import Link from "next/link";
+"use client";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getCategoryInfo } from "@/app/redux/Category/CategoryRetriew";
 import axios from "axios";
 import Swal from "sweetalert2";
-
 import TeacherSidebar from "@/components/Teacher/Sidebar";
 
 function TeacherProfileSettings() {
-  
   interface TeacherData {
-    'full_name': string;
-    'email': string;
-    'qualification': string;
-    'mobile_no': string;
-    'skills': string;
-    'profile_img': File | string | any;
-    'p_img': File | string | any;
+    full_name: string;
+    email: string;
+    qualification: string;
+    mobile_no: string;
+    skills: string;
+    profile_img: File | string | any;
+    p_img: File | string | any;
   }
   const [teacherData, setTeacherData] = useState<TeacherData>({
-    'full_name': "",
-    'email': "",
-    'qualification': "",
-    'mobile_no': "",
-    'skills': "",
-    'profile_img': "",
-    'p_img': "",
+    full_name: "",
+    email: "",
+    qualification: "",
+    mobile_no: "",
+    skills: "",
+    profile_img: "",
+    p_img: "",
   });
-  const teacherId = localStorage.getItem('teacherId');
+  const teacherId = localStorage.getItem("teacherId");
   useEffect(() => {
     // fetch current teacher data
     axios
       .get(`${process.env.BASE_URL}teacher/${teacherId}`)
       .then((response) => {
-       
-        console.log("this is the teacher data",response.data)
+        console.log("this is the teacher data", response.data);
         setTeacherData({
           full_name: response.data.full_name,
           email: response.data.email,
@@ -44,33 +37,30 @@ function TeacherProfileSettings() {
           mobile_no: response.data.mobile_no,
           skills: response.data.skills,
           p_img: response.data.profile_img,
-          profile_img: '',
+          profile_img: "",
         });
-        console.log("this is change",teacherData)
+        console.log("this is change", teacherData);
       })
       .catch((error) => {
-        // Handle error
         console.error("Error fetching course data:", error);
       });
   }, []);
-
-
-  const handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // const { name, value } = event.target;
+  const handleChangeTeacher = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setTeacherData({
-      // we pass referance teacherData and then change our name and value acording to event 
       ...teacherData,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      const file = files[0]; // Get the first file from the input
+      const file = files[0];
       setTeacherData({
         ...teacherData,
-        profile_img: file, // Set the file directly to the featured_img field
-        p_img: URL.createObjectURL(file), // Set the preview image URL
+        profile_img: file,
+        p_img: URL.createObjectURL(file),
       });
     }
   };
@@ -78,7 +68,6 @@ function TeacherProfileSettings() {
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const teacherFormData = new FormData();
-  
     teacherFormData.append("full_name", teacherData.full_name);
     teacherFormData.append("email", teacherData.email);
     teacherFormData.append("qualification", teacherData.qualification);
@@ -87,20 +76,14 @@ function TeacherProfileSettings() {
     if (teacherData.profile_img !== "") {
       teacherFormData.append("profile_img", teacherData.profile_img);
     }
- console.log("this is data ",teacherData)
-    try {
-      // console.log("here course form data", [...teacherFormData.entries()]);
-
+    console.log("this is data ", teacherData);
+ 
       axios
-        .put(
-          `${process.env.BASE_URL}teacher/${teacherId}/`,
-          teacherFormData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .put(`${process.env.BASE_URL}teacher/${teacherId}/`, teacherFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log(response.data);
           if (response.status == 200) {
@@ -114,14 +97,21 @@ function TeacherProfileSettings() {
               showConfirmButton: false,
             });
           }
+        }).catch((error) => {
+          console.error('Error fetching or parsing data:', error);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to update data",
+            icon: "error",
+            toast: true,
+            timer: 3000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
         });
-    } catch (error) {
-      console.log(error);
-    }
-   
   };
 
-console.log(teacherData)
   return (
     <div className="container mt-10">
       <div className="row">
@@ -130,12 +120,15 @@ console.log(teacherData)
         </aside>
         <section className="col-md-9">
           <div className="card shadow">
-            <h5 className="card-header text-center bg-primary text-white">Profile Settings</h5>
+            <h5 className="card-header text-center bg-primary text-white">
+              Profile Settings
+            </h5>
             <div className="card-body">
               <div className="mb-3 row">
                 <label
-                //  for="staticEmail"
-                  className="col-sm-2 col-form-label">
+                  htmlFor="staticEmail"
+                  className="col-sm-2 col-form-label"
+                >
                   Full Name
                 </label>
                 <div className="col-sm-10">
@@ -152,17 +145,18 @@ console.log(teacherData)
                 </div>
               </div>
               <div className="mb-3 row">
-                <label 
-                // for="staticEmail"
-                 className="col-sm-2 col-form-label">
+                <label
+                  htmlFor="staticEmail"
+                  className="col-sm-2 col-form-label"
+                >
                   Email
                 </label>
                 <div className="col-sm-10">
                   <div className="col-sm-10">
                     <input
-                     name="email"
-                     onChange={handleChangeTeacher}
-                     value={teacherData.email}
+                      name="email"
+                      onChange={handleChangeTeacher}
+                      value={teacherData.email}
                       type="email"
                       className="form-control"
                       id="inputPassword"
@@ -181,55 +175,64 @@ console.log(teacherData)
                   className="form-control"
                   id="video"
                 />
-                {teacherData.p_img && 
+                {teacherData.p_img && (
                   <div>
                     <img
-                       
                       src={teacherData.p_img}
                       width="300"
                       alt={teacherData.full_name}
                       className="img-fluid"
                     />
-                   <p>remain</p>
                   </div>
-                }
+                )}
               </div>
               <div className="mb-3 row">
-                <label 
-                // for="inputPassword" 
-                className="col-sm-2 col-form-label">
+                <label
+                  // for="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   Skills
                 </label>
                 <div className="col-sm-10">
                   <textarea
-                     name="skills"
-                     value={teacherData.skills}
-                     onChange={handleChangeTeacher}
+                    name="skills"
+                    value={teacherData.skills}
+                    onChange={handleChangeTeacher}
                     className="form-control"
                     id="floatingTextarea2"
                   ></textarea>
-                  <div id="emailHelp" className="form-text">Php,Python,Javascript,etc</div>
+                  <div id="emailHelp" className="form-text">
+                    Php,Python,Javascript,etc
+                  </div>
                 </div>
               </div>
               <div className="mb-3 row">
-                <label 
-                // for="inputPassword" 
-                className="col-sm-2 col-form-label">
+                <label
+                  // for="inputPassword"
+                  className="col-sm-2 col-form-label"
+                >
                   Qualification
                 </label>
                 <div className="col-sm-10">
                   <textarea
-                  value={teacherData.qualification}
+                    value={teacherData.qualification}
                     name="qualification"
                     onChange={handleChangeTeacher}
                     className="form-control"
                     id="floatingTextarea2"
                   ></textarea>
-                  <div id="emailHelp" className="form-text">BCA | MCA | B.Tech ....</div>
+                  <div id="emailHelp" className="form-text">
+                    BCA | MCA | B.Tech ....
+                  </div>
                 </div>
               </div>
               <hr />
-              <button onClick={submitForm as any} className="btn btn-primary  w-100">Update</button>
+              <button
+                onClick={submitForm as any}
+                className="btn btn-primary  w-100"
+              >
+                Update
+              </button>
             </div>
           </div>
         </section>
@@ -237,7 +240,6 @@ console.log(teacherData)
     </div>
   );
 }
-
 export default TeacherProfileSettings;
 <div className="form-floating">
   <textarea

@@ -1,7 +1,6 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-// import { cookies } from "next/headers";
 import cookies from 'js-cookie';
 
 
@@ -11,13 +10,11 @@ interface Course {
     title: string;
     completed: boolean;
 }
-
 interface CourseState {
     isLoading: boolean;
     data: Course[] | null;
     isError: boolean;
 }
-
 export const getCourseInfo = createAsyncThunk<Course[]|any>('getCourseInfo', async () => {
     const token = cookies.get('token')
     const teacherId = localStorage.getItem("teacherId")
