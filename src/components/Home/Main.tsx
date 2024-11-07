@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import "./Home.module.css";
@@ -17,73 +16,30 @@ function Main() {
     []
   );
 
-  const fetchPopularCourses = async () => {
-    try {
-        const data = await getApi('popular-courses/?popular=1');
-        console.log("hii iam here ")
-        setpopularCourseData(data.results); // Use the data to set state
-    } catch (error) {
-        console.error('Failed to fetch popular courses:', error);
-    }
+  
+const fetchData = async () => {
+  try {
+    const token = cookies.get("token");
+    const [courses, popularCourses, popularTeachers, testimonials] = await Promise.all([
+      getApi("course/?result=4",{Authorization: `Bearer ${token}`}),
+      getApi("popular-courses/?popular=1"),
+      getApi("popular-teachers/?popular=1"),
+      getApi("student-testimonial"),
+    ]);
+
+    setAllCourses(courses.results);
+    setpopularCourseData(popularCourses.results);
+    setpopularTeacherData(popularTeachers.results);
+    setstudetTestimonnialData(testimonials.results);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };
 
-  useEffect(() => {
-    const token = cookies.get("token");
-    console.log("this is my token", token);
-    const response = axios
-      .get(`${process.env.BASE_URL}course/?result=4`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("Data:", response.data);
-        setAllCourses(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+useEffect(() => {
+  fetchData();
+}, []);
 
-    //  fatch popular courses according to sum of all rating-
-    // axios
-    //   .get(`${process.env.BASE_URL}popular-courses/?popular=1`)
-    //   .then((response) => {
-    //     console.log("Data:", response.data);
-    //     setpopularCourseData(response.data.results);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-
-   
-  fetchPopularCourses()
-
-
-
- console.log("popular course data",popularCourseData) 
-
-    //fatch popular teachers-
-    axios
-      .get(`${process.env.BASE_URL}popular-teachers/?popular=1`)
-      .then((response) => {
-        console.log("Data:", response.data);
-        setpopularTeacherData(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    // fatch studet testimonial
-    axios
-      .get(`${process.env.BASE_URL}student-testimonial`)
-      .then((response) => {
-        console.log("Testomonial:", response.data);
-        setstudetTestimonnialData(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
 
   return (
     <div>
