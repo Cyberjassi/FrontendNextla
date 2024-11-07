@@ -7,6 +7,7 @@ import "./Home.module.css";
 import Button from "@mui/material/Button";
 import cookies from "js-cookie";
 import Rating from "./Rating";
+import getApi from "@/helper/getApi";
 
 function Main() {
   const [allCourses, setAllCourses] = useState<any[]>([]);
@@ -15,6 +16,17 @@ function Main() {
   const [studetTestimonnialData, setstudetTestimonnialData] = useState<any[]>(
     []
   );
+
+  const fetchPopularCourses = async () => {
+    try {
+        const data = await getApi('popular-courses/?popular=1');
+        console.log("hii iam here ")
+        setpopularCourseData(data.results); // Use the data to set state
+    } catch (error) {
+        console.error('Failed to fetch popular courses:', error);
+    }
+};
+
   useEffect(() => {
     const token = cookies.get("token");
     console.log("this is my token", token);
@@ -33,15 +45,22 @@ function Main() {
       });
 
     //  fatch popular courses according to sum of all rating-
-    axios
-      .get(`${process.env.BASE_URL}popular-courses/?popular=1`)
-      .then((response) => {
-        console.log("Data:", response.data);
-        setpopularCourseData(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    // axios
+    //   .get(`${process.env.BASE_URL}popular-courses/?popular=1`)
+    //   .then((response) => {
+    //     console.log("Data:", response.data);
+    //     setpopularCourseData(response.data.results);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+
+   
+  fetchPopularCourses()
+
+
+
+ console.log("popular course data",popularCourseData) 
 
     //fatch popular teachers-
     axios
@@ -58,13 +77,13 @@ function Main() {
     axios
       .get(`${process.env.BASE_URL}student-testimonial`)
       .then((response) => {
-        console.log("Data:", response.data);
+        console.log("Testomonial:", response.data);
         setstudetTestimonnialData(response.data.results);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [""]);
+  }, []);
 
   return (
     <div>
