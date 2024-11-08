@@ -1,24 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import Link from "next/link";
-import Rating from "@/components/Home/Rating";
 import Button from "@mui/material/Button";
+import CourseCard from "@/components/courseCard";
+import getApi from "@/helper/getApi";
 
 function Search(props: any) {
   const searchString = props.params["searchString"];
   const [allCourses, setAllCourses] = useState<any[]>([]);
+
+  const fetchData:any = async () =>{
+  const data = await getApi(`course/?searchString=${searchString}`)
+  setAllCourses(data.results)
+  }
   useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}course/?searchString=${searchString}`)
-      .then((response) => {
-        console.log("Data:", response.data);
-        setAllCourses(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+      fetchData()
+  },
+  []);
 
   return (
     <div>
@@ -41,54 +38,15 @@ function Search(props: any) {
             )}
             {allCourses &&
               allCourses.map((course: any, index: number) => (
-                <div className="col-md-3" key={course.id}>
-                  <div className="card ccard shadow">
-                    <Link href={`/course-detail/${course.id}`}>
-                      <img
-                        className="card-img-top"
-                        src={
-                          course.featured_img
-                            ? course.featured_img
-                            : "/img/default.png"
-                        }
-                        alt={course.title}
-                      />
-                    </Link>
-                    <div className="card-body">
-                      <h5 className="card-title">
-                        <Link
-                          className="custom-link-style course-title"
-                          href={`/course-detail/${course.id}`}
-                        >
-                          {course.title}
-                        </Link>
-                      </h5>
-                      <p className="description">
-                        {course.description.length > 100
-                          ? `${course.description.substring(0, 100)}...`
-                          : course.description}
-                      </p>
-                    </div>
-                    <div className="card-footer">
-                      <div className="title">
-                        {course.course_rating == null && (
-                          <span>
-                            Rating: <Rating rating={0} />
-                          </span>
-                        )}
-                        {course.course_rating && (
-                          <span>
-                            Rating: <Rating rating={course.course_rating} />
-                          </span>
-                        )}
-                        <p>
-                          Price: <span className="text-black text-base">₹</span>
-                          {course.price}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <CourseCard
+              courseId={course.id}
+              index={index}
+              ImgUrl={course.featured_img}
+              Title={course.title}
+              Description={course.description}
+              cRating={course.course_rating}
+              Price={course.price}
+              />
               ))}
           </div>
         </div>

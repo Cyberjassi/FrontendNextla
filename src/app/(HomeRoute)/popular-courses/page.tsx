@@ -1,9 +1,7 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "next/image";
-import Rating from "@/components/Home/Rating";
+import CourseCard from "@/components/courseCard";
 
 export default function PopularCourses() {
   const baseUrl = `${process.env.BASE_URL}popular-courses/?popular=1`;
@@ -37,49 +35,15 @@ export default function PopularCourses() {
       <h3 className="pb-1 my-4 text-start">Popular Courses</h3>
       <div className="row mb-4">
         {popularCourseData.map((row: any, index: number) => (
-          <div className="col-md-3" key={index}>
-            <div className="ccard card shadow-lg">
-              <Link href={`/course-detail/${row.course.id}`}>
-                <Image
-                  className="card-img-top"
-                  src={
-                    row.course.featured_img
-                      ? row.course.featured_img
-                      : "/img/default.png"
-                  }
-                  alt={row.course.title}
-                  height={300}
-                  width={150}
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link
-                    className="custom-link-style course-title"
-                    href={`/course-detail/${row.course.id}`}
-                  >
-                    {row.course.title}
-                  </Link>
-                  <p className="description">
-                    {row.course.description.length > 30
-                      ? `${row.course.description.substring(0, 100)}...`
-                      : row.course.description}
-                  </p>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>
-                    Rating: <Rating rating={row.average_rating} />
-                  </span>
-                  <p>
-                    Price: <span className="text-black text-base">₹</span>
-                    {row.course.price}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CourseCard
+              courseId={row.course.id}
+              index={index}
+              ImgUrl={row.course.featured_img}
+              Title={row.course.title}
+              Description={row.course.description}
+              cRating={row.average_rating}
+              Price={row.course.price}
+              />
         ))}
       </div>
       <nav aria-label="Page navigation example mt-5">

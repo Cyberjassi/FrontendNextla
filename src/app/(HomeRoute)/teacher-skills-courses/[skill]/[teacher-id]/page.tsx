@@ -3,24 +3,20 @@ import axios from "axios";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Rating from "@/components/Home/Rating";
+import getApi from "@/helper/getApi";
 
 export default function teacherSkillsCourses(props: any) {
   const [allCourses, setAllCourses] = useState<any[]>([]);
   const currentSkill = props.params["skill"];
   const currentTeacher = props.params["teacher-id"];
 
+  const fetchData = async() =>{
+    const data = await getApi(`course/?skill_name=${currentSkill}&teacher=${currentTeacher}`)
+    setAllCourses(data.results)
+  }
+
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}course/?skill_name=${currentSkill}&teacher=${currentTeacher}`
-      )
-      .then((response) => {
-        console.log("this is category course:", response.data.results);
-        setAllCourses(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      fetchData()
   }, []);
 
   return (

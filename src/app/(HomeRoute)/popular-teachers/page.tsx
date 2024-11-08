@@ -1,8 +1,7 @@
 "use client"
-import Link from 'next/link';
 import { useEffect ,useState} from 'react';
-import Image from 'next/image';
 import axios from 'axios';
+import TeacherCard from '@/components/teacherCard';
 
 export default function PopularTeachers() {
   const baseUrl = `${process.env.BASE_URL}popular-teachers/`
@@ -36,29 +35,13 @@ export default function PopularTeachers() {
           </h3>
           <div className="row mb-4">
             {popularTeacherData.map((teacher:any,index:number)=>
-              <div className="col-md-3" key={index}>
-                <div className="ccard card shadow-lg">
-                  <Link href={`/teacher-detail/${teacher.id}`}>
-                    <Image
-                      className="card-img-top"
-                      src={teacher.profile_img?teacher.profile_img:"/img/default.png"}
-                      alt={teacher.full_name}
-                      height={300}
-                      width={150}
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <Link className="custom-link-style course-title" href={`/teacher-detail/${teacher.id}`}>{teacher.full_name}</Link>
-                    </h5>
-                  </div>
-                  <div className="card-footer">
-                    <div className="title">
-                      <span>Courses:{teacher.total_teacher_courses}</span> 
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <TeacherCard
+            TeacherId={teacher.id}
+            Index={index}
+            ImgUrl={teacher.profile_img}
+            Name={teacher.full_name}
+            TotalC={teacher.total_teacher_courses}
+           />
             )}
           </div>
 

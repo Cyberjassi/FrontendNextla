@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
-import Rating from "@/components/Home/Rating";
+import CourseCard from "@/components/courseCard";
 
 export default function AllCourses() {
   const baseUrl = `${process.env.BASE_URL}course/`;
@@ -38,47 +37,15 @@ export default function AllCourses() {
       <h3 className="pb-1 my-4 text-start">All Courses</h3>
       <div className="row mb-4">
         {allCourses.map((course: any, index: number) => (
-          <div className="col-md-3" key={index}>
-            <div className="ccard card shadow-lg">
-              <Link href={`/course-detail/${course.id}`}>
-                <img
-                  className="card-img-top"
-                  src={
-                    course.featured_img
-                      ? course.featured_img
-                      : "/img/default.png"
-                  }
-                  alt={course.title}
-                />
-              </Link>
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link
-                    className="custom-link-style course-title"
-                    href={`/course-detail/${course.id}`}
-                  >
-                    {course.title}
-                  </Link>
-                  <p className="description">
-                    {course.description.length > 100
-                      ? `${course.description.substring(0, 100)}...`
-                      : course.description}
-                  </p>
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="title">
-                  <span>
-                    Rating: <Rating rating={course.course_rating} />
-                  </span>
-                  <p>
-                    Price: <span className="text-black text-base">₹</span>
-                    {course.price}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CourseCard
+          courseId={course.id}
+          index={index}
+          ImgUrl={course.featured_img}
+          Title={course.title}
+          Description={course.description}
+          cRating={course.course_rating}
+          Price={course.price}
+          />
         ))}
       </div>
 

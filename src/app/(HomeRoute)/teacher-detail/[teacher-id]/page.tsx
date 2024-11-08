@@ -1,30 +1,26 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import axios from "axios";
 import { ListItem, ListItemText } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import getApi from "@/helper/getApi";
 
 function TeacherDetail(props: any) {
   const currentTeacher = props.params["teacher-id"];
   const [teacherData, setTeacherData] = useState<any>([]);
   const [courseData, setCourseData] = useState<any>([]);
   const [skillList, setskillList] = useState<any>([]);
+
+  const fetchData = async () =>{
+       const data = await getApi(`teacher/${currentTeacher}`)
+       setTeacherData(data);
+       setCourseData(data.teacher_courses);
+       setskillList(data.skill_list);
+      }
   useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}teacher/${currentTeacher}`)
-      .then((response) => {
-        console.log("Data:", response.data);
-        setTeacherData(response.data);
-        setCourseData(response.data.teacher_courses);
-        setskillList(response.data.skill_list);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      fetchData()
   }, []);
-  console.log("teacher data", teacherData);
-  console.log("course data", courseData);
+
 
   return (
     <div>
