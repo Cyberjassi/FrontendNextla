@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import "./Home.module.css";
 import Button from "@mui/material/Button";
 import cookies from "js-cookie";
-import Rating from "./Rating";
 import getApi from "@/helper/getApi";
+import CourseCard from "../courseCard";
+import TeacherCard from "../teacherCard";
+import StudentTestimonialCard from "../studentTestimonialCard";
 
 function Main() {
   const [allCourses, setAllCourses] = useState<any[]>([]);
@@ -59,49 +59,15 @@ useEffect(() => {
           </h3>
           <div className="row mb-4">
             {allCourses.map((course: any, index: number) => (
-              <div className="col-md-3" key={index}>
-                <div className="ccard card shadow-lg">
-                  <Link href={`/course-detail/${course.id}`}>
-                    <Image
-                      className="card-img-top"
-                      src={
-                        course.featured_img
-                          ? course.featured_img
-                          : "/img/default.png"
-                      }
-                      alt={course.title}
-                      height={250}
-                      width={150}
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <Link
-                        className="custom-link-style course-title"
-                        href={`/course-detail/${course.id}`}
-                      >
-                        {course.title}
-                      </Link>
-                      <p className="description">
-                        {course.description.length > 30
-                          ? `${course.description.substring(0, 100)}...`
-                          : course.description}
-                      </p>
-                    </h5>
-                  </div>
-                  <div className="card-footer">
-                    <div className="title">
-                      <span>
-                        Rating: <Rating rating={course.course_rating} />
-                      </span>
-                      <p>
-                        Price: <span className="text-black text-base">₹</span>
-                        {course.price}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CourseCard
+              courseId={course.id}
+              index={index}
+              ImgUrl={course.featured_img}
+              Title={course.title}
+              Description={course.description}
+              cRating={course.course_rating}
+              Price={course.price}
+              />
             ))}
           </div>
         </div>
@@ -121,49 +87,15 @@ useEffect(() => {
           </h3>
           <div className="row mb-4">
             {popularCourseData.map((row: any, index: number) => (
-              <div className="col-md-3" key={index}>
-                <div className="ccard card shadow-lg">
-                  <Link href={`/course-detail/${row.course.id}`}>
-                    <Image
-                      className="card-img-top"
-                      src={
-                        row.course.featured_img
-                          ? row.course.featured_img
-                          : "/img/default.png"
-                      }
-                      alt={row.course.title}
-                      height={250}
-                      width={150}
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <Link
-                        className="custom-link-style course-title"
-                        href={`/course-detail/${row.course.id}`}
-                      >
-                        {row.course.title}
-                      </Link>
-                      <p className="description">
-                        {row.course.description.length > 30
-                          ? `${row.course.description.substring(0, 100)}...`
-                          : row.course.description}
-                      </p>
-                    </h5>
-                  </div>
-                  <div className="card-footer">
-                    <div className="title">
-                      <span>
-                        Rating: <Rating rating={row.average_rating} />
-                      </span>
-                      <p>
-                        Price: <span className="text-black text-base">₹</span>
-                        {row.course.price}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CourseCard
+              courseId={row.course.id}
+              index={index}
+              ImgUrl={row.course.featured_img}
+              Title={row.course.title}
+              Description={row.course.description}
+              cRating={row.average_rating}
+              Price={row.course.price}
+              />
             ))}
           </div>
         </div>
@@ -183,110 +115,20 @@ useEffect(() => {
           </h3>
           <div className="row mb-4">
             {popularTeacherData.map((teacher: any, index: number) => (
-              <div className="col-md-3" key={index}>
-                <div className="ccard card shadow-lg">
-                  <Link href={`/teacher-detail/${teacher.id}`}>
-                    <Image
-                      className="card-img-top"
-                      src={
-                        teacher.profile_img
-                          ? teacher.profile_img
-                          : "/img/default.png"
-                      }
-                      alt={teacher.full_name}
-                      height={250}
-                      width={150}
-                    />
-                  </Link>
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <Link
-                        className="custom-link-style course-title"
-                        href={`/teacher-detail/${teacher.id}`}
-                      >
-                        {teacher.full_name}
-                      </Link>
-                    </h5>
-                  </div>
-                  <div className="card-footer">
-                    <div className="title">
-                      <span>Courses: {teacher.total_teacher_courses}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             <TeacherCard
+              TeacherId={teacher.id}
+              Index={index}
+              ImgUrl={teacher.profile_img}
+              Name={teacher.full_name}
+              TotalC={teacher.total_teacher_courses}
+             />
             ))}
           </div>
 
           {/* student testimonial */}
-          <h3 className="pb-1 my-4 mt-4 course-heading">Student Testimonial</h3>
-          <div
-            id="carouselExampleIndicators"
-            className="carousel slide bg-primary text-white py-5"
-            data-bs-ride="carousel"
-          >
-            <div className="carousel-indicators">
-              {studetTestimonnialData &&
-                studetTestimonnialData.map((row, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to={index}
-                    className={index == 0 ? "active" : ""}
-                  ></button>
-                ))}
-            </div>
-            <div className="carousel-inner">
-              {studetTestimonnialData &&
-                studetTestimonnialData.map((row, i) => (
-                  <div
-                    key={i}
-                    className={
-                      i == 0
-                        ? "carousel-item text-center active"
-                        : "carousel-item text-ceter"
-                    }
-                  >
-                    <figure className="text-center">
-                      <blockquote className="blockquote">
-                        <p>{row.reviews}</p>
-                      </blockquote>
-                      <figcaption className="blockquote-footer text-white">
-                        {row.course.title} &nbsp;
-                        <cite title="Source Title">
-                          {row.student.full_name}
-                        </cite>
-                      </figcaption>
-                    </figure>
-                  </div>
-                ))}
-            </div>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev"
-            >
-              <span
-                className="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next"
-            >
-              <span
-                className="carousel-control-next-icon"
-                aria-hidden="true"
-              ></span>
-              <span className="visually-hidden">Next</span>
-            </button>
-          </div>
+          <StudentTestimonialCard
+           studetTestimonnialData={studetTestimonnialData}
+          />
         </div>
       </>
     </div>

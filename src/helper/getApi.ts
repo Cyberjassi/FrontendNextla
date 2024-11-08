@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-const getApi = async (url:any) => {
-    console.log("popular",url)
+const getApi = async (url:any,headers:any = null) => {
     try {
-        const response = await axios.get(`${process.env.BASE_URL}${url}`);
-        console.log("Data of favorite course:", response.data);
+        const options = headers ? { headers } : {};
+        const response = await axios.get(`${process.env.BASE_URL}${url}`,options);
         return response.data; // Return the response data for further use
     } catch (error) {
         console.error("Error:", error);
