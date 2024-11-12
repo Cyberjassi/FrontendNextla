@@ -109,7 +109,24 @@ function page(props: any) {
   //end payment
   
   const fetchData = async() =>{
-    const currentCourseData = await getApi(`course/${currentCourse}`)
+    const [currentCourseData,enrollStatus,RatingStatus,FavoriteStatus] = await Promise.all([ getApi(`course/${currentCourse}`),
+      getApi(`fatch-enroll-status/${studentId}/${currentCourse}`),
+      getApi(`fatch-rating-status/${studentId}/${currentCourse}`),
+      getApi(`fatch-favorite-status/${studentId}/${currentCourse}`),
+    ])
+    console.log("favrite status",FavoriteStatus.bool)
+      if (enrollStatus.bool == true) {
+        setEnrollStatus("success");
+      }
+      if (RatingStatus.bool == true) {
+        setratingStatus("success");
+      }
+      if (FavoriteStatus.bool == true) {
+        setfavoriteStatus("success");
+      } else {
+        setfavoriteStatus("");
+      }
+
     setCourse(currentCourseData)
     setTeacher(currentCourseData.teacher)
     setChapterData(currentCourseData.course_chapter)
@@ -121,61 +138,12 @@ function page(props: any) {
   }
 
   useEffect(() => {
-    //fatch current course-
     fetchData()
-
-
-    // fatch enroll status-
-    axios
-      .get(
-        `${process.env.BASE_URL}fatch-enroll-status/${studentId}/${currentCourse}`
-      )
-      .then((response) => {
-        console.log("this is a response for bool", response);
-        if (response.data.bool == true) {
-          setEnrollStatus("success");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    // fatch rating status-
-    axios
-      .get(
-        `${process.env.BASE_URL}fatch-rating-status/${studentId}/${currentCourse}`
-      )
-      .then((response) => {
-        console.log("this is a response for bool", response);
-        if (response.data.bool == true) {
-          setratingStatus("success");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    // favorite status-
-    axios
-      .get(
-        `${process.env.BASE_URL}fatch-favorite-status/${studentId}/${currentCourse}`
-      )
-      .then((response) => {
-        console.log("this is a response for bool", response);
-        if (response.data.bool == true) {
-          setfavoriteStatus("success");
-        } else {
-          setfavoriteStatus("");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
     const studentLoginStatus = localStorage.getItem("studentLoginStatus");
     if (studentLoginStatus == "true") {
       setUserLoginStatus("success");
     }
-  }, [""]);
+  }, []);
   console.log("related courses", realtedCourseData);
   console.log("tech list ", techListData);
 
